@@ -43,22 +43,19 @@
     border-color var(--duration-normal) var(--ease-out),
     box-shadow var(--duration-normal) var(--ease-out),
     transform var(--duration-normal) var(--ease-out);
-  box-shadow:
-    var(--shadow-sm),
-    inset 0 1px 0 var(--card-highlight);
+  box-shadow: var(--shadow-card);
 }
 
 .card:hover {
   border-color: var(--border-strong);
-  box-shadow:
-    var(--shadow-md),
-    inset 0 1px 0 var(--card-highlight);
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-1px);
 }
 
 .card-title {
   font-size: 15px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-weight: 650;
+  letter-spacing: -0.025em;
   color: var(--text-strong);
 }
 
@@ -80,31 +77,32 @@
   border: 1px solid var(--border);
   transition:
     border-color var(--duration-normal) var(--ease-out),
-    box-shadow var(--duration-normal) var(--ease-out);
-  box-shadow: inset 0 1px 0 var(--card-highlight);
+    box-shadow var(--duration-normal) var(--ease-out),
+    transform var(--duration-normal) var(--ease-out);
+  box-shadow: var(--shadow-card);
 }
 
 .stat:hover {
   border-color: var(--border-strong);
-  box-shadow:
-    var(--shadow-sm),
-    inset 0 1px 0 var(--card-highlight);
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-1px);
 }
 
 .stat-label {
   color: var(--muted);
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
 }
 
 .stat-value {
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 26px;
+  font-weight: 750;
   margin-top: 6px;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
   line-height: 1.1;
+  font-feature-settings: "tnum";
 }
 
 .stat-value.ok {
@@ -218,16 +216,20 @@
   align-items: center;
   gap: 6px;
   border: 1px solid var(--border);
-  padding: 6px 12px;
+  padding: 5px 11px;
   border-radius: var(--radius-full);
   background: var(--secondary);
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 500;
-  transition: border-color var(--duration-fast) ease;
+  letter-spacing: -0.01em;
+  transition:
+    border-color var(--duration-fast) ease,
+    background var(--duration-fast) ease;
 }
 
 .pill:hover {
   border-color: var(--border-strong);
+  background: var(--bg-hover);
 }
 
 .pill.danger {
@@ -267,7 +269,8 @@
   border-radius: var(--radius-full);
   transform: translateY(-50%)
     translateX(calc(var(--theme-index, 0) * (var(--theme-item) + var(--theme-gap))));
-  background: var(--accent);
+  background: var(--gradient-accent);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25), 0 0 10px var(--accent-glow);
   transition: transform var(--duration-normal) var(--ease-out);
   z-index: 0;
 }
@@ -318,19 +321,19 @@
   height: 8px;
   border-radius: var(--radius-full);
   background: var(--danger);
-  box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+  box-shadow: 0 0 0 2px var(--danger-subtle), 0 0 10px var(--danger-muted);
   animation: pulse-subtle 2s ease-in-out infinite;
 }
 
 .statusDot.ok {
   background: var(--ok);
-  box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+  box-shadow: 0 0 0 2px var(--ok-subtle), 0 0 10px var(--ok-muted);
   animation: none;
 }
 
 .statusDot.warn {
   background: var(--warn);
-  box-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
+  box-shadow: 0 0 0 2px var(--warn-subtle), 0 0 10px var(--warn-muted);
   animation: none;
 }
 
@@ -355,7 +358,8 @@
     border-color var(--duration-fast) var(--ease-out),
     background var(--duration-fast) var(--ease-out),
     box-shadow var(--duration-fast) var(--ease-out),
-    transform var(--duration-fast) var(--ease-out);
+    transform var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
 }
 
 .btn:hover {
@@ -367,7 +371,7 @@
 
 .btn:active {
   background: var(--secondary);
-  transform: translateY(0);
+  transform: translateY(0px);
   box-shadow: none;
 }
 
@@ -384,17 +388,17 @@
 
 .btn.primary {
   border-color: var(--accent);
-  background: var(--accent);
+  background: var(--gradient-accent);
   color: var(--primary-foreground);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .btn.primary:hover {
-  background: var(--accent-hover);
-  border-color: var(--accent-hover);
+  filter: brightness(1.1);
   box-shadow:
     var(--shadow-md),
-    0 0 20px var(--accent-glow);
+    0 0 28px var(--accent-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 /* Keyboard shortcut badge (shadcn style) */
@@ -479,17 +483,19 @@
   border-radius: var(--radius-md);
   padding: 8px 12px;
   outline: none;
-  box-shadow: inset 0 1px 0 var(--card-highlight);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12), inset 0 1px 0 var(--card-highlight);
   transition:
     border-color var(--duration-fast) ease,
-    box-shadow var(--duration-fast) ease;
+    box-shadow var(--duration-fast) ease,
+    background var(--duration-fast) ease;
 }
 
 .field input:focus,
 .field textarea:focus,
 .field select:focus {
-  border-color: var(--ring);
-  box-shadow: var(--focus-ring);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-subtle), inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  background: var(--bg-elevated);
 }
 
 .field select {

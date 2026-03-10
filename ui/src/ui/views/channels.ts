@@ -26,6 +26,23 @@ import { renderTelegramCard } from "./channels.telegram.ts";
 import type { ChannelKey, ChannelsChannelData, ChannelsProps } from "./channels.types.ts";
 import { renderWhatsAppCard } from "./channels.whatsapp.ts";
 
+function isChannelLive(status: Record<string, unknown> | undefined): boolean {
+  if (!status) {
+    return false;
+  }
+  return status.connected === true || status.running === true;
+}
+
+function renderChannelMetric(label: string, value: string, sub: string) {
+  return html`
+    <div class="stat">
+      <div class="stat-label">${label}</div>
+      <div class="stat-value">${value}</div>
+      <div class="muted">${sub}</div>
+    </div>
+  `;
+}
+
 export function renderChannels(props: ChannelsProps) {
   const channels = props.snapshot?.channels as Record<string, unknown> | null;
   const whatsapp = (channels?.whatsapp ?? undefined) as WhatsAppStatus | undefined;
@@ -49,9 +66,38 @@ export function renderChannels(props: ChannelsProps) {
       }
       return a.order - b.order;
     });
+  const liveCount = orderedChannels.filter((entry) =>
+    isChannelLive((channels?.[entry.key] ?? undefined) as Record<string, unknown> | undefined),
+  ).length;
+  const accountCount = Object.values(props.snapshot?.channelAccounts ?? {}).reduce(
+    (sum, accounts) => sum + accounts.length,
+    0,
+  );
 
   return html`
-    <section class="grid grid-cols-2">
+    <section class="dashboard-hero channels-hero">
+      <div class="card channels-hero__intro">
+        <div class="overview-card__eyebrow">
+          <span class="statusDot ${props.lastError ? "warn" : "ok"}"></span>
+          <span>${props.lastError ? "Needs attention" : "Messaging fabric healthy"}</span>
+        </div>
+        <div class="card-title">Channels at a glance</div>
+        <div class="card-sub">
+          Monitor every bridge, linked account, and delivery surface from one control plane.
+        </div>
+        <div class="row channels-hero__meta" style="margin-top: 16px;">
+          <span class="pill">${props.lastSuccessAt ? formatRelativeTimestamp(props.lastSuccessAt) : "No refresh yet"}</span>
+          <span class="pill">${props.snapshot ? "Snapshot loaded" : "Waiting for gateway"}</span>
+        </div>
+      </div>
+      <div class="grid grid-cols-3 channels-hero__stats">
+        ${renderChannelMetric("Ready", String(orderedChannels.filter((entry) => entry.enabled).length), "configured or active")}
+        ${renderChannelMetric("Live", String(liveCount), "running or connected")}
+        ${renderChannelMetric("Accounts", String(accountCount), "linked identities")}
+      </div>
+    </section>
+
+    <section class="grid grid-cols-2 channels-grid">
       ${orderedChannels.map((channel) =>
         renderChannel(channel.key, props, {
           whatsapp,
@@ -67,7 +113,7 @@ export function renderChannels(props: ChannelsProps) {
       )}
     </section>
 
-    <section class="card" style="margin-top: 18px;">
+    <section class="card channel-health" style="margin-top: 18px;">
       <div class="row" style="justify-content: space-between;">
         <div>
           <div class="card-title">Channel health</div>

@@ -258,6 +258,7 @@ export function renderChat(props: ChatProps) {
 
   const splitRatio = props.splitRatio ?? 0.6;
   const sidebarOpen = Boolean(props.sidebarOpen && props.onCloseSidebar);
+  const chatItems = buildChatItems(props);
   const thread = html`
     <div
       class="chat-thread"
@@ -272,8 +273,30 @@ export function renderChat(props: ChatProps) {
             `
           : nothing
       }
+      ${
+        !props.loading && chatItems.length === 0
+          ? html`
+              <div class="chat-empty-state">
+                <div class="chat-empty-state__eyebrow">
+                  ${icons.brain}
+                  <span>${props.assistantName}</span>
+                </div>
+                <div class="chat-empty-state__title">Start the next agent turn</div>
+                <div class="chat-empty-state__text">
+                  Ask for a status check, inspect a session, review config, or paste an image to
+                  start a richer workflow from this workspace.
+                </div>
+                <div class="chat-empty-state__chips">
+                  <span class="chat-empty-state__chip">${icons.messageSquare} Ask anything</span>
+                  <span class="chat-empty-state__chip">${icons.image} Paste screenshots</span>
+                  <span class="chat-empty-state__chip">${icons.puzzle} Use tool output sidebar</span>
+                </div>
+              </div>
+            `
+          : nothing
+      }
       ${repeat(
-        buildChatItems(props),
+        chatItems,
         (item) => item.key,
         (item) => {
           if (item.kind === "divider") {

@@ -65,7 +65,13 @@ import {
 } from "./controllers/skills.ts";
 import { buildExternalLinkRel, EXTERNAL_LINK_TARGET } from "./external-link.ts";
 import { icons } from "./icons.ts";
-import { normalizeBasePath, TAB_GROUPS, subtitleForTab, titleForTab } from "./navigation.ts";
+import {
+  iconForTab,
+  normalizeBasePath,
+  TAB_GROUPS,
+  subtitleForTab,
+  titleForTab,
+} from "./navigation.ts";
 import { resolveConfiguredCronModelSuggestions, sortLocaleStrings } from "./views/agents-utils.ts";
 import { renderAgents } from "./views/agents.ts";
 import { renderChannels } from "./views/channels.ts";
@@ -219,6 +225,55 @@ export function renderApp(state: AppViewState) {
     state.cronForm.deliveryMode === "webhook"
       ? rawDeliveryToSuggestions.filter((value) => isHttpUrl(value))
       : rawDeliveryToSuggestions;
+  const activeTabIcon = icons[iconForTab(state.tab)];
+  const channelCount =
+    state.channelsSnapshot?.channelMeta?.length ??
+    state.channelsSnapshot?.channelOrder?.length ??
+    0;
+  const agentCount = state.agentsList?.agents?.length ?? 0;
+  const pageBadges = [
+    {
+      label: t("common.health"),
+      value: state.connected ? t("common.ok") : t("common.offline"),
+      tone: state.connected ? "success" : "warn",
+    },
+    isChat
+      ? {
+          label: "Session",
+          value: state.sessionKey || "main",
+          tone: "default",
+        }
+      : null,
+    state.tab === "channels"
+      ? {
+          label: t("tabs.channels"),
+          value: channelCount > 0 ? `${channelCount} connected surfaces` : "Awaiting snapshot",
+          tone: "default",
+        }
+      : null,
+    state.tab === "agents"
+      ? {
+          label: t("tabs.agents"),
+          value: agentCount > 0 ? `${agentCount} configured` : "Awaiting load",
+          tone: "default",
+        }
+      : null,
+    !isChat && availableUpdate
+      ? {
+          label: "Update",
+          value: `v${availableUpdate.latestVersion}`,
+          tone: "warn",
+        }
+      : null,
+  ].filter(Boolean) as Array<{
+    label: string;
+    value: string;
+    tone: "default" | "success" | "warn";
+  }>;
+  const navFooterTitle = state.connected ? "Live control plane" : "Reconnect to resume";
+  const navFooterCopy = state.connected
+    ? `${presenceCount} live instance${presenceCount === 1 ? "" : "s"} · ${sessionsCount ?? "n/a"} sessions tracked`
+    : "Connect from Overview to restore streaming updates, channel health, and chat.";
 
   return html`
     <div class="shell ${isChat ? "shell--chat" : ""} ${chatFocus ? "shell--chat-focus" : ""} ${state.settings.navCollapsed ? "shell--nav-collapsed" : ""} ${state.onboarding ? "shell--onboarding" : ""}">
@@ -247,17 +302,23 @@ export function renderApp(state: AppViewState) {
           </div>
         </div>
         <div class="topbar-status">
-          <div class="pill">
+          <div class="pill topbar-pill topbar-pill--version">
             <span class="statusDot ${versionStatusClass}"></span>
-            <span>${t("common.version")}</span>
-            <span class="mono">${openClawVersion}</span>
+            <span class="topbar-pill__meta">
+              <span class="topbar-pill__label">${t("common.version")}</span>
+              <span class="topbar-pill__value mono">${openClawVersion}</span>
+            </span>
           </div>
-          <div class="pill">
+          <div class="pill topbar-pill topbar-pill--health">
             <span class="statusDot ${state.connected ? "ok" : ""}"></span>
-            <span>${t("common.health")}</span>
-            <span class="mono">${state.connected ? t("common.ok") : t("common.offline")}</span>
+            <span class="topbar-pill__meta">
+              <span class="topbar-pill__label">${t("common.health")}</span>
+              <span class="topbar-pill__value mono"
+                >${state.connected ? t("common.ok") : t("common.offline")}</span
+              >
+            </span>
           </div>
-          ${renderThemeToggle(state)}
+          <div class="topbar-status__toggle">${renderThemeToggle(state)}</div>
         </div>
       </header>
       <aside class="nav ${state.settings.navCollapsed ? "nav--collapsed" : ""}">
@@ -304,6 +365,20 @@ export function renderApp(state: AppViewState) {
             </a>
           </div>
         </div>
+        <div class="nav-footer">
+          <div class="nav-footer__card">
+            <div class="nav-footer__eyebrow">
+              <span class="statusDot ${state.connected ? "ok" : ""}"></span>
+              <span>${state.connected ? "Gateway online" : "Gateway offline"}</span>
+            </div>
+            <div class="nav-footer__title">${navFooterTitle}</div>
+            <div class="nav-footer__sub">${navFooterCopy}</div>
+            <div class="nav-footer__meta">
+              <span class="pill">${t("tabs.agents")} ${agentCount || "—"}</span>
+              <span class="pill">${t("tabs.channels")} ${channelCount || "—"}</span>
+            </div>
+          </div>
+        </div>
       </aside>
       <main class="content ${isChat ? "content--chat" : ""}">
         ${
@@ -319,16 +394,54 @@ export function renderApp(state: AppViewState) {
             </div>`
             : nothing
         }
-        <section class="content-header">
-          <div>
-            ${state.tab === "usage" ? nothing : html`<div class="page-title">${titleForTab(state.tab)}</div>`}
-            ${state.tab === "usage" ? nothing : html`<div class="page-sub">${subtitleForTab(state.tab)}</div>`}
-          </div>
-          <div class="page-meta">
-            ${state.lastError ? html`<div class="pill danger">${state.lastError}</div>` : nothing}
-            ${isChat ? renderChatControls(state) : nothing}
-          </div>
-        </section>
+        ${
+          state.tab === "usage"
+            ? nothing
+            : html`
+              <section class="content-header">
+                <div class="content-header__main">
+                  <div class="content-header__eyebrow">
+                    <span class="page-icon">${activeTabIcon}</span>
+                    <span>QCortex Workspace</span>
+                  </div>
+                  <div class="page-title-row">
+                    <div>
+                      <div class="page-title">${titleForTab(state.tab)}</div>
+                      <div class="page-sub">${subtitleForTab(state.tab)}</div>
+                    </div>
+                    ${
+                      pageBadges.length > 0
+                        ? html`
+                            <div class="page-badges">
+                              ${pageBadges.map(
+                                (badge) => html`
+                                  <div
+                                    class="page-badge ${
+                                      badge.tone === "warn"
+                                        ? "page-badge--warn"
+                                        : badge.tone === "success"
+                                          ? "page-badge--success"
+                                          : ""
+                                    }"
+                                  >
+                                    <div class="page-badge__label">${badge.label}</div>
+                                    <div class="page-badge__value">${badge.value}</div>
+                                  </div>
+                                `,
+                              )}
+                            </div>
+                          `
+                        : nothing
+                    }
+                  </div>
+                </div>
+                <div class="page-meta">
+                  ${state.lastError ? html`<div class="pill danger">${state.lastError}</div>` : nothing}
+                  ${isChat ? renderChatControls(state) : nothing}
+                </div>
+              </section>
+            `
+        }
 
         ${
           state.tab === "overview"

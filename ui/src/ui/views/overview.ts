@@ -194,11 +194,17 @@ export function renderOverview(props: OverviewProps) {
   const currentLocale = i18n.getLocale();
 
   return html`
-    <section class="grid grid-cols-2">
-      <div class="card">
-        <div class="card-title">${t("overview.access.title")}</div>
-        <div class="card-sub">${t("overview.access.subtitle")}</div>
-        <div class="form-grid" style="margin-top: 16px;">
+    <section class="grid grid-cols-2 overview-hero overview-section">
+      <div class="card overview-card overview-access">
+        <div class="overview-card__eyebrow">
+          <span class="statusDot ${props.connected ? "ok" : "warn"}"></span>
+          <span>${props.connected ? t("common.ok") : t("common.offline")}</span>
+        </div>
+        <div class="overview-card__header">
+          <div class="card-title">${t("overview.access.title")}</div>
+          <div class="card-sub">${t("overview.access.subtitle")}</div>
+        </div>
+        <div class="form-grid overview-form-grid">
           <label class="field">
             <span>${t("overview.access.wsUrl")}</span>
             <input
@@ -266,8 +272,8 @@ export function renderOverview(props: OverviewProps) {
             </select>
           </label>
         </div>
-        <div class="row" style="margin-top: 14px;">
-          <button class="btn" @click=${() => props.onConnect()}>${t("common.connect")}</button>
+        <div class="row overview-access__actions">
+          <button class="btn primary" @click=${() => props.onConnect()}>${t("common.connect")}</button>
           <button class="btn" @click=${() => props.onRefresh()}>${t("common.refresh")}</button>
           <span class="muted">${
             isTrustedProxy ? t("overview.access.trustedProxy") : t("overview.access.connectHint")
@@ -275,25 +281,31 @@ export function renderOverview(props: OverviewProps) {
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-title">${t("overview.snapshot.title")}</div>
-        <div class="card-sub">${t("overview.snapshot.subtitle")}</div>
-        <div class="stat-grid" style="margin-top: 16px;">
-          <div class="stat">
+      <div class="card overview-card overview-snapshot">
+        <div class="overview-card__eyebrow">
+          <span class="statusDot ${props.connected ? "ok" : "warn"}"></span>
+          <span>${t("overview.snapshot.status")}</span>
+        </div>
+        <div class="overview-card__header">
+          <div class="card-title">${t("overview.snapshot.title")}</div>
+          <div class="card-sub">${t("overview.snapshot.subtitle")}</div>
+        </div>
+        <div class="stat-grid overview-stat-grid">
+          <div class="stat overview-stat overview-stat--status">
             <div class="stat-label">${t("overview.snapshot.status")}</div>
             <div class="stat-value ${props.connected ? "ok" : "warn"}">
               ${props.connected ? t("common.ok") : t("common.offline")}
             </div>
           </div>
-          <div class="stat">
+          <div class="stat overview-stat">
             <div class="stat-label">${t("overview.snapshot.uptime")}</div>
             <div class="stat-value">${uptime}</div>
           </div>
-          <div class="stat">
+          <div class="stat overview-stat">
             <div class="stat-label">${t("overview.snapshot.tickInterval")}</div>
             <div class="stat-value">${tick}</div>
           </div>
-          <div class="stat">
+          <div class="stat overview-stat">
             <div class="stat-label">${t("overview.snapshot.lastChannelsRefresh")}</div>
             <div class="stat-value">
               ${props.lastChannelsRefresh ? formatRelativeTimestamp(props.lastChannelsRefresh) : t("common.na")}
@@ -302,14 +314,14 @@ export function renderOverview(props: OverviewProps) {
         </div>
         ${
           props.lastError
-            ? html`<div class="callout danger" style="margin-top: 14px;">
+            ? html`<div class="callout danger overview-card__callout">
               <div>${props.lastError}</div>
               ${pairingHint ?? ""}
               ${authHint ?? ""}
               ${insecureContextHint ?? ""}
             </div>`
             : html`
-                <div class="callout" style="margin-top: 14px">
+                <div class="callout overview-card__callout">
                   ${t("overview.snapshot.channelsHint")}
                 </div>
               `
@@ -317,18 +329,18 @@ export function renderOverview(props: OverviewProps) {
       </div>
     </section>
 
-    <section class="grid grid-cols-3" style="margin-top: 18px;">
-      <div class="card stat-card">
+    <section class="grid grid-cols-3 overview-metrics overview-section">
+      <div class="card stat-card overview-metric-card">
         <div class="stat-label">${t("overview.stats.instances")}</div>
         <div class="stat-value">${props.presenceCount}</div>
         <div class="muted">${t("overview.stats.instancesHint")}</div>
       </div>
-      <div class="card stat-card">
+      <div class="card stat-card overview-metric-card">
         <div class="stat-label">${t("overview.stats.sessions")}</div>
         <div class="stat-value">${props.sessionsCount ?? t("common.na")}</div>
         <div class="muted">${t("overview.stats.sessionsHint")}</div>
       </div>
-      <div class="card stat-card">
+      <div class="card stat-card overview-metric-card">
         <div class="stat-label">${t("overview.stats.cron")}</div>
         <div class="stat-value">
           ${props.cronEnabled == null ? t("common.na") : props.cronEnabled ? t("common.enabled") : t("common.disabled")}
@@ -337,21 +349,23 @@ export function renderOverview(props: OverviewProps) {
       </div>
     </section>
 
-    <section class="card" style="margin-top: 18px;">
-      <div class="card-title">${t("overview.notes.title")}</div>
-      <div class="card-sub">${t("overview.notes.subtitle")}</div>
-      <div class="note-grid" style="margin-top: 14px;">
-        <div>
+    <section class="card overview-notes overview-section">
+      <div class="overview-card__header">
+        <div class="card-title">${t("overview.notes.title")}</div>
+        <div class="card-sub">${t("overview.notes.subtitle")}</div>
+      </div>
+      <div class="note-grid overview-note-grid">
+        <div class="note-panel">
           <div class="note-title">${t("overview.notes.tailscaleTitle")}</div>
           <div class="muted">
             ${t("overview.notes.tailscaleText")}
           </div>
         </div>
-        <div>
+        <div class="note-panel">
           <div class="note-title">${t("overview.notes.sessionTitle")}</div>
           <div class="muted">${t("overview.notes.sessionText")}</div>
         </div>
-        <div>
+        <div class="note-panel">
           <div class="note-title">${t("overview.notes.cronTitle")}</div>
           <div class="muted">${t("overview.notes.cronText")}</div>
         </div>
