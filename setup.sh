@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
 echo "🦞 QCortex Setup"
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # 1. pnpm install & build
 pnpm install && pnpm build
@@ -11,7 +12,7 @@ mkdir -p ~/.local/bin
 cat > ~/.local/bin/qcortex << WRAPPER
 #!/usr/bin/env bash
 set -euo pipefail
-exec node "$(pwd)/dist/entry.js" "\$@"
+exec node "${SCRIPT_DIR}/dist/entry.js" "\$@"
 WRAPPER
 chmod +x ~/.local/bin/qcortex
 
@@ -22,7 +23,6 @@ fi
 if ! grep -q '.local/bin' ~/.bashrc 2>/dev/null; then
   echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
 fi
-
 export PATH="$HOME/.local/bin:$PATH"
 
 echo "✅ qcortex command ready!"
