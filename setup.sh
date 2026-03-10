@@ -7,7 +7,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # 1. pnpm install & build
 pnpm install && pnpm build
 
-# 2. qcortex command globally available karo
+# 2. qcortex wrapper banao
 mkdir -p ~/.local/bin
 cat > ~/.local/bin/qcortex << WRAPPER
 #!/usr/bin/env bash
@@ -27,6 +27,17 @@ export PATH="$HOME/.local/bin:$PATH"
 
 echo "✅ qcortex command ready!"
 echo ""
+echo "⚠️  New terminal mein PATH auto-apply hoga."
+echo "   Is session mein use karne ke liye:"
+echo "   source ~/.zshrc  (zsh)"
+echo "   source ~/.bashrc (bash)"
+echo ""
 
-# 4. Onboard
+# 4. Verify
+if ! command -v qcortex &>/dev/null; then
+  echo "❌ qcortex command not found — manually run: export PATH=\"\$HOME/.local/bin:\$PATH\""
+  exit 1
+fi
+
+echo "🚀 Starting onboard..."
 exec qcortex onboard --install-daemon
