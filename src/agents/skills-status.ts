@@ -127,6 +127,13 @@ function normalizeInstallOptions(
     return [];
   }
 
+  // Linux pe brew-only skills unsupported hain
+  const isLinux = process.platform === "linux";
+  const allBrewOnly = filtered.every((spec) => spec.kind === "brew");
+  if (isLinux && allBrewOnly && !hasBinary("brew")) {
+    return [];
+  }
+
   const toOption = (spec: SkillInstallSpec, index: number): SkillInstallOption => {
     const id = (spec.id ?? `${spec.kind}-${index}`).trim();
     const bins = spec.bins ?? [];
