@@ -41,3 +41,12 @@ fi
 
 echo "🚀 Starting onboard..."
 exec qcortex onboard --install-daemon
+
+# Already handled above, but tell user clearly
+echo ""
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "✅ Setup complete!"
+echo ""
+echo "👉 Run this to start:"
+echo "   source ~/.zshrc && qcortex onboard"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
