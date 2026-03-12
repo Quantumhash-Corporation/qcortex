@@ -23,7 +23,7 @@
   "files": [
     "CHANGELOG.md",
     "LICENSE",
-    "openclaw.mjs",
+    "qcortex.mjs",
     "README-header.png",
     "README.md",
     "assets/",
@@ -213,6 +213,9 @@
       "default": "./dist/plugin-sdk/keyed-async-queue.js"
     },
     "./cli-entry": "./openclaw.mjs"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "android:assemble": "cd apps/android && ./gradlew :app:assembleDebug",
