@@ -1,4 +1,4 @@
-# 🦞 QCortex — Personal AI Assistant
+# 🧠 QCortex — Personal AI Assistant
 
 <p align="center">
     <picture>
@@ -482,7 +482,7 @@ Use these when you’re past the onboarding flow and want the deeper reference.
 
 ## Molty
 
-QCortex was built for **Molty**, a space lobster AI assistant. 🦞
+QCortex was built for **Molty**, a space lobster AI assistant. 🧠
 by Peter Steinberger and the community.
 
 - [qcortex.ai](https://qcortex.ai)

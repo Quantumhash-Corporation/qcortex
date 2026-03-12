@@ -61,8 +61,8 @@ export function formatCliBannerLine(version: string, options: BannerOptions = {}
   const commitLabel = commit ?? "unknown";
   const tagline = pickTagline({ ...options, mode: resolveTaglineMode(options) });
   const rich = options.richTty ?? isRich();
-  const title = "🦞 QCortex";
-  const prefix = "🦞 ";
+  const title = "🧠 QCortex";
+  const prefix = "🧠 ";
   const columns = options.columns ?? process.stdout.columns ?? 120;
   const plainBaseLine = `${title} ${version} (${commitLabel})`;
   const plainFullLine = tagline ? `${plainBaseLine} — ${tagline}` : plainBaseLine;
@@ -102,7 +102,7 @@ const LOBSTER_ASCII = [
   "██░███░██░▀▀░██░▄▄▄██░█░█░██░█████░████░▀▀░██░█░█░██",
   "██░▀▀▀░██░█████░▀▀▀██░██▄░██░▀▀▄██░▀▀░█░██░██▄▀▄▀▄██",
   "▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀",
-  "                  🦞 QCORTEX 🦞                    ",
+  "                  🧠 QCORTEX 🧠                    ",
   " ",
 ];
 
@@ -129,9 +129,9 @@ export function formatCliBannerArt(options: BannerOptions = {}): string {
     if (line.includes("QCORTEX")) {
       return (
         theme.muted("              ") +
-        theme.accent("🦞") +
+        theme.accent("🧠") +
         theme.info(" QCORTEX ") +
-        theme.accent("🦞")
+        theme.accent("🧠")
       );
     }
     return splitGraphemes(line).map(colorChar).join("");

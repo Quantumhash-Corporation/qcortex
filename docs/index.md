@@ -5,7 +5,7 @@ read_when:
 title: "QCortex"
 ---
 
-# QCortex 🦞
+# QCortex 🧠
 
 <p align="center">
     <img

@@ -34,7 +34,7 @@ function Write-Host {
 
 function Write-Banner {
     Write-Host ""
-    Write-Host "${ACCENT}  🦞 QCortex Installer$NC" -Level info
+    Write-Host "${ACCENT}  🧠 QCortex Installer$NC" -Level info
     Write-Host "${MUTED}  All your chats, one QCortex.$NC" -Level info
     Write-Host ""
 }
@@ -323,7 +323,7 @@ function Main {
     }
     
     Write-Host ""
-    Write-Host "🦞 QCortex installed successfully!" -Level success
+    Write-Host "🧠 QCortex installed successfully!" -Level success
 }
 
 Main

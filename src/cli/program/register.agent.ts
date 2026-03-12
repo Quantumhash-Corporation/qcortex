@@ -219,7 +219,7 @@ ${theme.muted("Docs:")} ${formatDocsLink("/cli/agent", "docs.qcortex.ai/cli/agen
         `
 ${theme.heading("Examples:")}
 ${formatHelpExamples([
-  ['qcortex agents set-identity --agent main --name "QCortex" --emoji "🦞"', "Set name + emoji."],
+  ['qcortex agents set-identity --agent main --name "QCortex" --emoji "🧠"', "Set name + emoji."],
   ["qcortex agents set-identity --agent main --avatar avatars/qcortex.png", "Set avatar path."],
   [
     "qcortex agents set-identity --workspace ~/.qcortex/workspace --from-identity",

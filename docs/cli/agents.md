@@ -99,7 +99,7 @@ qcortex agents set-identity --workspace ~/.qcortex/workspace --from-identity
 Override fields explicitly:
 
 ```bash
-qcortex agents set-identity --agent main --name "QCortex" --emoji "🦞" --avatar avatars/qcortex.png
+qcortex agents set-identity --agent main --name "QCortex" --emoji "🧠" --avatar avatars/qcortex.png
 ```
 
 Config sample:
@@ -113,7 +113,7 @@ Config sample:
         identity: {
           name: "QCortex",
           theme: "space lobster",
-          emoji: "🦞",
+          emoji: "🧠",
           avatar: "avatars/qcortex.png",
         },
       },

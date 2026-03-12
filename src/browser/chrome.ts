@@ -321,7 +321,7 @@ export async function launchQCortexChrome(
         name: profile.name,
         color: profile.color,
       });
-      log.info(`🦞 qcortex browser profile decorated (${profile.color})`);
+      log.info(`🧠 qcortex browser profile decorated (${profile.color})`);
     } catch (err) {
       log.warn(`qcortex browser profile decoration failed: ${String(err)}`);
     }
@@ -378,7 +378,7 @@ export async function launchQCortexChrome(
 
   const pid = proc.pid ?? -1;
   log.info(
-    `🦞 qcortex browser started (${exe.kind}) profile "${profile.name}" on 127.0.0.1:${profile.cdpPort} (pid ${pid})`,
+    `🧠 qcortex browser started (${exe.kind}) profile "${profile.name}" on 127.0.0.1:${profile.cdpPort} (pid ${pid})`,
   );
 
   return {

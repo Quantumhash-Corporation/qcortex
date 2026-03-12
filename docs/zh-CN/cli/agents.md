@@ -58,7 +58,7 @@ qcortex agents set-identity --workspace ~/.qcortex/workspace --from-identity
 显式覆盖字段：
 
 ```bash
-qcortex agents set-identity --agent main --name "QCortex" --emoji "🦞" --avatar avatars/qcortex.png
+qcortex agents set-identity --agent main --name "QCortex" --emoji "🧠" --avatar avatars/qcortex.png
 ```
 
 配置示例：
@@ -72,7 +72,7 @@ qcortex agents set-identity --agent main --name "QCortex" --emoji "🦞" --avata
         identity: {
           name: "QCortex",
           theme: "space lobster",
-          emoji: "🦞",
+          emoji: "🧠",
           avatar: "avatars/qcortex.png",
         },
       },
