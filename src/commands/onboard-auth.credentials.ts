@@ -503,3 +503,15 @@ export async function setKilocodeApiKey(
     agentDir: resolveAuthAgentDir(agentDir),
   });
 }
+
+export async function setTinyfishApiKey(
+  key: SecretInput,
+  agentDir?: string,
+  options?: ApiKeyStorageOptions,
+) {
+  upsertAuthProfile({
+    profileId: "tinyfish:default",
+    credential: buildApiKeyCredential("tinyfish", key, undefined, options),
+    agentDir: resolveAuthAgentDir(agentDir),
+  });
+}

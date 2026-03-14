@@ -42,6 +42,7 @@ import {
   setKimiCodingApiKey,
   setLitellmApiKey,
   setMistralApiKey,
+  setTinyfishApiKey,
   setMinimaxApiKey,
   setMoonshotApiKey,
   setOpenaiApiKey,
@@ -415,6 +416,25 @@ export async function applyNonInteractiveAuthChoice(params: {
       mode: "api_key",
     });
     return applyMistralConfig(nextConfig);
+  if (authChoice === "tinyfish-api-key") {
+    const resolved = await resolveApiKey({
+      provider: "tinyfish",
+      cfg: baseConfig,
+      flagValue: opts.tinyfishApiKey,
+      flagName: "--tinyfish-api-key",
+      envVar: "TINYFISH_API_KEY",
+      runtime,
+    });
+    if (!resolved) return null;
+    if (!(await maybeSetResolvedApiKey(resolved, (value) =>
+      setTinyfishApiKey(value, undefined, apiKeyStorageOptions)))) return null;
+    nextConfig = applyAuthProfileConfig(nextConfig, {
+      profileId: "tinyfish:default",
+      provider: "tinyfish",
+      mode: "api_key",
+    });
+    return nextConfig;
+  }
   }
 
   if (authChoice === "volcengine-api-key") {

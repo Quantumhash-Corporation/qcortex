@@ -59,6 +59,13 @@ export const ONBOARD_PROVIDER_AUTH_FLAGS: ReadonlyArray<OnboardProviderAuthFlag>
     description: "Mistral API key",
   },
   {
+    optionKey: "tinyfishApiKey",
+    authChoice: "tinyfish-api-key",
+    cliFlag: "--tinyfish-api-key",
+    cliOption: "--tinyfish-api-key <key>",
+    description: "Tinyfish Web Agent API key",
+  },
+  {
     optionKey: "openrouterApiKey",
     authChoice: "openrouter-api-key",
     cliFlag: "--openrouter-api-key",

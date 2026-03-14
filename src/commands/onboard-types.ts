@@ -46,6 +46,7 @@ export type AuthChoice =
   | "qwen-portal"
   | "xai-api-key"
   | "mistral-api-key"
+  | "tinyfish-api-key"
   | "volcengine-api-key"
   | "byteplus-api-key"
   | "qianfan-api-key"
