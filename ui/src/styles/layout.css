@@ -87,7 +87,10 @@
   background: var(--chrome);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04), 0 4px 24px rgba(0, 0, 0, 0.12);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.05),
+    0 4px 32px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .topbar-left {
@@ -214,6 +217,7 @@
     padding var(--shell-focus-duration) var(--shell-focus-ease),
     opacity var(--shell-focus-duration) var(--shell-focus-ease);
   min-height: 0;
+  position: relative;
 }
 
 .nav::-webkit-scrollbar {
@@ -490,6 +494,10 @@
   letter-spacing: -0.045em;
   line-height: 1.1;
   color: var(--text-strong);
+  background: linear-gradient(135deg, var(--text-strong) 40%, var(--accent) 120%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .page-sub {
