@@ -100,19 +100,19 @@
 }
 
 .topbar .nav-collapse-toggle {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   margin-bottom: 0;
 }
 
 .topbar .nav-collapse-toggle__icon {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
 }
 
 .topbar .nav-collapse-toggle__icon svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
 }
 
 /* Brand */
@@ -579,6 +579,80 @@
   flex-wrap: wrap;
   gap: 8px;
   align-items: center;
+}
+
+/* ==========================================
+   Minimal UI overrides (flat surfaces, calm spacing)
+   ========================================== */
+
+body {
+  background: var(--bg);
+}
+
+.shell {
+  --shell-pad: 12px;
+  --shell-gap: 16px;
+  --shell-nav-width: 260px;
+  --shell-topbar-height: 58px;
+}
+
+.topbar {
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border);
+  box-shadow: none;
+}
+
+.nav {
+  background: var(--bg-elevated);
+  border-right: 1px solid var(--border);
+  box-shadow: none;
+}
+
+.nav-item {
+  border: 1px solid transparent;
+  background: transparent;
+  transform: none;
+}
+
+.nav-item:hover {
+  background: var(--bg-hover);
+  border-color: var(--border);
+}
+
+.nav-item.active {
+  background: var(--accent-subtle);
+  border-color: var(--accent);
+  box-shadow: none;
+}
+
+.content {
+  padding: 16px 18px 40px;
+  background: var(--bg);
+}
+
+.content-header {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+
+.card,
+.stat,
+.note-panel,
+.list-item,
+.table-row,
+.table-head {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+
+.pill,
+.chip,
+.btn,
+.nav-collapse-toggle,
+.theme-toggle__track {
+  box-shadow: none;
 }
 
 /* ===========================================

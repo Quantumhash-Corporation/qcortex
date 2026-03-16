@@ -552,8 +552,8 @@
 
 .cron-summary-strip__left {
   display: grid;
-  gap: 8px 14px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   flex: 1 1 auto;
   min-width: 0;
 }
@@ -604,6 +604,7 @@
   grid-template-columns: minmax(0, 1.2fr) minmax(340px, 0.8fr);
   gap: 16px;
   align-items: start;
+  overflow: visible;
 }
 
 .cron-workspace-main {
@@ -613,9 +614,10 @@
 
 .cron-workspace-form {
   position: sticky;
-  top: 74px;
-  max-height: calc(100vh - 74px - 32px);
+  top: 82px;
+  max-height: calc(100vh - 82px - 24px);
   overflow-y: auto;
+  padding-bottom: 8px;
 }
 
 .cron-form {

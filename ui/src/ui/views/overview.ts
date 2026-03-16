@@ -47,16 +47,16 @@ export function renderOverview(props: OverviewProps) {
       return null;
     }
     return html`
-      <div style="margin-top: 10px; font-size: 13px; line-height: 1.6; color: var(--muted)">
+      <div class="overview-hint-block">
         ${t("overview.pairing.hint")}
-        <div style="margin-top: 8px; display: grid; gap: 4px;">
+        <div class="overview-hint-block__commands">
           <code class="code-chip">qcortex devices list</code>
           <code class="code-chip">qcortex devices approve &lt;requestId&gt;</code>
         </div>
-        <div style="margin-top: 8px; font-size: 12px;">
+        <div class="overview-hint-block__subtext">
           ${t("overview.pairing.mobileHint")}
         </div>
-        <div style="margin-top: 8px">
+        <div class="overview-hint-block__links">
           <a
             class="session-link"
             href="https://docs.qcortex.ai/web/control-ui#device-pairing-first-connection"
@@ -107,13 +107,13 @@ export function renderOverview(props: OverviewProps) {
       : !hasToken && !hasPassword;
     if (isAuthRequired) {
       return html`
-        <div style="margin-top: 10px; font-size: 13px; line-height: 1.6; color: var(--muted)">
+        <div class="overview-hint-block">
           ${t("overview.auth.required")}
-          <div style="margin-top: 8px; display: grid; gap: 4px;">
+          <div class="overview-hint-block__commands">
             <code class="code-chip">qcortex dashboard --no-open</code>
             <code class="code-chip">qcortex doctor --generate-gateway-token</code>
           </div>
-          <div style="margin-top: 8px">
+          <div class="overview-hint-block__links">
             <a
               class="session-link"
               href="https://docs.qcortex.ai/web/dashboard"
@@ -127,9 +127,9 @@ export function renderOverview(props: OverviewProps) {
       `;
     }
     return html`
-      <div style="margin-top: 10px; font-size: 13px; line-height: 1.6; color: var(--muted)">
+      <div class="overview-hint-block">
         ${t("overview.auth.failed", { command: "qcortex dashboard --no-open" })}
-        <div style="margin-top: 8px">
+        <div class="overview-hint-block__links">
           <a
             class="session-link"
             href="https://docs.qcortex.ai/web/dashboard"
@@ -163,12 +163,12 @@ export function renderOverview(props: OverviewProps) {
       return null;
     }
     return html`
-      <div style="margin-top: 10px; font-size: 13px; line-height: 1.6; color: var(--muted)">
+      <div class="overview-hint-block">
         ${t("overview.insecure.hint", { url: "http://127.0.0.1:18789" })}
-        <div style="margin-top: 8px;">
+        <div class="overview-hint-block__links">
           ${t("overview.insecure.stayHttp", { config: "gateway.controlUi.allowInsecureAuth: true" })}
         </div>
-        <div style="margin-top: 8px; display: flex; gap: 12px; flex-wrap: wrap;">
+        <div class="overview-hint-block__links overview-hint-block__links--wrap">
           <a
             class="session-link"
             href="https://docs.qcortex.ai/gateway/tailscale"
@@ -245,9 +245,9 @@ export function renderOverview(props: OverviewProps) {
             <div class="connection-card__title">${t("overview.access.title")}</div>
             <div class="connection-card__subtitle">${t("overview.access.subtitle")}</div>
           </div>
-          <div style="margin-left: auto; flex-shrink: 0">
+          <div class="connection-card__badge-wrap">
             <span class="badge ${props.connected ? "badge--success" : "badge--warn"}">
-              <span class="statusDot ${props.connected ? "ok" : "warn"}" style="width:6px;height:6px;box-shadow:none;animation:none"></span>
+              <span class="statusDot statusDot--compact ${props.connected ? "ok" : "warn"}"></span>
               ${props.connected ? t("common.ok") : t("common.offline")}
             </span>
           </div>
@@ -294,7 +294,7 @@ export function renderOverview(props: OverviewProps) {
               </label>
             `
           }
-          <div class="form-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+          <div class="form-grid overview-form-grid-compact">
             <label class="field">
               <span>${t("overview.access.sessionKey")}</span>
               <input
@@ -333,7 +333,7 @@ export function renderOverview(props: OverviewProps) {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path></svg>
             ${t("common.refresh")}
           </button>
-          <span class="muted" style="font-size: 12px; margin-left: 4px">
+          <span class="muted connection-card__hint">
             ${isTrustedProxy ? t("overview.access.trustedProxy") : t("overview.access.connectHint")}
           </span>
         </div>
@@ -352,7 +352,7 @@ export function renderOverview(props: OverviewProps) {
             </div>
           </div>
           <span class="badge ${props.connected ? "badge--success" : "badge--warn"}">
-            <span class="statusDot ${props.connected ? "ok" : "warn"}" style="width:6px;height:6px;box-shadow:none;animation:none"></span>
+            <span class="statusDot statusDot--compact ${props.connected ? "ok" : "warn"}"></span>
             ${props.connected ? t("common.ok") : t("common.offline")}
           </span>
         </div>
@@ -456,7 +456,7 @@ export function renderOverview(props: OverviewProps) {
     </div>
 
     <!-- ── Info Notes ───────────────────────────────────────────────────── -->
-    <div class="card overview-section" style="padding: 22px;">
+    <div class="card overview-section overview-notes-shell">
       <div class="section-header">
         <div class="section-header__left">
           <div class="section-header__icon" aria-hidden="true">
@@ -464,7 +464,7 @@ export function renderOverview(props: OverviewProps) {
           </div>
           <div>
             <div class="section-header__title">${t("overview.notes.title")}</div>
-            <div class="section-header__sub" style="display:block">${t("overview.notes.subtitle")}</div>
+            <div class="section-header__sub section-header__sub--block">${t("overview.notes.subtitle")}</div>
           </div>
         </div>
       </div>

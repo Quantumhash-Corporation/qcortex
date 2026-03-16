@@ -277,10 +277,10 @@ qcortex-app {
 }
 
 .shell {
-  --shell-pad: 20px;
-  --shell-gap: 20px;
-  --shell-nav-width: 292px;
-  --shell-topbar-height: 80px;
+  --shell-pad: 12px;
+  --shell-gap: 16px;
+  --shell-nav-width: 260px;
+  --shell-topbar-height: 58px;
   padding: var(--shell-pad);
   gap: var(--shell-gap);
   grid-template-columns: var(--shell-nav-width) minmax(0, 1fr);
@@ -312,9 +312,9 @@ qcortex-app {
   position: sticky;
   top: var(--shell-pad);
   height: var(--shell-topbar-height);
-  padding: 0 22px;
+  padding: 0 16px;
   border: 1px solid var(--glass-border);
-  border-radius: 28px;
+  border-radius: 20px;
   background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
@@ -346,21 +346,21 @@ qcortex-app {
 }
 
 .brand-logo {
-  width: 44px;
-  height: 44px;
-  padding: 9px;
-  border-radius: 16px;
+  width: 36px;
+  height: 36px;
+  padding: 7px;
+  border-radius: 12px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0) 68%),
     rgba(var(--accent-rgb), 0.12);
   border: 1px solid rgba(var(--accent-rgb), 0.22);
   box-shadow:
-    0 18px 32px rgba(var(--accent-rgb), 0.18),
+    0 12px 24px rgba(var(--accent-rgb), 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 .brand-title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 800;
   letter-spacing: -0.06em;
   background: linear-gradient(135deg, #ffffff 0%, #afc1f8 100%);
@@ -377,11 +377,12 @@ qcortex-app {
 }
 
 .brand-sub {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--muted);
+  margin-top: 1px;
 }
 
 .topbar-status {
@@ -389,27 +390,53 @@ qcortex-app {
 }
 
 .topbar-status .pill {
-  height: 38px;
-  padding: 0 12px;
+  height: 32px;
+  padding: 0 10px;
   background: rgba(255, 255, 255, 0.04);
   border-color: var(--glass-border);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
 }
 
 .topbar .nav-collapse-toggle {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   margin-bottom: 0;
-  border-radius: 14px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
+  color: var(--text);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition:
+    background var(--duration-fast) ease,
+    border-color var(--duration-fast) ease;
+}
+
+.topbar .nav-collapse-toggle:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+:root[data-theme="light"] .topbar .nav-collapse-toggle {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: none;
+}
+
+:root[data-theme="light"] .topbar .nav-collapse-toggle:hover {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.1);
 }
 
 .nav {
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 18px 14px 14px;
+  padding: 14px 12px 12px;
   border: 1px solid var(--glass-border);
-  border-radius: 30px;
+  border-radius: 22px;
   background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
@@ -418,7 +445,7 @@ qcortex-app {
 
 .nav-group {
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .nav-label {
@@ -429,7 +456,7 @@ qcortex-app {
   color: var(--muted);
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
@@ -449,9 +476,9 @@ qcortex-app {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
-  border-radius: 18px;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
   border: 1px solid transparent;
   color: var(--text);
   background: transparent;
@@ -464,27 +491,27 @@ qcortex-app {
 }
 
 .nav-item:hover {
-  transform: translateX(3px);
+  transform: translateX(2px);
   background: rgba(255, 255, 255, 0.05);
   border-color: var(--glass-border);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .nav-item.active {
-  transform: translateX(4px);
+  transform: translateX(3px);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0) 80%),
     rgba(var(--accent-rgb), 0.12);
   border-color: rgba(var(--accent-rgb), 0.26);
   box-shadow:
-    0 18px 36px rgba(var(--accent-rgb), 0.18),
+    0 14px 30px rgba(var(--accent-rgb), 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .nav-item__icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 14px;
+  width: 32px;
+  height: 32px;
+  border-radius: 12px;
   display: grid;
   place-items: center;
   border: 1px solid var(--glass-border);
@@ -515,7 +542,7 @@ qcortex-app {
 
 .content {
   position: relative;
-  padding: 0 0 40px 0;
+  padding: 4px 4px 28px;
   border: none;
   background: transparent;
   box-shadow: none;
@@ -538,23 +565,23 @@ qcortex-app {
 }
 
 .content > * + * {
-  margin-top: 18px;
+  margin-top: 14px;
 }
 
 .content-header {
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 18px;
-  padding: 22px 24px;
-  border-radius: 26px;
+  gap: 12px;
+  padding: 16px 18px;
+  border-radius: 18px;
   border: 1px solid var(--glass-border);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, transparent 100%),
     rgba(255, 255, 255, 0.02);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 18px 44px rgba(2, 8, 23, 0.18);
+    0 14px 32px rgba(2, 8, 23, 0.16);
 }
 
 :root[data-theme="light"] .content-header {
@@ -565,24 +592,24 @@ qcortex-app {
 
 .content-header__main {
   display: grid;
-  gap: 14px;
+  gap: 10px;
 }
 
 .content-header__eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   color: var(--muted);
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
 .page-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
   display: grid;
   place-items: center;
   background:
@@ -602,7 +629,7 @@ qcortex-app {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  gap: 18px;
+  gap: 14px;
   flex-wrap: wrap;
 }
 
@@ -615,24 +642,24 @@ qcortex-app {
 }
 
 .page-sub {
-  margin-top: 8px;
+  margin-top: 6px;
   max-width: 64ch;
   color: var(--muted);
   font-size: 14px;
-  line-height: 1.6;
+  line-height: 1.55;
 }
 
 .page-badges {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
 }
 
 .page-badge {
-  min-width: 136px;
-  padding: 10px 12px;
+  min-width: 120px;
+  padding: 8px 10px;
   border: 1px solid var(--glass-border);
-  border-radius: 16px;
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.04);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
@@ -641,12 +668,12 @@ qcortex-app {
   color: var(--muted);
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .page-badge__value {
-  margin-top: 4px;
+  margin-top: 2px;
   color: var(--text-strong);
   font-size: 13px;
   font-weight: 700;
@@ -675,7 +702,7 @@ qcortex-app {
   display: flex;
   align-items: flex-start;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
@@ -691,7 +718,7 @@ qcortex-app {
 }
 
 .grid {
-  gap: 18px;
+  gap: 14px;
 }
 
 .grid-cols-2 {
@@ -705,19 +732,19 @@ qcortex-app {
 .dashboard-hero {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
-  gap: 18px;
+  gap: 14px;
   align-items: start;
 }
 
 .row,
 .stack {
-  gap: 12px;
+  gap: 10px;
 }
 
 .filters {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
   align-items: flex-end;
 }
 
@@ -725,8 +752,8 @@ qcortex-app {
   position: relative;
   overflow: hidden;
   border: 1px solid var(--glass-border);
-  border-radius: 24px;
-  padding: 22px;
+  border-radius: 18px;
+  padding: 18px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0) 38%),
     rgba(11, 20, 36, 0.58);
@@ -1102,18 +1129,18 @@ qcortex-app {
 
 .agents-layout {
   grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
-  gap: 20px;
+  gap: 16px;
 }
 
 .agents-sidebar,
 .agents-main {
-  gap: 18px;
+  gap: 12px;
 }
 
 .agent-row,
 .agent-file-row {
   padding: 12px 14px;
-  border-radius: 18px;
+  border-radius: 14px;
   border-color: var(--glass-border);
   background: rgba(255, 255, 255, 0.03);
 }
@@ -1125,7 +1152,7 @@ qcortex-app {
     rgba(var(--accent-rgb), 0.12);
   border-color: rgba(var(--accent-rgb), 0.28);
   box-shadow:
-    0 18px 38px rgba(var(--accent-rgb), 0.16),
+    0 14px 30px rgba(var(--accent-rgb), 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
@@ -1675,8 +1702,8 @@ qcortex-app {
   }
 
   .page-icon {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
   }
 
   .nav-item {
@@ -1958,10 +1985,10 @@ qcortex-app::before {
 }
 
 .shell {
-  --shell-pad: 22px;
-  --shell-gap: 20px;
-  --shell-nav-width: 292px;
-  --shell-topbar-height: 76px;
+  --shell-pad: 12px;
+  --shell-gap: 16px;
+  --shell-nav-width: 260px;
+  --shell-topbar-height: 58px;
   padding: var(--shell-pad);
   gap: var(--shell-gap);
   grid-template-columns: var(--shell-nav-width) minmax(0, 1fr);
@@ -2236,7 +2263,7 @@ qcortex-app::before {
 
 .content-header__main {
   display: grid;
-  gap: 16px;
+  gap: 10px;
 }
 
 .content-header__eyebrow,
@@ -2244,18 +2271,18 @@ qcortex-app::before {
 .nav-footer__eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
 .page-icon {
-  width: 46px;
-  height: 46px;
-  border-radius: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
   display: grid;
   place-items: center;
   background:
@@ -2270,7 +2297,7 @@ qcortex-app::before {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 18px;
+  gap: 14px;
   flex-wrap: wrap;
 }
 
@@ -2283,23 +2310,23 @@ qcortex-app::before {
 }
 
 .page-sub {
-  margin-top: 9px;
+  margin-top: 6px;
   max-width: 64ch;
   color: var(--muted);
   font-size: 14px;
-  line-height: 1.65;
+  line-height: 1.55;
 }
 
 .page-badges {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
 }
 
 .page-badge {
-  min-width: 142px;
-  padding: 11px 13px;
-  border-radius: 18px;
+  min-width: 120px;
+  padding: 8px 10px;
+  border-radius: 12px;
   border: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.04);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
@@ -2309,15 +2336,15 @@ qcortex-app::before {
   color: var(--muted);
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .page-badge__value {
-  margin-top: 5px;
+  margin-top: 2px;
   color: var(--text-strong);
   font-size: 13px;
-  font-weight: 720;
+  font-weight: 700;
   letter-spacing: -0.02em;
 }
 
@@ -2344,11 +2371,11 @@ qcortex-app::before {
   flex-wrap: wrap;
   justify-content: flex-end;
   align-items: flex-start;
-  gap: 10px;
+  gap: 8px;
 }
 
 .grid {
-  gap: 20px;
+  gap: 14px;
 }
 
 .grid-cols-2 {
@@ -2363,14 +2390,14 @@ qcortex-app::before {
 .overview-hero {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
-  gap: 20px;
+  gap: 14px;
   align-items: start;
 }
 
 .row,
 .stack,
 .filters {
-  gap: 12px;
+  gap: 10px;
 }
 
 .filters {
@@ -2382,12 +2409,12 @@ qcortex-app::before {
 .card {
   position: relative;
   overflow: hidden;
-  border-radius: 24px;
+  border-radius: 18px;
   border: 1px solid var(--border);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 100%),
     var(--card);
-  padding: 24px;
+  padding: 18px;
   box-shadow: var(--shadow-card);
   transition:
     transform var(--duration-normal) var(--ease-out),
@@ -2430,7 +2457,7 @@ qcortex-app::before {
 .log-stream,
 .code-block,
 .exec-approval-command {
-  border-radius: 20px;
+  border-radius: 16px;
   border: 1px solid var(--border);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 100%),
@@ -2454,7 +2481,7 @@ qcortex-app::before {
 }
 
 .stat {
-  min-height: 148px;
+  min-height: 128px;
   justify-content: space-between;
   padding: 18px;
 }
@@ -2465,7 +2492,7 @@ qcortex-app::before {
   color: var(--muted);
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
@@ -3038,8 +3065,8 @@ qcortex-app::before {
 }
 
 .chat-split-container {
-  min-height: min(780px, calc(100vh - 296px));
-  border-radius: 28px;
+  min-height: min(720px, calc(100vh - 240px));
+  border-radius: 20px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 100%),
     var(--card);
@@ -3053,7 +3080,7 @@ qcortex-app::before {
 }
 
 .chat-thread {
-  padding: 28px 28px 30px;
+  padding: 20px 20px 24px;
   margin: 0;
   border-radius: 0;
   background: transparent;
@@ -3062,8 +3089,8 @@ qcortex-app::before {
 .chat-empty-state {
   max-width: 680px;
   margin: auto;
-  padding: 34px;
-  border-radius: 28px;
+  padding: 24px;
+  border-radius: 20px;
   border: 1px solid var(--border);
   background:
     linear-gradient(180deg, rgba(var(--accent-rgb), 0.1), transparent 56%),
@@ -3089,16 +3116,16 @@ qcortex-app::before {
 .chat-empty-state__chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 18px;
+  gap: 8px;
+  margin-top: 14px;
 }
 
 .chat-empty-state__chip {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 12px;
-  border-radius: 16px;
+  padding: 8px 10px;
+  border-radius: 14px;
   border: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.04);
   color: var(--text);
@@ -3673,16 +3700,16 @@ qcortex-app::before {
   }
 
   .content {
-    padding: 14px;
+    padding: 12px;
   }
 
   .content-header {
-    padding: 18px;
+    padding: 14px;
   }
 
   .page-icon {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
   }
 
   .page-title {
@@ -3694,7 +3721,7 @@ qcortex-app::before {
   .note-panel,
   .list-item,
   .table-row {
-    padding: 16px;
+    padding: 14px;
   }
 
   .btn,
@@ -3704,11 +3731,11 @@ qcortex-app::before {
   }
 
   .chat-thread {
-    padding: 16px;
+    padding: 14px;
   }
 
   .chat-empty-state {
-    padding: 24px;
+    padding: 20px;
   }
 
   .chat-compose__actions {
@@ -3949,21 +3976,21 @@ body::after {
 }
 
 .shell {
-  --shell-pad: 16px;
+  --shell-pad: 12px;
   --shell-gap: 16px;
-  --shell-nav-width: 272px;
-  --shell-topbar-height: 68px;
+  --shell-nav-width: 260px;
+  --shell-topbar-height: 58px;
 }
 
 .topbar {
   top: var(--shell-pad);
-  padding: 0 18px;
-  border-radius: 22px;
+  padding: 0 16px;
+  border-radius: 20px;
   background: var(--chrome);
 }
 
 .topbar-status {
-  gap: 8px;
+  gap: 10px;
 }
 
 .topbar-status .pill {
@@ -3992,29 +4019,29 @@ body::after {
 
 .nav {
   padding: 14px 12px 12px;
-  border-radius: 24px;
+  border-radius: 22px;
 }
 
 .nav-group {
-  gap: 10px;
+  gap: 8px;
 }
 
 .nav-group__items {
-  gap: 4px;
+  gap: 6px;
 }
 
 .nav-item {
-  min-height: 50px;
-  padding: 9px 12px;
-  border-radius: 16px;
+  min-height: 44px;
+  padding: 10px 12px;
+  border-radius: 14px;
 }
 
 .nav-item:hover {
-  transform: translateX(1px);
+  transform: translateX(2px);
 }
 
 .nav-item.active {
-  transform: translateX(2px);
+  transform: translateX(3px);
   background:
     linear-gradient(180deg, rgba(var(--accent-rgb), 0.12), rgba(var(--accent-rgb), 0.05)),
     rgba(255, 255, 255, 0.025);
@@ -4030,21 +4057,17 @@ body::after {
 }
 
 .content {
-  padding: 20px 20px 24px;
-  border-radius: 28px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 100%),
-    var(--panel-strong);
+  padding: 4px 4px 28px;
+  border-radius: 0;
+  background: transparent;
 }
 
 :root[data-theme="light"] .content {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.98), transparent 100%),
-    rgba(255, 255, 255, 0.76);
+  background: transparent;
 }
 
 .content::before {
-  height: 120px;
+  height: 140px;
   background:
     radial-gradient(circle at top left, rgba(var(--accent-rgb), 0.08), transparent 52%),
     radial-gradient(circle at top right, rgba(45, 184, 166, 0.05), transparent 46%);
@@ -4052,7 +4075,7 @@ body::after {
 }
 
 .content > * + * {
-  margin-top: 16px;
+  margin-top: 14px;
 }
 
 .content-header {
@@ -4074,14 +4097,15 @@ body::after {
 }
 
 .content-header__main {
-  gap: 12px;
+  gap: 10px;
 }
 
 .content-header__eyebrow,
 .overview-card__eyebrow,
 .nav-footer__eyebrow {
   gap: 8px;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
+  font-size: 11px;
 }
 
 .page-title {
@@ -4098,7 +4122,7 @@ body::after {
 .dashboard-hero,
 .overview-hero,
 .note-grid {
-  gap: 16px;
+  gap: 14px;
 }
 
 .page-badge {
@@ -4123,8 +4147,8 @@ body::after {
 }
 
 .card {
-  border-radius: 20px;
-  padding: 20px;
+  border-radius: 18px;
+  padding: 18px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 100%),
     var(--card);
@@ -4845,7 +4869,7 @@ body::after {
 
   .nav-item {
     min-width: max-content;
-    min-height: 46px;
+    min-height: 40px;
     padding: 8px 12px;
   }
 
@@ -4876,9 +4900,9 @@ body::after {
   }
 
   .nav-item__icon {
-    width: 34px;
-    height: 34px;
-    border-radius: 11px;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
   }
 }
 
@@ -4917,9 +4941,9 @@ body::after {
    =========================================== */
 
 .topbar {
-  min-height: 70px;
-  padding: 10px 14px 10px 16px;
-  gap: 14px;
+  min-height: var(--shell-topbar-height);
+  padding: 0 16px;
+  gap: 12px;
   align-items: center;
 }
 
@@ -4930,21 +4954,17 @@ body::after {
 }
 
 .topbar .nav-collapse-toggle {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  border-color: rgba(255, 255, 255, 0.06);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 100%),
-    rgba(255, 255, 255, 0.03);
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.04);
   flex: 0 0 auto;
 }
 
 .topbar .nav-collapse-toggle:hover {
-  border-color: rgba(var(--accent-rgb), 0.16);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.1), transparent 100%),
-    rgba(var(--accent-rgb), 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .brand {
@@ -4960,15 +4980,15 @@ body::after {
 }
 
 .brand-title {
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1;
   letter-spacing: -0.05em;
 }
 
 .brand-sub {
-  font-size: 10px;
+  font-size: 9px;
   line-height: 1;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.15em;
 }
 
 .topbar-status {
@@ -4976,19 +4996,19 @@ body::after {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 8px;
+  gap: 10px;
   flex-wrap: nowrap;
 }
 
 .topbar-pill {
-  min-width: 136px;
-  min-height: 38px;
-  padding: 7px 10px 7px 9px;
+  min-width: 120px;
+  min-height: 32px;
+  padding: 6px 10px;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  gap: 8px;
-  border-radius: 13px;
+  gap: 6px;
+  border-radius: 12px;
 }
 
 .topbar-pill__meta {
@@ -5018,8 +5038,8 @@ body::after {
 }
 
 .topbar-pill .statusDot {
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   box-shadow: none;
   margin-left: 1px;
 }
@@ -5032,35 +5052,35 @@ body::after {
 }
 
 .topbar-status__toggle .theme-toggle__track {
-  min-height: 38px;
-  padding: 4px;
-  border-radius: 13px;
+  min-height: 32px;
+  padding: 3px;
+  border-radius: 12px;
 }
 
 .content-header {
-  gap: 18px 20px;
-  padding: 20px 22px;
+  gap: 12px 14px;
+  padding: 16px 18px;
 }
 
 .content-header__main {
-  gap: 14px;
+  gap: 10px;
 }
 
 .page-title-row {
   align-items: flex-start;
-  gap: 16px 20px;
+  gap: 14px;
 }
 
 .page-badges {
   align-items: stretch;
-  gap: 10px;
+  gap: 8px;
 }
 
 .page-badge {
-  min-width: 136px;
-  padding: 11px 12px;
+  min-width: 120px;
+  padding: 8px 10px;
   display: grid;
-  gap: 4px;
+  gap: 3px;
 }
 
 .page-meta {
@@ -5069,13 +5089,13 @@ body::after {
 }
 
 .overview-section {
-  gap: 16px;
+  gap: 12px;
 }
 
 .overview-card,
 .overview-notes {
   display: grid;
-  gap: 16px;
+  gap: 12px;
   align-content: start;
 }
 
@@ -5085,7 +5105,7 @@ body::after {
 }
 
 .overview-form-grid {
-  gap: 12px 14px;
+  gap: 10px 12px;
 }
 
 .overview-card__callout {
@@ -5101,11 +5121,11 @@ body::after {
 }
 
 .overview-stat-grid {
-  gap: 12px;
+  gap: 10px;
 }
 
 .overview-stat {
-  min-height: 122px;
+  min-height: 112px;
   display: grid;
   align-content: space-between;
 }
@@ -5125,22 +5145,22 @@ body::after {
 }
 
 .overview-metrics {
-  gap: 14px;
+  gap: 12px;
 }
 
 .overview-metric-card {
-  min-height: 150px;
-  gap: 12px;
+  min-height: 130px;
+  gap: 10px;
 }
 
 .overview-note-grid {
-  gap: 12px;
+  gap: 10px;
 }
 
 .overview-note-grid .note-panel {
   display: grid;
   gap: 10px;
-  min-height: 138px;
+  min-height: 120px;
 }
 
 @media (max-width: 760px) {
@@ -5167,8 +5187,8 @@ body::after {
   }
 
   .content-header {
-    padding: 16px 18px;
-    gap: 14px;
+    padding: 14px 16px;
+    gap: 12px;
   }
 
   .page-title-row {
@@ -5181,7 +5201,7 @@ body::after {
 
   .overview-card,
   .overview-notes {
-    gap: 14px;
+    gap: 12px;
   }
 
   .overview-form-grid,
@@ -5228,7 +5248,7 @@ body::after {
   }
 
   .content-header {
-    padding: 14px 16px;
+    padding: 12px 14px;
   }
 
   .page-badge {
@@ -5239,4 +5259,206 @@ body::after {
   .overview-notes {
     gap: 12px;
   }
+}
+
+/* ===========================================
+   Polished skin overrides (depth + hierarchy)
+   =========================================== */
+
+body {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(var(--accent-rgb), 0.12), transparent 30%),
+    radial-gradient(circle at 92% 6%, rgba(45, 184, 166, 0.09), transparent 24%),
+    var(--bg);
+}
+
+body::before,
+body::after,
+qcortex-app::before {
+  display: none;
+}
+
+.shell {
+  --shell-pad: 12px;
+  --shell-gap: 16px;
+  --shell-nav-width: 260px;
+  --shell-topbar-height: 58px;
+}
+
+.topbar {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  box-shadow:
+    0 16px 34px rgba(2, 8, 23, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.topbar-status .pill,
+.topbar .nav-collapse-toggle {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.nav {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 22%),
+    var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  box-shadow:
+    0 20px 42px rgba(2, 8, 23, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.nav-item {
+  border: 1px solid transparent;
+  background: transparent;
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.nav-item:hover {
+  transform: translateX(2px);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--glass-border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.nav-item.active {
+  transform: translateX(3px);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 100%),
+    rgba(var(--accent-rgb), 0.14);
+  border-color: rgba(var(--accent-rgb), 0.24);
+  box-shadow:
+    0 12px 24px rgba(var(--accent-rgb), 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.nav-item__icon {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--glass-border);
+}
+
+.content {
+  padding: 12px 12px 32px;
+  background: transparent;
+}
+
+.content::before {
+  display: block;
+  height: 140px;
+  background:
+    radial-gradient(circle at top left, rgba(var(--accent-rgb), 0.1), transparent 54%),
+    radial-gradient(circle at top right, rgba(45, 184, 166, 0.08), transparent 48%);
+  opacity: 0.75;
+}
+
+.content-header {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 100%),
+    rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 14px 30px rgba(2, 8, 23, 0.11);
+  overflow: visible;
+  max-height: none;
+  align-items: start;
+  gap: 14px;
+  padding: 18px 20px 20px;
+}
+
+.content-header__main {
+  gap: 12px;
+  min-width: 0;
+}
+
+.content-header__eyebrow {
+  line-height: 1.25;
+}
+
+.page-title {
+  display: block;
+  line-height: 1.2;
+  margin: 0;
+  padding: 4px 0;
+}
+
+.page-sub {
+  margin-top: 8px;
+}
+
+.page-icon,
+.page-badge {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.card,
+.stat,
+.note-panel,
+.account-card,
+.list-item,
+.table-row,
+.table-head,
+.log-stream,
+.code-block,
+.exec-approval-command,
+.chat-split-container,
+.chat-empty-state,
+.chat-thread {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 100%),
+    var(--card);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-card);
+}
+
+.table,
+.table-head,
+.table-row {
+  border-radius: 12px;
+  padding: 0;
+}
+
+.chat-thread {
+  padding: 16px;
+}
+
+.chat-empty-state {
+  padding: 20px;
+}
+
+.pill,
+.chip,
+.btn,
+.btn--sm,
+.btn-sm,
+.topbar-status__toggle .theme-toggle__track {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.btn:hover {
+  border-color: rgba(var(--accent-rgb), 0.22);
+  box-shadow:
+    0 10px 22px rgba(2, 8, 23, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.btn.primary {
+  border-color: transparent;
+  background: var(--gradient-accent);
+  box-shadow:
+    0 14px 28px rgba(var(--accent-rgb), 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
