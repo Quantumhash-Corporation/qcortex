@@ -1,21 +1,21 @@
 {
-  "name": "@openclaw/googlechat",
+  "name": "@qcortex/googlechat",
   "version": "2026.3.7",
   "private": true,
-  "description": "OpenClaw Google Chat channel plugin",
+  "description": "QCortex Google Chat channel plugin",
   "type": "module",
   "dependencies": {
     "google-auth-library": "^10.6.1"
   },
   "peerDependencies": {
-    "openclaw": ">=2026.3.2"
+    "qcortex": ">=2026.3.2"
   },
   "peerDependenciesMeta": {
-    "openclaw": {
+    "qcortex": {
       "optional": true
     }
   },
-  "openclaw": {
+  "qcortex": {
     "extensions": [
       "./index.ts"
     ],
@@ -34,7 +34,7 @@
       "order": 55
     },
     "install": {
-      "npmSpec": "@openclaw/googlechat",
+      "npmSpec": "@qcortex/googlechat",
       "localPath": "extensions/googlechat",
       "defaultChoice": "npm"
     }

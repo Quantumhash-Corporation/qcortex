@@ -1,18 +1,18 @@
 {
-  "name": "@openclaw/memory-core",
+  "name": "@qcortex/memory-core",
   "version": "2026.3.7",
   "private": true,
-  "description": "OpenClaw core memory search plugin",
+  "description": "QCortex core memory search plugin",
   "type": "module",
   "peerDependencies": {
-    "openclaw": ">=2026.3.2"
+    "qcortex": ">=2026.3.2"
   },
   "peerDependenciesMeta": {
-    "openclaw": {
+    "qcortex": {
       "optional": true
     }
   },
-  "openclaw": {
+  "qcortex": {
     "extensions": [
       "./index.ts"
     ]

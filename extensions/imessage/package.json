@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/imessage",
+  "name": "@qcortex/imessage",
   "version": "2026.3.7",
   "private": true,
-  "description": "OpenClaw iMessage channel plugin",
+  "description": "QCortex iMessage channel plugin",
   "type": "module",
-  "openclaw": {
+  "qcortex": {
     "extensions": [
       "./index.ts"
     ]

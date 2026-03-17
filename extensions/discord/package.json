@@ -1,9 +1,9 @@
 {
-  "name": "@openclaw/discord",
+  "name": "@qcortex/discord",
   "version": "2026.3.7",
-  "description": "OpenClaw Discord channel plugin",
+  "description": "QCortex Discord channel plugin",
   "type": "module",
-  "openclaw": {
+  "qcortex": {
     "extensions": [
       "./index.ts"
     ]
