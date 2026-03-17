@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/signal",
+  "name": "@qcortex/signal",
   "version": "2026.3.7",
   "private": true,
-  "description": "OpenClaw Signal channel plugin",
+  "description": "QCortex Signal channel plugin",
   "type": "module",
-  "openclaw": {
+  "qcortex": {
     "extensions": [
       "./index.ts"
     ]
