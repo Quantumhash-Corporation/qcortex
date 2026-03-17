@@ -136,7 +136,7 @@ Run `qcortex doctor` to surface risky/misconfigured DM policies.
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=qcortex/qcortex&type=date&legend=top-left)](https://www.star-history.com/#qcortex/qcortex&type=date&legend=top-left)
+[![Star History Chart](https://api.star-history.com/image?repos=Quantumhash-Corporation/qcortex&type=date&legend=top-left)](https://www.star-history.com/?repos=Quantumhash-Corporation%2Fqcortex&type=date&legend=top-left)
 
 ## Everything we built so far
 
