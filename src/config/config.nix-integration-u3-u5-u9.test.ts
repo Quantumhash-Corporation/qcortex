@@ -93,9 +93,7 @@ describe("Nix integration (U3, U5, U9)", () => {
 
     it("CONFIG_PATH respects QCORTEX_CONFIG_PATH override", () => {
       expect(
-        resolveConfigPathCandidate(
-          envWith({ QCORTEX_CONFIG_PATH: "/nix/store/abc/qcortex.json" }),
-        ),
+        resolveConfigPathCandidate(envWith({ QCORTEX_CONFIG_PATH: "/nix/store/abc/qcortex.json" })),
       ).toBe(path.resolve("/nix/store/abc/qcortex.json"));
     });
 
@@ -182,9 +180,7 @@ describe("Nix integration (U3, U5, U9)", () => {
         expect(cfg.plugins?.load?.paths?.[0]).toBe(path.join(home, "plugins", "demo-plugin"));
         expect(cfg.agents?.defaults?.workspace).toBe(path.join(home, "ws-default"));
         expect(cfg.agents?.list?.[0]?.workspace).toBe(path.join(home, "ws-agent"));
-        expect(cfg.agents?.list?.[0]?.agentDir).toBe(
-          path.join(home, ".qcortex", "agents", "main"),
-        );
+        expect(cfg.agents?.list?.[0]?.agentDir).toBe(path.join(home, ".qcortex", "agents", "main"));
         expect(cfg.agents?.list?.[0]?.sandbox?.workspaceRoot).toBe(path.join(home, "sandbox-root"));
         expect(cfg.channels?.whatsapp?.accounts?.personal?.authDir).toBe(
           path.join(home, ".qcortex", "credentials", "wa-personal"),
@@ -211,10 +207,7 @@ describe("Nix integration (U3, U5, U9)", () => {
 
     it("falls back to config when env is invalid", () => {
       expect(
-        resolveGatewayPort(
-          { gateway: { port: 19003 } },
-          envWith({ QCORTEX_GATEWAY_PORT: "nope" }),
-        ),
+        resolveGatewayPort({ gateway: { port: 19003 } }, envWith({ QCORTEX_GATEWAY_PORT: "nope" })),
       ).toBe(19003);
     });
   });

@@ -165,9 +165,7 @@ export function extractHookToken(req: IncomingMessage): string | undefined {
     }
   }
   const headerToken =
-    typeof req.headers["x-qcortex-token"] === "string"
-      ? req.headers["x-qcortex-token"].trim()
-      : "";
+    typeof req.headers["x-qcortex-token"] === "string" ? req.headers["x-qcortex-token"].trim() : "";
   if (headerToken) {
     return headerToken;
   }

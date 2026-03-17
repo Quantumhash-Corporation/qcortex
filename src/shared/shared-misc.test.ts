@@ -75,9 +75,7 @@ describe("shared/frontmatter", () => {
 
   test("resolveQCortexManifestBlock returns undefined for invalid input", () => {
     expect(resolveQCortexManifestBlock({ frontmatter: {} })).toBeUndefined();
-    expect(
-      resolveQCortexManifestBlock({ frontmatter: { metadata: "not-json5" } }),
-    ).toBeUndefined();
+    expect(resolveQCortexManifestBlock({ frontmatter: { metadata: "not-json5" } })).toBeUndefined();
     expect(
       resolveQCortexManifestBlock({ frontmatter: { metadata: "{ nope: { a: 1 } }" } }),
     ).toBeUndefined();

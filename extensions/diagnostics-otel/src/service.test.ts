@@ -244,14 +244,10 @@ describe("diagnostics-otel service", () => {
     });
 
     expect(telemetryState.counters.get("qcortex.webhook.received")?.add).toHaveBeenCalled();
-    expect(
-      telemetryState.histograms.get("qcortex.webhook.duration_ms")?.record,
-    ).toHaveBeenCalled();
+    expect(telemetryState.histograms.get("qcortex.webhook.duration_ms")?.record).toHaveBeenCalled();
     expect(telemetryState.counters.get("qcortex.message.queued")?.add).toHaveBeenCalled();
     expect(telemetryState.counters.get("qcortex.message.processed")?.add).toHaveBeenCalled();
-    expect(
-      telemetryState.histograms.get("qcortex.message.duration_ms")?.record,
-    ).toHaveBeenCalled();
+    expect(telemetryState.histograms.get("qcortex.message.duration_ms")?.record).toHaveBeenCalled();
     expect(telemetryState.histograms.get("qcortex.queue.wait_ms")?.record).toHaveBeenCalled();
     expect(telemetryState.counters.get("qcortex.session.stuck")?.add).toHaveBeenCalled();
     expect(
@@ -361,9 +357,7 @@ describe("diagnostics-otel service", () => {
     );
     const attrs = sessionCounter?.add.mock.calls[0]?.[1] as Record<string, unknown> | undefined;
     expect(typeof attrs?.["qcortex.reason"]).toBe("string");
-    expect(String(attrs?.["qcortex.reason"])).not.toContain(
-      "ghp_abcdefghijklmnopqrstuvwxyz123456",
-    );
+    expect(String(attrs?.["qcortex.reason"])).not.toContain("ghp_abcdefghijklmnopqrstuvwxyz123456");
     await service.stop?.(ctx);
   });
 });

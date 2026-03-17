@@ -67,9 +67,7 @@ function cloneStatWithDev<T extends { dev: number | bigint }>(stat: T, dev: numb
 }
 
 beforeAll(async () => {
-  fixtureRoot = await fs.mkdtemp(
-    path.join(resolvePreferredQCortexTmpDir(), "qcortex-media-test-"),
-  );
+  fixtureRoot = await fs.mkdtemp(path.join(resolvePreferredQCortexTmpDir(), "qcortex-media-test-"));
   largeJpegBuffer = await sharp({
     create: {
       width: 400,
