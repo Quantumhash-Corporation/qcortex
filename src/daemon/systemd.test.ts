@@ -1,0 +1,416 @@
+import fs from "node:fs/promises";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+const execFileMock = vi.hoisted(() => vi.fn());
+
+vi.mock("node:child_process", () => ({
+  execFile: execFileMock,
+}));
+
+import { splitArgsPreservingQuotes } from "./arg-split.js";
+import { parseSystemdExecStart } from "./systemd-unit.js";
+import {
+  isSystemdUserServiceAvailable,
+  parseSystemdShow,
+  restartSystemdService,
+  resolveSystemdUserUnitPath,
+  stopSystemdService,
+} from "./systemd.js";
+
+describe("systemd availability", () => {
+  beforeEach(() => {
+    execFileMock.mockReset();
+  });
+
+  it("returns true when systemctl --user succeeds", async () => {
+    execFileMock.mockImplementation((_cmd, _args, _opts, cb) => {
+      cb(null, "", "");
+    });
+    await expect(isSystemdUserServiceAvailable()).resolves.toBe(true);
+  });
+
+  it("returns false when systemd user bus is unavailable", async () => {
+    execFileMock.mockImplementation((_cmd, _args, _opts, cb) => {
+      const err = new Error("Failed to connect to bus") as Error & {
+        stderr?: string;
+        code?: number;
+      };
+      err.stderr = "Failed to connect to bus";
+      err.code = 1;
+      cb(err, "", "");
+    });
+    await expect(isSystemdUserServiceAvailable()).resolves.toBe(false);
+  });
+
+  it("falls back to machine user scope when --user bus is unavailable", async () => {
+    execFileMock
+      .mockImplementationOnce((_cmd, args, _opts, cb) => {
+        expect(args).toEqual(["--user", "status"]);
+        const err = new Error(
+          "Failed to connect to user scope bus via local transport",
+        ) as Error & {
+          stderr?: string;
+          code?: number;
+        };
+        err.stderr =
+          "Failed to connect to user scope bus via local transport: $DBUS_SESSION_BUS_ADDRESS and $XDG_RUNTIME_DIR not defined";
+        err.code = 1;
+        cb(err, "", "");
+      })
+      .mockImplementationOnce((_cmd, args, _opts, cb) => {
+        expect(args).toEqual(["--machine", "debian@", "--user", "status"]);
+        cb(null, "", "");
+      });
+
+    await expect(isSystemdUserServiceAvailable({ USER: "debian" })).resolves.toBe(true);
+  });
+});
+
+describe("isSystemdServiceEnabled", () => {
+  const mockManagedUnitPresent = () => {
+    vi.spyOn(fs, "access").mockResolvedValue(undefined);
+  };
+
+  beforeEach(() => {
+    vi.restoreAllMocks();
+    execFileMock.mockReset();
+  });
+
+  it("returns false when systemctl is not present", async () => {
+    const { isSystemdServiceEnabled } = await import("./systemd.js");
+    mockManagedUnitPresent();
+    execFileMock.mockImplementation((_cmd, _args, _opts, cb) => {
+      const err = new Error("spawn systemctl EACCES") as Error & { code?: string };
+      err.code = "EACCES";
+      cb(err, "", "");
+    });
+    const result = await isSystemdServiceEnabled({ env: { HOME: "/tmp/qcortex-test-home" } });
+    expect(result).toBe(false);
+  });
+
+  it("returns false without calling systemctl when the managed unit file is missing", async () => {
+    const { isSystemdServiceEnabled } = await import("./systemd.js");
+    const err = new Error("missing unit") as NodeJS.ErrnoException;
+    err.code = "ENOENT";
+    vi.spyOn(fs, "access").mockRejectedValueOnce(err);
+
+    const result = await isSystemdServiceEnabled({ env: { HOME: "/tmp/qcortex-test-home" } });
+
+    expect(result).toBe(false);
+    expect(execFileMock).not.toHaveBeenCalled();
+  });
+
+  it("calls systemctl is-enabled when systemctl is present", async () => {
+    const { isSystemdServiceEnabled } = await import("./systemd.js");
+    mockManagedUnitPresent();
+    execFileMock.mockImplementationOnce((_cmd, args, _opts, cb) => {
+      expect(args).toEqual(["--user", "is-enabled", "qcortex-gateway.service"]);
+      cb(null, "enabled", "");
+    });
+    const result = await isSystemdServiceEnabled({ env: { HOME: "/tmp/qcortex-test-home" } });
+    expect(result).toBe(true);
+  });
+
+  it("returns false when systemctl reports disabled", async () => {
+    const { isSystemdServiceEnabled } = await import("./systemd.js");
+    mockManagedUnitPresent();
+    execFileMock.mockImplementationOnce((_cmd, _args, _opts, cb) => {
+      const err = new Error("disabled") as Error & { code?: number };
+      err.code = 1;
+      cb(err, "disabled", "");
+    });
+    const result = await isSystemdServiceEnabled({ env: { HOME: "/tmp/qcortex-test-home" } });
+    expect(result).toBe(false);
+  });
+
+  it("throws when systemctl is-enabled fails for non-state errors", async () => {
+    const { isSystemdServiceEnabled } = await import("./systemd.js");
+    mockManagedUnitPresent();
+    execFileMock
+      .mockImplementationOnce((_cmd, args, _opts, cb) => {
+        expect(args).toEqual(["--user", "is-enabled", "qcortex-gateway.service"]);
+        const err = new Error("Failed to connect to bus") as Error & { code?: number };
+        err.code = 1;
+        cb(err, "", "Failed to connect to bus");
+      })
+      .mockImplementationOnce((_cmd, args, _opts, cb) => {
+        expect(args[0]).toBe("--machine");
+        expect(String(args[1])).toMatch(/^[^@]+@$/);
+        expect(args.slice(2)).toEqual(["--user", "is-enabled", "qcortex-gateway.service"]);
+        const err = new Error("permission denied") as Error & { code?: number };
+        err.code = 1;
+        cb(err, "", "permission denied");
+      });
+    await expect(
+      isSystemdServiceEnabled({ env: { HOME: "/tmp/qcortex-test-home" } }),
+    ).rejects.toThrow("systemctl is-enabled unavailable: permission denied");
+  });
+
+  it("returns false when systemctl is-enabled exits with code 4 (not-found)", async () => {
+    const { isSystemdServiceEnabled } = await import("./systemd.js");
+    mockManagedUnitPresent();
+    execFileMock.mockImplementationOnce((_cmd, _args, _opts, cb) => {
+      // On Ubuntu 24.04, `systemctl --user is-enabled <unit>` exits with
+      // code 4 and prints "not-found" to stdout when the unit doesn't exist.
+      const err = new Error(
+        "Command failed: systemctl --user is-enabled qcortex-gateway.service",
+      ) as Error & { code?: number };
+      err.code = 4;
+      cb(err, "not-found\n", "");
+    });
+    const result = await isSystemdServiceEnabled({ env: { HOME: "/tmp/qcortex-test-home" } });
+    expect(result).toBe(false);
+  });
+});
+
+describe("systemd runtime parsing", () => {
+  it("parses active state details", () => {
+    const output = [
+      "ActiveState=inactive",
+      "SubState=dead",
+      "MainPID=0",
+      "ExecMainStatus=2",
+      "ExecMainCode=exited",
+    ].join("\n");
+    expect(parseSystemdShow(output)).toEqual({
+      activeState: "inactive",
+      subState: "dead",
+      execMainStatus: 2,
+      execMainCode: "exited",
+    });
+  });
+});
+
+describe("resolveSystemdUserUnitPath", () => {
+  it.each([
+    {
+      name: "uses default service name when QCORTEX_PROFILE is unset",
+      env: { HOME: "/home/test" },
+      expected: "/home/test/.config/systemd/user/qcortex-gateway.service",
+    },
+    {
+      name: "uses profile-specific service name when QCORTEX_PROFILE is set to a custom value",
+      env: { HOME: "/home/test", QCORTEX_PROFILE: "jbphoenix" },
+      expected: "/home/test/.config/systemd/user/qcortex-gateway-jbphoenix.service",
+    },
+    {
+      name: "prefers QCORTEX_SYSTEMD_UNIT over QCORTEX_PROFILE",
+      env: {
+        HOME: "/home/test",
+        QCORTEX_PROFILE: "jbphoenix",
+        QCORTEX_SYSTEMD_UNIT: "custom-unit",
+      },
+      expected: "/home/test/.config/systemd/user/custom-unit.service",
+    },
+    {
+      name: "handles QCORTEX_SYSTEMD_UNIT with .service suffix",
+      env: {
+        HOME: "/home/test",
+        QCORTEX_SYSTEMD_UNIT: "custom-unit.service",
+      },
+      expected: "/home/test/.config/systemd/user/custom-unit.service",
+    },
+    {
+      name: "trims whitespace from QCORTEX_SYSTEMD_UNIT",
+      env: {
+        HOME: "/home/test",
+        QCORTEX_SYSTEMD_UNIT: "  custom-unit  ",
+      },
+      expected: "/home/test/.config/systemd/user/custom-unit.service",
+    },
+  ])("$name", ({ env, expected }) => {
+    expect(resolveSystemdUserUnitPath(env)).toBe(expected);
+  });
+});
+
+describe("splitArgsPreservingQuotes", () => {
+  it("splits on whitespace outside quotes", () => {
+    expect(splitArgsPreservingQuotes('/usr/bin/qcortex gateway start --name "My Bot"')).toEqual([
+      "/usr/bin/qcortex",
+      "gateway",
+      "start",
+      "--name",
+      "My Bot",
+    ]);
+  });
+
+  it("supports systemd-style backslash escaping", () => {
+    expect(
+      splitArgsPreservingQuotes('qcortex --name "My \\"Bot\\"" --foo bar', {
+        escapeMode: "backslash",
+      }),
+    ).toEqual(["qcortex", "--name", 'My "Bot"', "--foo", "bar"]);
+  });
+
+  it("supports schtasks-style escaped quotes while preserving other backslashes", () => {
+    expect(
+      splitArgsPreservingQuotes('qcortex --path "C:\\\\Program Files\\\\QCortex"', {
+        escapeMode: "backslash-quote-only",
+      }),
+    ).toEqual(["qcortex", "--path", "C:\\\\Program Files\\\\QCortex"]);
+
+    expect(
+      splitArgsPreservingQuotes('qcortex --label "My \\"Quoted\\" Name"', {
+        escapeMode: "backslash-quote-only",
+      }),
+    ).toEqual(["qcortex", "--label", 'My "Quoted" Name']);
+  });
+});
+
+describe("parseSystemdExecStart", () => {
+  it("preserves quoted arguments", () => {
+    const execStart = '/usr/bin/qcortex gateway start --name "My Bot"';
+    expect(parseSystemdExecStart(execStart)).toEqual([
+      "/usr/bin/qcortex",
+      "gateway",
+      "start",
+      "--name",
+      "My Bot",
+    ]);
+  });
+});
+
+describe("systemd service control", () => {
+  beforeEach(() => {
+    execFileMock.mockReset();
+  });
+
+  it("stops the resolved user unit", async () => {
+    execFileMock
+      .mockImplementationOnce((_cmd, _args, _opts, cb) => cb(null, "", ""))
+      .mockImplementationOnce((_cmd, args, _opts, cb) => {
+        expect(args).toEqual(["--user", "stop", "qcortex-gateway.service"]);
+        cb(null, "", "");
+      });
+    const write = vi.fn();
+    const stdout = { write } as unknown as NodeJS.WritableStream;
+
+    await stopSystemdService({ stdout, env: {} });
+
+    expect(write).toHaveBeenCalledTimes(1);
+    expect(String(write.mock.calls[0]?.[0])).toContain("Stopped systemd service");
+  });
+
+  it("restarts a profile-specific user unit", async () => {
+    execFileMock
+      .mockImplementationOnce((_cmd, _args, _opts, cb) => cb(null, "", ""))
+      .mockImplementationOnce((_cmd, args, _opts, cb) => {
+        expect(args).toEqual(["--user", "restart", "qcortex-gateway-work.service"]);
+        cb(null, "", "");
+      });
+    const write = vi.fn();
+    const stdout = { write } as unknown as NodeJS.WritableStream;
+
+    await restartSystemdService({ stdout, env: { QCORTEX_PROFILE: "work" } });
+
+    expect(write).toHaveBeenCalledTimes(1);
+    expect(String(write.mock.calls[0]?.[0])).toContain("Restarted systemd service");
+  });
+
+  it("surfaces stop failures with systemctl detail", async () => {
+    execFileMock
+      .mockImplementationOnce((_cmd, _args, _opts, cb) => cb(null, "", ""))
+      .mockImplementationOnce((_cmd, _args, _opts, cb) => {
+        const err = new Error("stop failed") as Error & { code?: number };
+        err.code = 1;
+        cb(err, "", "permission denied");
+      });
+
+    await expect(
+      stopSystemdService({
+        stdout: { write: vi.fn() } as unknown as NodeJS.WritableStream,
+        env: {},
+      }),
+    ).rejects.toThrow("systemctl stop failed: permission denied");
+  });
+
+  it("targets the sudo caller's user scope when SUDO_USER is set", async () => {
+    execFileMock
+      .mockImplementationOnce((_cmd, args, _opts, cb) => {
+        expect(args).toEqual(["--machine", "debian@", "--user", "status"]);
+        cb(null, "", "");
+      })
+      .mockImplementationOnce((_cmd, args, _opts, cb) => {
+        expect(args).toEqual([
+          "--machine",
+          "debian@",
+          "--user",
+          "restart",
+          "qcortex-gateway.service",
+        ]);
+        cb(null, "", "");
+      });
+    const write = vi.fn();
+    const stdout = { write } as unknown as NodeJS.WritableStream;
+
+    await restartSystemdService({ stdout, env: { SUDO_USER: "debian" } });
+
+    expect(write).toHaveBeenCalledTimes(1);
+    expect(String(write.mock.calls[0]?.[0])).toContain("Restarted systemd service");
+  });
+
+  it("keeps direct --user scope when SUDO_USER is root", async () => {
+    execFileMock
+      .mockImplementationOnce((_cmd, args, _opts, cb) => {
+        expect(args).toEqual(["--user", "status"]);
+        cb(null, "", "");
+      })
+      .mockImplementationOnce((_cmd, args, _opts, cb) => {
+        expect(args).toEqual(["--user", "restart", "qcortex-gateway.service"]);
+        cb(null, "", "");
+      });
+    const write = vi.fn();
+    const stdout = { write } as unknown as NodeJS.WritableStream;
+
+    await restartSystemdService({ stdout, env: { SUDO_USER: "root", USER: "root" } });
+
+    expect(write).toHaveBeenCalledTimes(1);
+    expect(String(write.mock.calls[0]?.[0])).toContain("Restarted systemd service");
+  });
+
+  it("falls back to machine user scope for restart when user bus env is missing", async () => {
+    execFileMock
+      .mockImplementationOnce((_cmd, args, _opts, cb) => {
+        expect(args).toEqual(["--user", "status"]);
+        const err = new Error("Failed to connect to user scope bus") as Error & {
+          stderr?: string;
+          code?: number;
+        };
+        err.stderr =
+          "Failed to connect to user scope bus via local transport: $DBUS_SESSION_BUS_ADDRESS and $XDG_RUNTIME_DIR not defined";
+        err.code = 1;
+        cb(err, "", "");
+      })
+      .mockImplementationOnce((_cmd, args, _opts, cb) => {
+        expect(args).toEqual(["--machine", "debian@", "--user", "status"]);
+        cb(null, "", "");
+      })
+      .mockImplementationOnce((_cmd, args, _opts, cb) => {
+        expect(args).toEqual(["--user", "restart", "qcortex-gateway.service"]);
+        const err = new Error("Failed to connect to user scope bus") as Error & {
+          stderr?: string;
+          code?: number;
+        };
+        err.stderr = "Failed to connect to user scope bus";
+        err.code = 1;
+        cb(err, "", "");
+      })
+      .mockImplementationOnce((_cmd, args, _opts, cb) => {
+        expect(args).toEqual([
+          "--machine",
+          "debian@",
+          "--user",
+          "restart",
+          "qcortex-gateway.service",
+        ]);
+        cb(null, "", "");
+      });
+    const write = vi.fn();
+    const stdout = { write } as unknown as NodeJS.WritableStream;
+
+    await restartSystemdService({ stdout, env: { USER: "debian" } });
+
+    expect(write).toHaveBeenCalledTimes(1);
+    expect(String(write.mock.calls[0]?.[0])).toContain("Restarted systemd service");
+  });
+});
