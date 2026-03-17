@@ -97,16 +97,16 @@ Both resolve from process env at activation time. SecretRef details are document
 
 ## Path-related env vars
 
-| Variable               | Purpose                                                                                                                                                                          |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Variable              | Purpose                                                                                                                                                                        |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `QCORTEX_HOME`        | Override the home directory used for all internal path resolution (`~/.qcortex/`, agent dirs, sessions, credentials). Useful when running QCortex as a dedicated service user. |
-| `QCORTEX_STATE_DIR`   | Override the state directory (default `~/.qcortex`).                                                                                                                            |
+| `QCORTEX_STATE_DIR`   | Override the state directory (default `~/.qcortex`).                                                                                                                           |
 | `QCORTEX_CONFIG_PATH` | Override the config file path (default `~/.qcortex/qcortex.json`).                                                                                                             |
 
 ## Logging
 
-| Variable             | Purpose                                                                                                                                                                                      |
-| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Variable            | Purpose                                                                                                                                                                                      |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `QCORTEX_LOG_LEVEL` | Override log level for both file and console (e.g. `debug`, `trace`). Takes precedence over `logging.level` and `logging.consoleLevel` in config. Invalid values are ignored with a warning. |
 
 ### `QCORTEX_HOME`

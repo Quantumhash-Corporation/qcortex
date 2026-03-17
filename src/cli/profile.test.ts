@@ -94,9 +94,7 @@ describe("applyCliProfileEnv", () => {
 
     const resolvedHome = path.resolve("/srv/qcortex-home");
     expect(env.QCORTEX_STATE_DIR).toBe(path.join(resolvedHome, ".qcortex-work"));
-    expect(env.QCORTEX_CONFIG_PATH).toBe(
-      path.join(resolvedHome, ".qcortex-work", "qcortex.json"),
-    );
+    expect(env.QCORTEX_CONFIG_PATH).toBe(path.join(resolvedHome, ".qcortex-work", "qcortex.json"));
   });
 });
 
@@ -155,9 +153,7 @@ describe("formatCliCommand", () => {
   });
 
   it("handles command with no args after qcortex", () => {
-    expect(formatCliCommand("qcortex", { QCORTEX_PROFILE: "test" })).toBe(
-      "qcortex --profile test",
-    );
+    expect(formatCliCommand("qcortex", { QCORTEX_PROFILE: "test" })).toBe("qcortex --profile test");
   });
 
   it("handles pnpm wrapper", () => {

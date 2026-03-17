@@ -184,9 +184,7 @@ export function createLlmTaskTool(api: QCortexPluginApi) {
 
       let tmpDir: string | null = null;
       try {
-        tmpDir = await fs.mkdtemp(
-          path.join(resolvePreferredQCortexTmpDir(), "qcortex-llm-task-"),
-        );
+        tmpDir = await fs.mkdtemp(path.join(resolvePreferredQCortexTmpDir(), "qcortex-llm-task-"));
         const sessionId = `llm-task-${Date.now()}`;
         const sessionFile = path.join(tmpDir, "session.json");
 

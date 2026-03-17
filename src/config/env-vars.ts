@@ -66,10 +66,7 @@ export function collectConfigEnvVars(cfg?: QCortexConfig): Record<string, string
   return collectConfigRuntimeEnvVars(cfg);
 }
 
-export function applyConfigEnvVars(
-  cfg: QCortexConfig,
-  env: NodeJS.ProcessEnv = process.env,
-): void {
+export function applyConfigEnvVars(cfg: QCortexConfig, env: NodeJS.ProcessEnv = process.env): void {
   const entries = collectConfigRuntimeEnvVars(cfg);
   for (const [key, value] of Object.entries(entries)) {
     if (env[key]?.trim()) {

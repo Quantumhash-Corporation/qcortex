@@ -140,9 +140,7 @@ function createSignalAccountOverrideCfg(): QCortexConfig {
   } as QCortexConfig;
 }
 
-function createDiscordModerationOverrideCfg(params?: {
-  channelsEnabled?: boolean;
-}): QCortexConfig {
+function createDiscordModerationOverrideCfg(params?: { channelsEnabled?: boolean }): QCortexConfig {
   const accountActions = params?.channelsEnabled
     ? { moderation: true, channels: true }
     : { moderation: true };

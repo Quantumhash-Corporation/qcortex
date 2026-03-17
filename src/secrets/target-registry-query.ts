@@ -239,9 +239,7 @@ export function resolvePlanTargetAgainstRegistry(candidate: {
   return null;
 }
 
-export function discoverConfigSecretTargets(
-  config: QCortexConfig,
-): DiscoveredConfigSecretTarget[] {
+export function discoverConfigSecretTargets(config: QCortexConfig): DiscoveredConfigSecretTarget[] {
   return discoverConfigSecretTargetsByIds(config);
 }
 

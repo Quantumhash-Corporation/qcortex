@@ -5,10 +5,10 @@ import type { AgentTool, AgentToolResult } from "@mariozechner/pi-agent-core";
 import { Type } from "@sinclair/typebox";
 import { describe, expect, it, vi } from "vitest";
 import "./test-helpers/fast-coding-tools.js";
-import { createQCortexTools } from "./qcortex-tools.js";
 import { findUnsupportedSchemaKeywords } from "./pi-embedded-runner/google.js";
 import { __testing, createQCortexCodingTools } from "./pi-tools.js";
 import { createQCortexReadTool, createSandboxedReadTool } from "./pi-tools.read.js";
+import { createQCortexTools } from "./qcortex-tools.js";
 import { createHostSandboxFsBridge } from "./test-helpers/host-sandbox-fs-bridge.js";
 import { createBrowserTool } from "./tools/browser-tool.js";
 

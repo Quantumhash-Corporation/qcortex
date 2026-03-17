@@ -4,11 +4,7 @@ import {
   resolveGatewayPort,
   resolveStateDir,
 } from "../../config/config.js";
-import type {
-  QCortexConfig,
-  GatewayBindMode,
-  GatewayControlUiConfig,
-} from "../../config/types.js";
+import type { QCortexConfig, GatewayBindMode, GatewayControlUiConfig } from "../../config/types.js";
 import {
   hasConfiguredSecretInput,
   normalizeSecretInputString,

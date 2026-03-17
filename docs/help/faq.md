@@ -1337,9 +1337,9 @@ Related: [Agent workspace](/concepts/agent-workspace), [Memory](/concepts/memory
 
 Everything lives under `$QCORTEX_STATE_DIR` (default: `~/.qcortex`):
 
-| Path                                                            | Purpose                                                            |
-| --------------------------------------------------------------- | ------------------------------------------------------------------ |
-| `$QCORTEX_STATE_DIR/qcortex.json`                             | Main config (JSON5)                                                |
+| Path                                                           | Purpose                                                            |
+| -------------------------------------------------------------- | ------------------------------------------------------------------ |
+| `$QCORTEX_STATE_DIR/qcortex.json`                              | Main config (JSON5)                                                |
 | `$QCORTEX_STATE_DIR/credentials/oauth.json`                    | Legacy OAuth import (copied into auth profiles on first use)       |
 | `$QCORTEX_STATE_DIR/agents/<agentId>/agent/auth-profiles.json` | Auth profiles (OAuth, API keys, and optional `keyRef`/`tokenRef`)  |
 | `$QCORTEX_STATE_DIR/secrets.json`                              | Optional file-backed secret payload for `file` SecretRef providers |
