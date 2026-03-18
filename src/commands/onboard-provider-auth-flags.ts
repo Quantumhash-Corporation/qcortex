@@ -25,6 +25,8 @@ type OnboardProviderAuthOptionKey = keyof Pick<
   | "qianfanApiKey"
   | "volcengineApiKey"
   | "byteplusApiKey"
+  | "ollamaApiKey"
+  | "ollamaCloudApiKey"
 >;
 
 export type OnboardProviderAuthFlag = {
@@ -197,5 +199,19 @@ export const ONBOARD_PROVIDER_AUTH_FLAGS: ReadonlyArray<OnboardProviderAuthFlag>
     cliFlag: "--byteplus-api-key",
     cliOption: "--byteplus-api-key <key>",
     description: "BytePlus API key",
+  },
+  {
+    optionKey: "ollamaApiKey",
+    authChoice: "ollama-api-key",
+    cliFlag: "--ollama-api-key",
+    cliOption: "--ollama-api-key <key>",
+    description: "Ollama API key (local)",
+  },
+  {
+    optionKey: "ollamaCloudApiKey",
+    authChoice: "ollama-cloud-api-key",
+    cliFlag: "--ollama-cloud-api-key",
+    cliOption: "--ollama-cloud-api-key <key>",
+    description: "Ollama Cloud API key",
   },
 ];

@@ -1,10 +1,10 @@
 {
-  "name": "@openclaw/copilot-proxy",
+  "name": "@qcortex/copilot-proxy",
   "version": "2026.3.7",
   "private": true,
-  "description": "OpenClaw Copilot Proxy provider plugin",
+  "description": "QCortex Copilot Proxy provider plugin",
   "type": "module",
-  "openclaw": {
+  "qcortex": {
     "extensions": [
       "./index.ts"
     ]

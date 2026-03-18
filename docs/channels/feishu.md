@@ -439,8 +439,8 @@ qcortex pairing list feishu
 
 ## Gateway management commands
 
-| Command                    | Description                   |
-| -------------------------- | ----------------------------- |
+| Command                   | Description                   |
+| ------------------------- | ----------------------------- |
 | `qcortex gateway status`  | Show gateway status           |
 | `qcortex gateway install` | Install/start gateway service |
 | `qcortex gateway stop`    | Stop gateway service          |

@@ -100,12 +100,26 @@ export function validateGatewayPasswordInput(value: unknown): string | undefined
 
 export function printWizardHeader(runtime: RuntimeEnv) {
   const header = [
-    "▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄",
-    "██░▄▄▄░██░▄▄░██░▄▄▄██░▀██░██░▄▄▀██░████░▄▄▀██░███░██",
-    "██░███░██░▀▀░██░▄▄▄██░█░█░██░█████░████░▀▀░██░█░█░██",
-    "██░▀▀▀░██░█████░▀▀▀██░██▄░██░▀▀▄██░▀▀░█░██░██▄▀▄▀▄██",
-    "▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀",
-    "                  🧠 QCORTEX 🧠                    ",
+    "     QQQQQQQQQ             CCCCCCCCCCCCC     OOOOOOOOO     RRRRRRRRRRRRRRRRR   TTTTTTTTTTTTTTTTTTTTTTTEEEEEEEEEEEEEEEEEEEEEEXXXXXXX       XXXXXXX",
+    "   QQ:::::::::QQ        CCC::::::::::::C   OO:::::::::OO   R::::::::::::::::R  T:::::::::::::::::::::TE::::::::::::::::::::EX:::::X       X:::::X",
+    " QQ:::::::::::::QQ    CC:::::::::::::::C OO:::::::::::::OO R::::::RRRRRR:::::R T:::::::::::::::::::::TE::::::::::::::::::::EX:::::X       X:::::X",
+    "Q:::::::QQQ:::::::Q  C:::::CCCCCCCC::::CO:::::::OOO:::::::ORR:::::R     R:::::RT:::::TT:::::::TT:::::TEE::::::EEEEEEEEE::::EX::::::X     X::::::X",
+    "Q::::::O   Q::::::Q C:::::C       CCCCCCO::::::O   O::::::O  R::::R     R:::::RTTTTTT  T:::::T  TTTTTT  E:::::E       EEEEEEXXX:::::X   X:::::XXX",
+    "Q:::::O     Q:::::QC:::::C              O:::::O     O:::::O  R::::R     R:::::R        T:::::T          E:::::E                X:::::X X:::::X   ",
+    "Q:::::O     Q:::::QC:::::C              O:::::O     O:::::O  R::::RRRRRR:::::R         T:::::T          E::::::EEEEEEEEEE       X:::::X:::::X    ",
+    "Q:::::O     Q:::::QC:::::C              O:::::O     O:::::O  R:::::::::::::RR          T:::::T          E:::::::::::::::E        X:::::::::X     ",
+    "Q:::::O     Q:::::QC:::::C              O:::::O     O:::::O  R::::RRRRRR:::::R         T:::::T          E:::::::::::::::E        X:::::::::X     ",
+    "Q:::::O     Q:::::QC:::::C              O:::::O     O:::::O  R::::R     R:::::R        T:::::T          E::::::EEEEEEEEEE       X:::::X:::::X    ",
+    "Q:::::O  QQQQ:::::QC:::::C              O:::::O     O:::::O  R::::R     R:::::R        T:::::T          E:::::E                X:::::X X:::::X   ",
+    "Q::::::O Q::::::::Q C:::::C       CCCCCCO::::::O   O::::::O  R::::R     R:::::R        T:::::T          E:::::E       EEEEEEXXX:::::X   X:::::XXX",
+    "Q:::::::QQ::::::::Q  C:::::CCCCCCCC::::CO:::::::OOO:::::::ORR:::::R     R:::::R      TT:::::::TT      EE::::::EEEEEEEE:::::EX::::::X     X::::::X",
+    " QQ::::::::::::::Q    CC:::::::::::::::C OO:::::::::::::OO R::::::R     R:::::R      T:::::::::T      E::::::::::::::::::::EX:::::X       X:::::X",
+    "   QQ:::::::::::Q       CCC::::::::::::C   OO:::::::::OO   R::::::R     R:::::R      T:::::::::T      E::::::::::::::::::::EX:::::X       X:::::X",
+    "     QQQQQQQQ::::QQ        CCCCCCCCCCCCC     OOOOOOOOO     RRRRRRRR     RRRRRRR      TTTTTTTTTTT      EEEEEEEEEEEEEEEEEEEEEEXXXXXXX       XXXXXXX",
+    "             Q:::::Q                                                                                                                             ",
+    "              QQQQQQ                                                                                                                             ",
+    "                                                                                                                                                 ",
+    "                                                              🧠 QCORTEX 🧠                                                                      ",
     " ",
   ].join("\n");
   runtime.log(header);

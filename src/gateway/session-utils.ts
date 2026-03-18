@@ -404,10 +404,7 @@ function resolveDefaultStoreAgentId(cfg: QCortexConfig): string {
   return normalizeAgentId(resolveDefaultAgentId(cfg));
 }
 
-export function resolveSessionStoreKey(params: {
-  cfg: QCortexConfig;
-  sessionKey: string;
-}): string {
+export function resolveSessionStoreKey(params: { cfg: QCortexConfig; sessionKey: string }): string {
   const raw = (params.sessionKey ?? "").trim();
   if (!raw) {
     return raw;

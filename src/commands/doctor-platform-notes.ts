@@ -88,9 +88,7 @@ export async function noteMacLaunchctlGatewayEnvOverrides(
     (deps?.noteFn ?? note)(lines.join("\n"), "Gateway (macOS)");
   }
 
-  const tokenEntries = [
-    ["QCORTEX_GATEWAY_TOKEN", await getenv("QCORTEX_GATEWAY_TOKEN")],
-  ] as const;
+  const tokenEntries = [["QCORTEX_GATEWAY_TOKEN", await getenv("QCORTEX_GATEWAY_TOKEN")]] as const;
   const passwordEntries = [
     ["QCORTEX_GATEWAY_PASSWORD", await getenv("QCORTEX_GATEWAY_PASSWORD")],
   ] as const;

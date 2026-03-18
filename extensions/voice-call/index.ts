@@ -1,8 +1,5 @@
 import { Type } from "@sinclair/typebox";
-import type {
-  GatewayRequestHandlerOptions,
-  QCortexPluginApi,
-} from "qcortex/plugin-sdk/voice-call";
+import type { GatewayRequestHandlerOptions, QCortexPluginApi } from "qcortex/plugin-sdk/voice-call";
 import { registerVoiceCallCli } from "./src/cli.js";
 import {
   VoiceCallConfigSchema,

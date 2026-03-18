@@ -40,10 +40,7 @@ export function applyOnboardAuthAgentModelsAndProviders(
   };
 }
 
-export function applyAgentDefaultModelPrimary(
-  cfg: QCortexConfig,
-  primary: string,
-): QCortexConfig {
+export function applyAgentDefaultModelPrimary(cfg: QCortexConfig, primary: string): QCortexConfig {
   const existingFallbacks = extractAgentDefaultModelFallbacks(cfg.agents?.defaults?.model);
   return {
     ...cfg,

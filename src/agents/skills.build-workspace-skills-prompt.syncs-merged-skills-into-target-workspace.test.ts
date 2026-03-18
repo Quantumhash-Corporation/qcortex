@@ -163,8 +163,7 @@ describe("buildWorkspaceSkillsPrompt", () => {
       dir: skillDir,
       name: "nano-banana-pro",
       description: "Generates images",
-      metadata:
-        '{"qcortex":{"requires":{"env":["GEMINI_API_KEY"]},"primaryEnv":"GEMINI_API_KEY"}}',
+      metadata: '{"qcortex":{"requires":{"env":["GEMINI_API_KEY"]},"primaryEnv":"GEMINI_API_KEY"}}',
       body: "# Nano Banana\n",
     });
 
