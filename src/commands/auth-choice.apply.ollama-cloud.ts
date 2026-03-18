@@ -130,6 +130,7 @@ export async function applyAuthChoiceOllamaCloud(
   process.env.OLLAMA_API_KEY = apiKey;
 
   // Update config to use existing "ollama" provider with cloud base URL
+  // Note: Ollama Cloud uses the native Ollama API at /api/chat (not /v1/chat/completions)
   const nextConfig: QCortexConfig = {
     ...cfg,
     models: {
@@ -138,11 +139,17 @@ export async function applyAuthChoiceOllamaCloud(
       providers: {
         ...cfg.models?.providers,
         // Use existing "ollama" provider with cloud base URL
+        // IMPORTANT: Use native "ollama" API type, not "openai-completions"
+        // because Ollama Cloud uses /api/chat, not /v1/chat/completions
         ollama: {
           baseUrl: OLLAMA_CLOUD_API_BASE,
-          api: "openai-completions",
+          api: "ollama",
           // Reference the stored key directly
           apiKey: "OLLAMA_API_KEY",
+          // Include headers for direct API authentication
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+          },
           models: [
             {
               id: modelId,
