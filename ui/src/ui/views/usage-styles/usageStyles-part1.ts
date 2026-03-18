@@ -24,26 +24,57 @@ export const usageStylesPart1 = `
     padding: 6px 10px;
     border: 1px solid var(--border);
     border-radius: 6px;
-    background: var(--bg);
-    color: var(--text);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-strong);
     font-size: 13px;
+    outline: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+  .usage-filters-inline select:hover,
+  .usage-filters-inline select:focus {
+    border-color: var(--accent);
+    background: rgba(255, 255, 255, 0.08);
   }
   .usage-filters-inline input[type="date"] {
     padding: 6px 10px;
     border: 1px solid var(--border);
     border-radius: 6px;
-    background: var(--bg);
-    color: var(--text);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-strong);
     font-size: 13px;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+  .usage-filters-inline input[type="date"]:hover,
+  .usage-filters-inline input[type="date"]:focus {
+    border-color: var(--accent);
+    background: rgba(255, 255, 255, 0.08);
+  }
+  .usage-filters-inline input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    opacity: 0.6;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+  .usage-filters-inline input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
   }
   .usage-filters-inline input[type="text"] {
     padding: 6px 10px;
     border: 1px solid var(--border);
     border-radius: 6px;
-    background: var(--bg);
-    color: var(--text);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-strong);
     font-size: 13px;
     min-width: 180px;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+  .usage-filters-inline input[type="text"]:hover,
+  .usage-filters-inline input[type="text"]:focus {
+    border-color: var(--accent);
+    background: rgba(255, 255, 255, 0.08);
   }
   .usage-filters-inline .btn-sm {
     padding: 6px 12px;
@@ -54,16 +85,16 @@ export const usageStylesPart1 = `
     align-items: center;
     gap: 6px;
     padding: 4px 10px;
-    background: rgba(255, 77, 77, 0.1);
+    background: var(--accent-subtle);
     border-radius: 4px;
     font-size: 12px;
-    color: #ff4d4d;
+    color: var(--accent);
   }
   .usage-refresh-indicator::before {
     content: "";
     width: 10px;
     height: 10px;
-    border: 2px solid #ff4d4d;
+    border: 2px solid var(--accent);
     border-top-color: transparent;
     border-radius: 50%;
     animation: usage-spin 0.6s linear infinite;
@@ -161,36 +192,36 @@ export const usageStylesPart1 = `
     border-color: var(--border-strong);
   }
   .usage-primary-btn {
-    background: #ff4d4d;
-    color: #fff;
-    border-color: #ff4d4d;
+    background: var(--primary);
+    color: var(--primary-foreground);
+    border-color: var(--primary);
     box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.12);
   }
   .btn.usage-primary-btn {
-    background: #ff4d4d !important;
-    border-color: #ff4d4d !important;
-    color: #fff !important;
+    background: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: var(--primary-foreground) !important;
   }
   .usage-primary-btn:hover {
-    background: #e64545;
-    border-color: #e64545;
+    background: var(--primary-hover);
+    border-color: var(--primary-hover);
   }
   .btn.usage-primary-btn:hover {
-    background: #e64545 !important;
-    border-color: #e64545 !important;
+    background: var(--primary-hover) !important;
+    border-color: var(--primary-hover) !important;
   }
   .usage-primary-btn:disabled {
-    background: rgba(255, 77, 77, 0.18);
-    border-color: rgba(255, 77, 77, 0.3);
-    color: #ff4d4d;
+    background: var(--accent-subtle);
+    border-color: var(--border-accent);
+    color: var(--accent);
     box-shadow: none;
     cursor: default;
     opacity: 1;
   }
   .usage-primary-btn[disabled] {
-    background: rgba(255, 77, 77, 0.18) !important;
-    border-color: rgba(255, 77, 77, 0.3) !important;
-    color: #ff4d4d !important;
+    background: var(--accent-subtle) !important;
+    border-color: var(--border-accent) !important;
+    color: var(--accent) !important;
     opacity: 1 !important;
   }
   .usage-secondary-btn {
@@ -204,9 +235,16 @@ export const usageStylesPart1 = `
     padding: 6px 10px;
     border: 1px solid var(--border);
     border-radius: 6px;
-    background: var(--bg);
-    color: var(--text);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-strong);
     font-size: 13px;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+  .usage-query-input:hover,
+  .usage-query-input:focus {
+    border-color: var(--accent);
+    background: rgba(255, 255, 255, 0.08);
   }
   .usage-query-suggestions {
     display: flex;
@@ -392,6 +430,36 @@ export const usageStylesPart1 = `
   }
   .usage-controls .active-filters {
     flex: 1 1 100%;
+  }
+  .usage-controls input[type="date"],
+  .usage-controls select,
+  .usage-controls input[type="text"] {
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-strong);
+    font-size: 13px;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+  .usage-controls input[type="date"]:hover,
+  .usage-controls input[type="date"]:focus,
+  .usage-controls select:hover,
+  .usage-controls select:focus,
+  .usage-controls input[type="text"]:hover,
+  .usage-controls input[type="text"]:focus {
+    border-color: var(--accent);
+    background: rgba(255, 255, 255, 0.08);
+  }
+  .usage-controls input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    opacity: 0.6;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+  .usage-controls input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
   }
   .usage-controls input[type="date"] {
     min-width: 140px;

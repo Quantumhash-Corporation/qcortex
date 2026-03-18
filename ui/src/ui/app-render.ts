@@ -238,7 +238,7 @@ export function renderApp(state: AppViewState) {
           </button>
           <div class="brand">
             <div class="brand-logo">
-              <img src=${basePath ? `${basePath}/favicon.svg` : "/favicon.svg"} alt="QCortex" />
+              <img src=${basePath ? `${basePath}/favicon.ico` : "/favicon.ico"} alt="QCortex" />
             </div>
             <div class="brand-text">
               <div class="brand-title">QCORTEX</div>
