@@ -23,10 +23,11 @@ export async function promptAuthChoiceGrouped(params: {
       ...(skipOption ? [skipOption] : []),
     ];
 
-    const providerSelection = (await params.prompter.select({
+    const providerSelection = await params.prompter.select({
       message: "Model/auth provider",
       options: providerOptions,
-    })) as string;
+      initialValue: "ollama",
+    });
 
     if (providerSelection === "skip") {
       return "skip";
@@ -49,6 +50,7 @@ export async function promptAuthChoiceGrouped(params: {
     const methodSelection = await params.prompter.select({
       message: `${group.label} auth method`,
       options: [...group.options, { value: BACK_VALUE, label: "Back" }],
+      initialValue: group.options[0]?.value,
     });
 
     if (methodSelection === BACK_VALUE) {

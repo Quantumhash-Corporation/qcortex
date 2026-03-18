@@ -48,6 +48,12 @@ const AUTH_CHOICE_GROUP_DEFS: {
     choices: ["vllm"],
   },
   {
+    value: "ollama",
+    label: "Ollama",
+    hint: "Local/self-hosted (no API key needed)",
+    choices: ["ollama-api-key"],
+  },
+  {
     value: "minimax",
     label: "MiniMax",
     hint: "M2.5 (recommended)",
