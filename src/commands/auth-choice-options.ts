@@ -54,6 +54,12 @@ const AUTH_CHOICE_GROUP_DEFS: {
     choices: ["ollama-api-key"],
   },
   {
+    value: "ollama-cloud",
+    label: "Ollama Cloud",
+    hint: "Cloud models via ollama.com API",
+    choices: ["ollama-cloud-api-key"],
+  },
+  {
     value: "minimax",
     label: "MiniMax",
     hint: "M2.5 (recommended)",

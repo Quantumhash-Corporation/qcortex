@@ -33,6 +33,7 @@ type AuthChoiceFlagOptions = Pick<
   | "volcengineApiKey"
   | "byteplusApiKey"
   | "ollamaApiKey"
+  | "ollamaCloudApiKey"
   | "customBaseUrl"
   | "customModelId"
   | "customApiKey"

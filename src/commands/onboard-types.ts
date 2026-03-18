@@ -50,6 +50,7 @@ export type AuthChoice =
   | "byteplus-api-key"
   | "qianfan-api-key"
   | "ollama-api-key"
+  | "ollama-cloud-api-key"
   | "custom-api-key"
   | "skip";
 export type AuthChoiceGroupId =
@@ -57,6 +58,7 @@ export type AuthChoiceGroupId =
   | "anthropic"
   | "chutes"
   | "ollama"
+  | "ollama-cloud"
   | "vllm"
   | "google"
   | "copilot"
@@ -138,6 +140,7 @@ export type OnboardOptions = {
   byteplusApiKey?: string;
   qianfanApiKey?: string;
   ollamaApiKey?: string;
+  ollamaCloudApiKey?: string;
   customBaseUrl?: string;
   customApiKey?: string;
   customModelId?: string;

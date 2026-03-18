@@ -47,6 +47,7 @@ const PREFERRED_PROVIDER_BY_AUTH_CHOICE: Partial<Record<AuthChoice, string>> = {
   "minimax-portal": "minimax-portal",
   "qianfan-api-key": "qianfan",
   "ollama-api-key": "ollama",
+  "ollama-cloud-api-key": "ollama-cloud",
   "custom-api-key": "custom",
 };
 
