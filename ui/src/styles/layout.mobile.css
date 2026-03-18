@@ -1,21 +1,31 @@
 /* ===========================================
-   Mobile Layout
+   QCortex Mobile Layout
+   Responsive Premium Design
    =========================================== */
 
-/* Tablet: Horizontal nav */
+/* ============================================
+   TABLET BREAKPOINT (1100px)
+   Horizontal nav, simplified layout
+   ============================================ */
+
 @media (max-width: 1100px) {
   .nav {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    gap: 4px;
-    padding: 10px 14px;
+    gap: 6px;
+    padding: 10px 16px;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    background: var(--bg);
   }
 
   .nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav::before {
     display: none;
   }
 
@@ -36,38 +46,74 @@
   }
 
   .nav-item {
-    padding: 8px 14px;
-    font-size: 13px;
-    border-radius: var(--radius-md);
+    padding: 9px 14px;
+    font-size: var(--text-sm);
+    border-radius: var(--radius-full);
     white-space: nowrap;
     flex-shrink: 0;
+    min-height: 40px;
+    border: 1px solid var(--border);
+    background: var(--secondary);
+  }
+
+  .nav-item:hover {
+    transform: none;
+  }
+
+  .nav-item.active {
+    background: var(--accent-subtle);
+    border-color: var(--accent);
+  }
+
+  .nav-item.active::before {
+    display: none;
+  }
+
+  .content {
+    padding: 20px 16px 32px;
   }
 }
 
-/* Mobile-specific styles */
+/* ============================================
+   MOBILE BREAKPOINT (600px)
+   Touch-optimized, compact layout
+   ============================================ */
+
 @media (max-width: 600px) {
   .shell {
-    --shell-pad: 8px;
-    --shell-gap: 8px;
+    --shell-pad: 12px;
+    --shell-gap: 12px;
   }
 
-  /* Topbar */
+  /* Topbar - Compact */
   .topbar {
-    padding: 10px 12px;
-    gap: 8px;
-    flex-direction: row;
+    padding: 12px 14px;
+    gap: 10px;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    height: auto;
+    min-height: var(--shell-topbar-height);
+  }
+
+  .topbar-left {
+    gap: 10px;
   }
 
   .brand {
     flex: 1;
     min-width: 0;
+    gap: 8px;
+  }
+
+  .brand-logo {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-sm);
   }
 
   .brand-title {
-    font-size: 14px;
+    font-size: var(--text-base);
   }
 
   .brand-sub {
@@ -81,9 +127,10 @@
   }
 
   .topbar-status .pill {
-    padding: 4px 8px;
+    padding: 5px 10px;
     font-size: 11px;
-    gap: 4px;
+    gap: 5px;
+    height: 28px;
   }
 
   .topbar-status .pill .mono {
@@ -94,110 +141,159 @@
     display: none;
   }
 
-  /* Nav */
+  .topbar-status .statusDot {
+    width: 7px;
+    height: 7px;
+  }
+
+  /* Nav - Touch-optimized chips */
   .nav {
-    padding: 8px 10px;
-    gap: 4px;
+    padding: 8px 12px;
+    gap: 6px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    background: var(--bg-accent);
   }
 
   .nav::-webkit-scrollbar {
     display: none;
   }
 
-  .nav-group {
-    display: contents;
-  }
-
-  .nav-label {
-    display: none;
-  }
-
   .nav-item {
-    padding: 6px 10px;
-    font-size: 12px;
-    border-radius: var(--radius-md);
+    padding: 8px 12px;
+    font-size: var(--text-xs);
+    border-radius: var(--radius-full);
     white-space: nowrap;
     flex-shrink: 0;
+    min-height: 36px;
+    gap: 6px;
   }
 
-  /* Content */
+  .nav-item__icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .nav-item__icon svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .nav-item__text {
+    font-size: var(--text-xs);
+  }
+
+  /* Content - Full bleed */
   .content-header {
     display: none;
   }
 
   .content {
-    padding: 4px 4px 16px;
-    gap: 12px;
+    padding: 14px 12px 24px;
+    gap: 14px;
   }
 
-  /* Cards */
+  .content > * + * {
+    margin-top: 14px;
+  }
+
+  /* Cards - Compact */
   .card {
-    padding: 12px;
+    padding: 14px;
     border-radius: var(--radius-md);
   }
 
-  .card-title {
-    font-size: 13px;
+  .card:hover {
+    transform: none;
   }
 
-  /* Stats */
+  .card-title {
+    font-size: var(--text-sm);
+  }
+
+  .card-sub {
+    font-size: var(--text-xs);
+  }
+
+  /* Stats - 2-column grid */
   .stat-grid {
-    gap: 8px;
+    gap: 10px;
     grid-template-columns: repeat(2, 1fr);
   }
 
   .stat {
-    padding: 10px;
+    padding: 12px;
     border-radius: var(--radius-md);
   }
 
+  .stat:hover {
+    transform: none;
+  }
+
   .stat-label {
-    font-size: 11px;
+    font-size: 10px;
+    letter-spacing: 0.04em;
   }
 
   .stat-value {
-    font-size: 18px;
+    font-size: var(--text-xl);
   }
 
-  /* Notes */
+  /* Notes - Single column */
   .note-grid {
     grid-template-columns: 1fr;
-    gap: 8px;
+    gap: 10px;
   }
 
-  /* Forms */
+  /* Forms - Touch-friendly */
   .form-grid {
     grid-template-columns: 1fr;
-    gap: 10px;
+    gap: 12px;
   }
 
   .field input,
   .field textarea,
   .field select {
-    padding: 8px 10px;
+    padding: 12px 14px;
     border-radius: var(--radius-md);
-    font-size: 14px;
+    font-size: 16px; /* Prevent iOS zoom */
+    min-height: 46px;
   }
 
-  /* Buttons */
+  .field textarea {
+    min-height: 100px;
+  }
+
+  /* Buttons - Larger touch targets */
   .btn {
-    padding: 8px 12px;
-    font-size: 12px;
+    padding: 11px 16px;
+    font-size: var(--text-sm);
+    min-height: 44px;
+    border-radius: var(--radius-md);
+  }
+
+  .btn:hover {
+    transform: none;
+  }
+
+  .btn--sm {
+    padding: 9px 12px;
+    font-size: var(--text-xs);
+    min-height: 36px;
   }
 
   /* Pills */
   .pill {
-    padding: 4px 10px;
-    font-size: 12px;
+    padding: 5px 10px;
+    font-size: var(--text-xs);
   }
 
-  /* Chat */
+  /* Chat - Mobile optimized */
   .chat-header {
     flex-direction: column;
     align-items: stretch;
-    gap: 8px;
+    gap: 10px;
+    padding: 12px;
   }
 
   .chat-header__left {
@@ -216,7 +312,7 @@
 
   .chat-thread {
     margin-top: 8px;
-    padding: 12px 8px;
+    padding: 14px 12px;
   }
 
   .chat-msg {
@@ -224,31 +320,32 @@
   }
 
   .chat-bubble {
-    padding: 8px 12px;
+    padding: 10px 12px;
     border-radius: var(--radius-md);
   }
 
   .chat-compose {
     gap: 8px;
+    padding: 10px;
   }
 
   .chat-compose__field textarea {
-    min-height: 60px;
-    padding: 8px 10px;
+    min-height: 52px;
+    padding: 12px;
     border-radius: var(--radius-md);
-    font-size: 14px;
+    font-size: 16px; /* Prevent iOS zoom */
   }
 
   /* Log stream */
   .log-stream {
     border-radius: var(--radius-md);
-    max-height: 380px;
+    max-height: 400px;
   }
 
   .log-row {
     grid-template-columns: 1fr;
     gap: 4px;
-    padding: 8px;
+    padding: 10px;
   }
 
   .log-time {
@@ -257,6 +354,7 @@
 
   .log-level {
     font-size: 9px;
+    padding: 2px 6px;
   }
 
   .log-subsystem {
@@ -264,28 +362,35 @@
   }
 
   .log-message {
-    font-size: 12px;
+    font-size: var(--text-xs);
+    line-height: var(--leading-normal);
   }
 
   /* Lists */
   .list-item {
-    padding: 10px;
+    padding: 12px;
     border-radius: var(--radius-md);
   }
 
+  .list-item:hover {
+    transform: none;
+  }
+
   .list-title {
-    font-size: 13px;
+    font-size: var(--text-sm);
   }
 
   .list-sub {
     font-size: 11px;
+    margin-top: 4px;
   }
 
   /* Code blocks */
   .code-block {
-    padding: 8px;
+    padding: 12px;
     border-radius: var(--radius-md);
-    font-size: 11px;
+    font-size: var(--text-xs);
+    overflow-x: auto;
   }
 
   /* Theme toggle */
@@ -299,66 +404,168 @@
     width: 12px;
     height: 12px;
   }
+
+  /* Tables - Scroll horizontally */
+  .table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -12px;
+    padding: 0 12px;
+  }
+
+  .table {
+    min-width: 600px;
+  }
+
+  /* Modal / Dialog */
+  .modal {
+    padding: 18px;
+    margin: 14px;
+    max-height: calc(100vh - 28px);
+    border-radius: var(--radius-lg);
+  }
+
+  .modal-title {
+    font-size: var(--text-lg);
+  }
+
+  /* Filters */
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .filter-group {
+    width: 100%;
+  }
+
+  .filter-group select,
+  .filter-group input {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  /* Collapsible sections */
+  .section-toggle {
+    padding: 12px;
+    font-size: var(--text-sm);
+  }
+
+  /* Hide complex elements */
+  .hide-mobile {
+    display: none !important;
+  }
 }
 
-/* Small mobile */
+/* ============================================
+   SMALL MOBILE (400px)
+   Extra compact for small devices
+   ============================================ */
+
 @media (max-width: 400px) {
   .shell {
-    --shell-pad: 4px;
+    --shell-pad: 8px;
   }
 
   .topbar {
-    padding: 8px 10px;
+    padding: 10px;
+    gap: 8px;
+  }
+
+  .brand-logo {
+    width: 26px;
+    height: 26px;
   }
 
   .brand-title {
-    font-size: 13px;
+    font-size: var(--text-sm);
+  }
+
+  .topbar .nav-collapse-toggle {
+    width: 32px;
+    height: 32px;
   }
 
   .nav {
     padding: 6px 8px;
+    gap: 4px;
   }
 
   .nav-item {
-    padding: 6px 8px;
+    padding: 7px 10px;
     font-size: 11px;
+    min-height: 32px;
+    gap: 6px;
+  }
+
+  .nav-item__icon {
+    width: 12px;
+    height: 12px;
   }
 
   .content {
-    padding: 4px 4px 12px;
+    padding: 10px 8px 18px;
     gap: 10px;
   }
 
+  .content > * + * {
+    margin-top: 10px;
+  }
+
   .card {
-    padding: 10px;
+    padding: 12px;
   }
 
   .stat {
-    padding: 8px;
+    padding: 10px;
   }
 
   .stat-value {
-    font-size: 16px;
+    font-size: var(--text-lg);
+  }
+
+  .stat-label {
+    font-size: 9px;
+  }
+
+  .stat-grid {
+    gap: 8px;
   }
 
   .chat-bubble {
     padding: 8px 10px;
+    font-size: var(--text-sm);
   }
 
   .chat-compose__field textarea {
-    min-height: 52px;
-    padding: 8px 10px;
-    font-size: 13px;
+    min-height: 44px;
+    padding: 10px;
+    font-size: var(--text-sm);
   }
 
   .btn {
-    padding: 6px 10px;
+    padding: 9px 12px;
+    font-size: var(--text-xs);
+    min-height: 38px;
+  }
+
+  .btn--sm {
+    padding: 7px 10px;
     font-size: 11px;
+    min-height: 32px;
   }
 
   .topbar-status .pill {
-    padding: 3px 6px;
+    padding: 4px 8px;
     font-size: 10px;
+    gap: 4px;
+    height: 24px;
+  }
+
+  .topbar-status .statusDot {
+    width: 6px;
+    height: 6px;
   }
 
   .theme-toggle {
@@ -370,5 +577,149 @@
   .theme-icon {
     width: 11px;
     height: 11px;
+  }
+
+  /* Even more compact */
+  .modal {
+    padding: 14px;
+    margin: 10px;
+  }
+
+  .modal-title {
+    font-size: var(--text-md);
+  }
+}
+
+/* ============================================
+   TOUCH DEVICE OPTIMIZATIONS
+   ============================================ */
+
+@media (hover: none) and (pointer: coarse) {
+  .nav-item,
+  .btn,
+  .card,
+  .list-item,
+  .pill {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Disable hover transforms on touch */
+  .nav-item:hover,
+  .btn:hover,
+  .card:hover,
+  .stat:hover,
+  .list-item:hover {
+    transform: none;
+  }
+
+  /* Active touch feedback */
+  .nav-item:active,
+  .btn:active,
+  .card:active,
+  .list-item-clickable:active {
+    opacity: 0.85;
+    transform: scale(0.98);
+  }
+
+  /* Disable pill hover state */
+  .topbar-status .pill:hover {
+    border-color: var(--border);
+    background: var(--secondary);
+  }
+}
+
+/* ============================================
+   LANDSCAPE PHONE
+   Bottom navigation bar
+   ============================================ */
+
+@media (max-width: 900px) and (orientation: landscape) {
+  .shell {
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "topbar"
+      "content";
+  }
+
+  .nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+    z-index: 50;
+    grid-area: auto;
+    background: var(--chrome);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border-top: 1px solid var(--border);
+    border-bottom: none;
+    padding: 8px 16px;
+    justify-content: center;
+  }
+
+  .content {
+    padding-bottom: 72px;
+  }
+}
+
+/* ============================================
+   SAFE AREA INSETS (Notched Devices)
+   ============================================ */
+
+@supports (padding: env(safe-area-inset-bottom)) {
+  .shell {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  .topbar {
+    padding-top: max(12px, env(safe-area-inset-top));
+  }
+
+  .nav {
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+  }
+
+  @media (max-width: 900px) and (orientation: landscape) {
+    .nav {
+      padding-bottom: max(8px, env(safe-area-inset-bottom));
+    }
+
+    .content {
+      padding-bottom: calc(72px + env(safe-area-inset-bottom));
+    }
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  .shell {
+    display: block;
+    height: auto;
+  }
+
+  .topbar,
+  .nav {
+    display: none;
+  }
+
+  .content {
+    padding: 0;
+    overflow: visible;
+  }
+
+  .card {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+
+  .btn,
+  .theme-toggle {
+    display: none;
   }
 }

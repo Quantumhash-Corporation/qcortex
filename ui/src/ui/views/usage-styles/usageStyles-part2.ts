@@ -100,8 +100,9 @@ export const usageStylesPart2 = `
     color: var(--text);
   }
   .chart-toggle .toggle-btn.active {
-    background: #ff4d4d;
-    color: white;
+    background: var(--accent);
+    color: var(--accent-foreground);
+    box-shadow: 0 0 12px var(--accent-glow);
   }
   .chart-toggle.small .toggle-btn {
     padding: 4px 8px;
@@ -157,14 +158,14 @@ export const usageStylesPart2 = `
   .daily-bar {
     width: 100%;
     max-width: var(--bar-max-width, 32px);
-    background: #ff4d4d;
+    background: var(--accent);
     border-radius: 3px 3px 0 0;
     min-height: 2px;
     transition: all 0.15s;
     overflow: hidden;
   }
   .daily-bar-wrapper:hover .daily-bar {
-    background: #cc3d3d;
+    background: var(--accent-hover);
   }
   .daily-bar-label {
     position: absolute;
@@ -682,7 +683,7 @@ export const usageStylesPart2 = `
     display: flex;
     flex-direction: column;
   }
-  
+
   /* ===== LEFT CARD (Daily + Breakdown) ===== */
   .usage-left-card {
     /* inherits background, border, shadow from .card */

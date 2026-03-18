@@ -131,9 +131,9 @@ export function renderUsage(props: UsageProps) {
           </div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
             <div style="display: flex; gap: 8px; align-items: center;">
-              <input type="date" .value=${props.startDate} disabled style="padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); font-size: 13px; opacity: 0.6;" />
+              <input type="date" .value=${props.startDate} disabled style="padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px; background: rgba(255,255,255,0.05); color: var(--text-strong); font-size: 13px; opacity: 0.6;" />
               <span style="color: var(--muted);">to</span>
-              <input type="date" .value=${props.endDate} disabled style="padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); font-size: 13px; opacity: 0.6;" />
+              <input type="date" .value=${props.endDate} disabled style="padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px; background: rgba(255,255,255,0.05); color: var(--text-strong); font-size: 13px; opacity: 0.6;" />
             </div>
           </div>
         </div>
@@ -622,7 +622,7 @@ export function renderUsage(props: UsageProps) {
             Refresh
           </button>
         </div>
-        
+
       </div>
 
       <div style="margin-top: 12px;">
