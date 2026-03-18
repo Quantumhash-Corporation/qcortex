@@ -1,7 +1,7 @@
 import type { QCortexConfig } from "../config/config.js";
 import type { ApplyAuthChoiceParams, ApplyAuthChoiceResult } from "./auth-choice.apply.js";
 
-const OLLAMA_CLOUD_API_BASE = "https://api.ollama.com";
+const OLLAMA_CLOUD_API_BASE = "https://ollama.com";
 const OLLAMA_DEFAULT_CONTEXT_WINDOW = 128000;
 const OLLAMA_DEFAULT_MAX_TOKENS = 8192;
 const OLLAMA_DEFAULT_COST = {
@@ -116,17 +116,20 @@ export async function applyAuthChoiceOllamaCloud(
     modelId = String(modelRaw).trim();
   }
 
-  const modelRef = `ollama-cloud/${modelId}`;
+  const modelRef = `ollama/${modelId}`;
 
-  // Store credentials
+  // Store credentials in auth profile
   const { upsertAuthProfileWithLock } = await import("../agents/auth-profiles.js");
   await upsertAuthProfileWithLock({
-    profileId: "ollama-cloud:default",
-    credential: { type: "api_key", provider: "ollama-cloud", key: apiKey },
+    profileId: "ollama:default",
+    credential: { type: "api_key", provider: "ollama", key: apiKey },
     agentDir,
   });
 
-  // Update config with Ollama Cloud provider
+  // Also set the API key in environment for direct runtime access
+  process.env.OLLAMA_API_KEY = apiKey;
+
+  // Update config to use existing "ollama" provider with cloud base URL
   const nextConfig: QCortexConfig = {
     ...cfg,
     models: {
@@ -134,10 +137,12 @@ export async function applyAuthChoiceOllamaCloud(
       mode: cfg.models?.mode ?? "merge",
       providers: {
         ...cfg.models?.providers,
-        "ollama-cloud": {
+        // Use existing "ollama" provider with cloud base URL
+        ollama: {
           baseUrl: OLLAMA_CLOUD_API_BASE,
           api: "openai-completions",
-          apiKey: "OLLAMA_CLOUD_API_KEY",
+          // Reference the stored key directly
+          apiKey: "OLLAMA_API_KEY",
           models: [
             {
               id: modelId,
