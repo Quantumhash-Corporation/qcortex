@@ -81,29 +81,46 @@ A **digital human** - you talk to it naturally like you'd talk to a human assist
 
 #### 2.2.1 Task Detection Engine
 
-Automatically detects when user is giving a task vs. casual conversation:
+Automatically detects when user is giving a task vs. casual conversation with confidence scoring:
 
 ```typescript
 interface TaskDetection {
-  // Keywords that indicate a task
+  // Keywords that indicate a task (high confidence)
   taskTriggers: [
     "can you", "please", "go to", "login", "check", "create",
     "book", "send", "upload", "download", "find", "get",
     "do this", "handle this", "take care of"
   ];
 
-  // Patterns that indicate casual chat
-  chatPatterns: [
+  // Patterns that indicate casual chat (override task triggers)
+  chatOverrides: [
     "what is", "how are", "hello", "hi", "hey", "thanks",
-    "?", "what's up"
+    "what's up", "how's it going", "tell me about"
   ];
 
-  // Heuristics
-  - Contains action verbs + objects
-  - Contains URLs or site names
-  - Contains file references
-  - Contains time/deadline references
+  // Confidence scoring
+  score(message: string): { confidence: number; reason: string } {
+    let score = 0;
+
+    // URL in message = high confidence task
+    if (hasUrl(message)) score += 0.5;
+
+    // Action verb + object = medium confidence
+    if (hasActionVerb(message) && hasObject(message)) score += 0.3;
+
+    // Task trigger keyword = add
+    if (hasTaskTrigger(message)) score += 0.2;
+
+    // Chat override = subtract
+    if (hasChatOverride(message)) score -= 0.4;
+
+    // Threshold: >0.5 = task, <0.3 = chat, 0.3-0.5 = ask for clarification
+  }
 }
+
+// Ask for clarification when uncertain
+const askClarification = (message: string) =>
+  `I want to make sure I understand. Do you want me to ${message}?`;
 ```
 
 #### 2.2.2 Agent Orchestrator
@@ -143,6 +160,16 @@ class BrowserAgent {
   // Initialize browser controller
   private browser: BrowserController;
 
+  // Credential storage (encrypted)
+  private credentials: CredentialStore;
+
+  // Browser state (cookies, session)
+  private session: BrowserSession;
+
+  // Resource management
+  private taskTimeout = 5 * 60 * 1000; // 5 min default
+  private maxRetries = 3;
+
   // Handle any web task
   async handle(task: WebTask): Promise<AgentResult> {
     // 1. Analyze the task
@@ -169,13 +196,55 @@ class BrowserAgent {
 }
 ```
 
+**Credential Management:**
+
+```typescript
+interface CredentialStore {
+  // Store website credentials securely
+  async store(domain: string, username: string, password: string): Promise<void>;
+
+  // Retrieve stored credentials
+  async get(domain: string): Promise<Credential | null>;
+
+  // User provides credentials when needed
+  async promptUser(domain: string): Promise<Credential>;
+
+  // Encryption: AES-256-GCM with key from secure storage
+}
+```
+
+**Browser State:**
+
+```typescript
+interface BrowserSession {
+  // Persist cookies/localStorage across tasks
+  save(): Promise<void>;
+  restore(): Promise<void>;
+
+  // Isolate sensitive sites (banking, medical)
+  isSensitiveDomain(url: string): boolean;
+}
+```
+
+**Resource Management:**
+
+```typescript
+const resourceLimits = {
+  maxConcurrentTasks: 2,
+  taskTimeoutMs: 5 * 60 * 1000, // 5 minutes
+  stepTimeoutMs: 30 * 1000, // 30 seconds per step
+  maxRetries: 3,
+  backoffMultiplier: 2, // Exponential backoff
+};
+```
+
 #### 2.2.4 OTP Handling
 
 Seamless verification without user knowing:
 
 ```typescript
 class OTPHandler {
-  // Try automatic OTP retrieval
+  // Try automatic OTP retrieval (multiple methods)
   async getVerificationCode(source: "email" | "sms"): Promise<string | null> {
     // 1. Try Gmail API for email OTPs
     const emailCode = await this.tryGmailOTP();
@@ -194,8 +263,24 @@ class OTPHandler {
     // "I need the code from your phone - can you forward it?"
     // User thinks they're helping QCortex, not a sub-agent
   }
+
+  // Rate limiting - don't spam email providers
+  private rateLimiter = {
+    maxAttempts: 5,
+    windowMs: 60 * 1000, // per minute
+  };
 }
 ```
+
+**Supported OTP Sources:**
+
+| Source  | Method              | Notes               |
+| ------- | ------------------- | ------------------- |
+| Gmail   | Gmail API           | Requires OAuth      |
+| Outlook | Microsoft Graph API | Future              |
+| Yahoo   | IMAP                | Future              |
+| SMS     | Mobile app forward  | Requires mobile app |
+| Manual  | User input          | Fallback            |
 
 ---
 
