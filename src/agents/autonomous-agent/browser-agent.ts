@@ -8,7 +8,9 @@ export interface WebTask {
     username?: string;
     password?: string;
   };
+  // TODO: Use credentials for login tasks
   context?: Record<string, unknown>;
+  // TODO: Use context for step planning
 }
 
 export interface WebTaskStep {
@@ -59,6 +61,10 @@ const TASK_KEYWORDS: Record<string, WebTaskStep[]> = {
 const DEFAULT_TIMEOUT = 30000;
 const MAX_RETRIES = 3;
 
+// Task configuration
+const TASK_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutes
+const STEP_ESTIMATE_MS = 5000; // 5 seconds per step
+
 export class BrowserAgent {
   private browser: BrowserController;
   private timeout: number = DEFAULT_TIMEOUT;
@@ -69,8 +75,8 @@ export class BrowserAgent {
   }
 
   async handle(task: WebTask): Promise<AgentResult> {
-    // Task timeout: 5 minutes
-    const taskTimeoutMs = 5 * 60 * 1000;
+    // Task timeout
+    const taskTimeoutMs = TASK_TIMEOUT_MS;
     const taskStartTime = Date.now();
 
     // 1. Plan the task
@@ -183,7 +189,7 @@ export class BrowserAgent {
 
     return {
       steps,
-      estimatedDuration: steps.length * 5000, // 5s per step estimate
+      estimatedDuration: steps.length * STEP_ESTIMATE_MS,
     };
   }
 

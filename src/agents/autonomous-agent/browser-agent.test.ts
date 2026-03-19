@@ -82,5 +82,27 @@ describe("BrowserAgent", () => {
       const plan = await agent.planTask(task);
       expect(plan.steps).toBeDefined();
     });
+
+    it("should include snapshot step by default", async () => {
+      const task: WebTask = {
+        id: "test-5",
+        description: "Check something",
+      };
+
+      const plan = await agent.planTask(task);
+      expect(plan.steps).toContainEqual({ type: "snapshot" });
+      expect(plan.estimatedDuration).toBe(5000); // One step * STEP_ESTIMATE_MS
+    });
+
+    it("should include navigate step when URL provided", async () => {
+      const task: WebTask = {
+        id: "test-6",
+        description: "Visit page",
+        targetUrl: "https://example.com",
+      };
+
+      const plan = await agent.planTask(task);
+      expect(plan.steps).toContainEqual({ type: "navigate", value: "https://example.com" });
+    });
   });
 });
