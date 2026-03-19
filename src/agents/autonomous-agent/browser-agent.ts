@@ -20,6 +20,7 @@ export interface WebTaskStep {
     selector?: string;
     url?: string;
     timeout?: number;
+    fields?: Array<{ ref: string; value: string }>;
   };
 }
 
@@ -68,6 +69,10 @@ export class BrowserAgent {
   }
 
   async handle(task: WebTask): Promise<AgentResult> {
+    // Task timeout: 5 minutes
+    const taskTimeoutMs = 5 * 60 * 1000;
+    const taskStartTime = Date.now();
+
     // 1. Plan the task
     const plan = await this.planTask(task);
 
@@ -109,17 +114,36 @@ export class BrowserAgent {
     // 4. Execute steps
     let stepsCompleted = 0;
     for (const step of plan.steps) {
+      // Check task timeout
+      if (Date.now() - taskStartTime > taskTimeoutMs) {
+        return {
+          success: false,
+          error: {
+            code: "TASK_TIMEOUT",
+            message: "Task exceeded 5 minute timeout",
+            recoverable: false,
+          },
+          stepsCompleted,
+          totalSteps: plan.steps.length,
+        };
+      }
+
       const result = await this.executeStep(step);
-      if (!result.success) {
+      let stepSuccess = result.success;
+      if (!stepSuccess) {
         // Retry logic
         for (let retry = 0; retry < this.maxRetries; retry++) {
           const retryResult = await this.executeStep(step);
           if (retryResult.success) {
+            stepSuccess = true;
             break;
           }
         }
       }
-      stepsCompleted++;
+      // Only count as completed if the step succeeded
+      if (stepSuccess) {
+        stepsCompleted++;
+      }
     }
 
     // 5. Get final snapshot
@@ -193,8 +217,10 @@ export class BrowserAgent {
           return { success: false, error: "no target or value" };
 
         case "fill":
-          // Handle fill form - simplified
-          return { success: true };
+          if (step.options && Array.isArray(step.options.fields)) {
+            return { success: await this.browser.fill(step.options.fields) };
+          }
+          return { success: false, error: "fill requires fields array" };
 
         case "wait":
           if (step.options) {

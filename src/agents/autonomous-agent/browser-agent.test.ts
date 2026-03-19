@@ -13,6 +13,7 @@ vi.mock("./tools/browser-tool", () => ({
     }),
     click: vi.fn().mockResolvedValue(true),
     type: vi.fn().mockResolvedValue(true),
+    fill: vi.fn().mockResolvedValue(true),
     getUrl: vi.fn().mockResolvedValue("https://example.com"),
   })),
   createBrowserController: vi.fn().mockImplementation(() => ({
@@ -25,6 +26,7 @@ vi.mock("./tools/browser-tool", () => ({
     }),
     click: vi.fn().mockResolvedValue(true),
     type: vi.fn().mockResolvedValue(true),
+    fill: vi.fn().mockResolvedValue(true),
     getUrl: vi.fn().mockResolvedValue("https://example.com"),
   })),
 }));
@@ -56,6 +58,29 @@ describe("BrowserAgent", () => {
       const plan = await agent.planTask(task);
       expect(plan.steps).toBeDefined();
       expect(plan.steps.length).toBeGreaterThan(0);
+    });
+
+    it("should handle click step", async () => {
+      const task: WebTask = {
+        id: "test-3",
+        description: "Click login button",
+        targetUrl: "https://example.com",
+        context: { action: "click", target: "btn-login" },
+      };
+
+      const plan = await agent.planTask(task);
+      expect(plan.steps).toBeDefined();
+    });
+
+    it("should handle type step", async () => {
+      const task: WebTask = {
+        id: "test-4",
+        description: "Enter username",
+        context: { action: "type", target: "username", value: "testuser" },
+      };
+
+      const plan = await agent.planTask(task);
+      expect(plan.steps).toBeDefined();
     });
   });
 });
