@@ -871,6 +871,7 @@ Expected: FAIL
 
 ```typescript
 // src/agents/autonomous-agent/tools/file-system.ts
+import * as os from "node:os";
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import type { ToolResult, ToolError } from "../types";
