@@ -17,7 +17,11 @@
   --bg-muted: #0b1120;
   --bg-subtle: rgba(255, 255, 255, 0.02);
   --bg-overlay: rgba(3, 7, 18, 0.92);
-  --bg-spotlight: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(56, 189, 248, 0.08), transparent);
+  --bg-spotlight: radial-gradient(
+    ellipse 80% 50% at 50% -20%,
+    rgba(56, 189, 248, 0.08),
+    transparent
+  );
 
   /* ============================================
      SURFACE SYSTEM - Premium Cards & Panels
@@ -91,8 +95,16 @@
   /* Gradient accents - Premium multi-stop */
   --gradient-accent: linear-gradient(135deg, #0284c7 0%, #38bdf8 50%, #7dd3fc 100%);
   --gradient-accent-vibrant: linear-gradient(135deg, #2563eb 0%, #0ea5e9 50%, #38bdf8 100%);
-  --gradient-subtle: linear-gradient(135deg, rgba(56, 189, 248, 0.1) 0%, rgba(129, 140, 248, 0.1) 100%);
-  --gradient-glow: linear-gradient(135deg, rgba(56, 189, 248, 0.4) 0%, rgba(129, 140, 248, 0.4) 100%);
+  --gradient-subtle: linear-gradient(
+    135deg,
+    rgba(56, 189, 248, 0.1) 0%,
+    rgba(129, 140, 248, 0.1) 100%
+  );
+  --gradient-glow: linear-gradient(
+    135deg,
+    rgba(56, 189, 248, 0.4) 0%,
+    rgba(129, 140, 248, 0.4) 100%
+  );
   --gradient-surface: linear-gradient(180deg, rgba(56, 189, 248, 0.05) 0%, transparent 100%);
 
   /* ============================================
@@ -142,8 +154,12 @@
   /* ============================================
      TYPOGRAPHY - Premium font stack
      ============================================ */
-  --mono: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace;
-  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono:
+    "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas,
+    monospace;
+  --font-body:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    sans-serif;
   --font-display: var(--font-body);
 
   /* Font sizes - Refined modular scale */
@@ -191,18 +207,12 @@
   --shadow-glow-sm: 0 0 24px var(--accent-glow);
   --shadow-glow-xs: 0 0 12px var(--accent-glow);
   --shadow-card:
-    0 0 0 1px var(--card-border),
-    0 2px 4px rgba(0, 0, 0, 0.35),
-    0 8px 16px rgba(0, 0, 0, 0.2);
+    0 0 0 1px var(--card-border), 0 2px 4px rgba(0, 0, 0, 0.35), 0 8px 16px rgba(0, 0, 0, 0.2);
   --shadow-card-hover:
-    0 0 0 1px var(--card-border-hover),
-    0 4px 8px rgba(0, 0, 0, 0.4),
-    0 16px 32px rgba(0, 0, 0, 0.25),
-    0 0 0 1px var(--border-accent);
+    0 0 0 1px var(--card-border-hover), 0 4px 8px rgba(0, 0, 0, 0.4),
+    0 16px 32px rgba(0, 0, 0, 0.25), 0 0 0 1px var(--border-accent);
   --shadow-card-elevated:
-    0 0 0 1px var(--card-border),
-    0 8px 16px rgba(0, 0, 0, 0.4),
-    0 24px 48px rgba(0, 0, 0, 0.3);
+    0 0 0 1px var(--card-border), 0 8px 16px rgba(0, 0, 0, 0.4), 0 24px 48px rgba(0, 0, 0, 0.3);
   --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.03);
   --shadow-inset-strong: inset 0 1px 0 rgba(255, 255, 255, 0.05), inset 0 -1px 0 rgba(0, 0, 0, 0.2);
 
@@ -285,7 +295,11 @@
   --bg-subtle: rgba(0, 0, 0, 0.015);
   --bg-overlay: rgba(255, 255, 255, 0.92);
   --bg-content: #f0f0f4;
-  --bg-spotlight: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(139, 92, 246, 0.08), transparent);
+  --bg-spotlight: radial-gradient(
+    ellipse 80% 50% at 50% -20%,
+    rgba(139, 92, 246, 0.08),
+    transparent
+  );
 
   /* Surfaces */
   --card: #ffffff;
@@ -348,8 +362,16 @@
   /* Gradient accents */
   --gradient-accent: linear-gradient(135deg, #6d28d9 0%, #7c3aed 40%, #8b5cf6 100%);
   --gradient-accent-vibrant: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #a855f7 100%);
-  --gradient-subtle: linear-gradient(135deg, rgba(124, 58, 237, 0.06) 0%, rgba(139, 92, 246, 0.06) 100%);
-  --gradient-glow: linear-gradient(135deg, rgba(124, 58, 237, 0.18) 0%, rgba(139, 92, 246, 0.18) 100%);
+  --gradient-subtle: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.06) 0%,
+    rgba(139, 92, 246, 0.06) 100%
+  );
+  --gradient-glow: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.18) 0%,
+    rgba(139, 92, 246, 0.18) 100%
+  );
   --gradient-surface: linear-gradient(180deg, rgba(139, 92, 246, 0.025) 0%, transparent 100%);
 
   /* Semantic */
@@ -393,18 +415,12 @@
   --shadow-glow-sm: 0 0 18px var(--accent-glow);
   --shadow-glow-xs: 0 0 10px var(--accent-glow);
   --shadow-card:
-    0 0 0 1px var(--card-border),
-    0 1px 3px rgba(0, 0, 0, 0.05),
-    0 6px 12px rgba(0, 0, 0, 0.03);
+    0 0 0 1px var(--card-border), 0 1px 3px rgba(0, 0, 0, 0.05), 0 6px 12px rgba(0, 0, 0, 0.03);
   --shadow-card-hover:
-    0 0 0 1px var(--card-border-hover),
-    0 2px 6px rgba(0, 0, 0, 0.06),
-    0 12px 24px rgba(0, 0, 0, 0.05),
-    0 0 0 1px var(--border-accent);
+    0 0 0 1px var(--card-border-hover), 0 2px 6px rgba(0, 0, 0, 0.06),
+    0 12px 24px rgba(0, 0, 0, 0.05), 0 0 0 1px var(--border-accent);
   --shadow-card-elevated:
-    0 0 0 1px var(--card-border),
-    0 4px 12px rgba(0, 0, 0, 0.06),
-    0 16px 32px rgba(0, 0, 0, 0.04);
+    0 0 0 1px var(--card-border), 0 4px 12px rgba(0, 0, 0, 0.06), 0 16px 32px rgba(0, 0, 0, 0.04);
   --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.7);
   --shadow-inset-strong: inset 0 1px 0 rgba(255, 255, 255, 0.8), inset 0 -1px 0 rgba(0, 0, 0, 0.04);
 
@@ -694,7 +710,8 @@ select {
 }
 
 @keyframes bounce-subtle {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -715,7 +732,8 @@ select {
 }
 
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -739,7 +757,8 @@ select {
 }
 
 @keyframes glow-breathe {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.4;
     filter: blur(20px);
   }
@@ -750,14 +769,30 @@ select {
 }
 
 /* Stagger animation delays */
-.stagger-1 { animation-delay: 0ms; }
-.stagger-2 { animation-delay: 30ms; }
-.stagger-3 { animation-delay: 60ms; }
-.stagger-4 { animation-delay: 90ms; }
-.stagger-5 { animation-delay: 120ms; }
-.stagger-6 { animation-delay: 150ms; }
-.stagger-7 { animation-delay: 180ms; }
-.stagger-8 { animation-delay: 210ms; }
+.stagger-1 {
+  animation-delay: 0ms;
+}
+.stagger-2 {
+  animation-delay: 30ms;
+}
+.stagger-3 {
+  animation-delay: 60ms;
+}
+.stagger-4 {
+  animation-delay: 90ms;
+}
+.stagger-5 {
+  animation-delay: 120ms;
+}
+.stagger-6 {
+  animation-delay: 150ms;
+}
+.stagger-7 {
+  animation-delay: 180ms;
+}
+.stagger-8 {
+  animation-delay: 210ms;
+}
 
 /* ============================================
    FOCUS STATES - Accessible & visible
@@ -826,7 +861,9 @@ select {
   padding: 1px;
   border-radius: inherit;
   background: var(--gradient-accent);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   mask-composite: exclude;
   -webkit-mask-composite: xor;
   pointer-events: none;

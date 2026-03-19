@@ -292,11 +292,7 @@
   left: 0;
   right: 0;
   height: 120px;
-  background: linear-gradient(
-    180deg,
-    rgba(99, 102, 241, 0.03) 0%,
-    transparent 100%
-  );
+  background: linear-gradient(180deg, rgba(99, 102, 241, 0.03) 0%, transparent 100%);
   pointer-events: none;
   z-index: 0;
 }
@@ -499,7 +495,10 @@
   justify-content: center;
   flex-shrink: 0;
   opacity: 0.6;
-  transition: opacity var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out);
+  transition:
+    opacity var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
 }
 
 .nav-item__icon svg {
@@ -537,7 +536,10 @@
   color: var(--accent-foreground);
   background: var(--accent);
   border-color: var(--accent);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 0 12px var(--accent-glow-strong);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 4px 6px -1px rgba(0, 0, 0, 0.2),
+    0 0 12px var(--accent-glow-strong);
   font-weight: var(--font-semibold);
   transform: translateY(-1px);
 }

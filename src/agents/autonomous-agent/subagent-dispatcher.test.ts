@@ -145,17 +145,15 @@ describe("SubagentDispatcher", () => {
         canHandle: vi.fn().mockReturnValue(true),
       };
 
-      const fallbackTool = vi
-        .fn()
-        .mockResolvedValue({
-          success: false,
-          error: {
-            code: "TOOL_ERROR",
-            message: "Tool failed",
-            recoverable: false,
-            canEscalateToHuman: false,
-          },
-        });
+      const fallbackTool = vi.fn().mockResolvedValue({
+        success: false,
+        error: {
+          code: "TOOL_ERROR",
+          message: "Tool failed",
+          recoverable: false,
+          canEscalateToHuman: false,
+        },
+      });
 
       dispatcher.register(subagent);
       dispatcher.registerFallbackTool("testSubagent", fallbackTool);

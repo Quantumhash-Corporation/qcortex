@@ -78,11 +78,7 @@
   right: -30%;
   width: 80%;
   height: 80%;
-  background: radial-gradient(
-    circle at center,
-    rgba(99, 102, 241, 0.04) 0%,
-    transparent 70%
-  );
+  background: radial-gradient(circle at center, rgba(99, 102, 241, 0.04) 0%, transparent 70%);
   pointer-events: none;
   opacity: 0.8;
 }
@@ -115,12 +111,7 @@
   left: 18px;
   right: 18px;
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(99, 102, 241, 0.2) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg, transparent 0%, rgba(99, 102, 241, 0.2) 50%, transparent 100%);
 }
 
 .sidebar-header:hover {
@@ -438,11 +429,7 @@
 }
 
 :root[data-theme="light"] .sidebar-panel::before {
-  background: radial-gradient(
-    circle at center,
-    rgba(79, 70, 229, 0.04) 0%,
-    transparent 70%
-  );
+  background: radial-gradient(circle at center, rgba(79, 70, 229, 0.04) 0%, transparent 70%);
 }
 
 :root[data-theme="light"] .sidebar-header {

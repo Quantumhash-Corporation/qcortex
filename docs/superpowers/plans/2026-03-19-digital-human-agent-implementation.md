@@ -547,14 +547,12 @@ import { BrowserAgent } from "./browser-agent";
 // Mock dependencies
 vi.mock("./task-detector", () => ({
   TaskDetector: vi.fn().mockImplementation(() => ({
-    detect: vi
-      .fn()
-      .mockReturnValue({
-        isTask: true,
-        confidence: 0.8,
-        reason: "test",
-        needsClarification: false,
-      }),
+    detect: vi.fn().mockReturnValue({
+      isTask: true,
+      confidence: 0.8,
+      reason: "test",
+      needsClarification: false,
+    }),
   })),
 }));
 
