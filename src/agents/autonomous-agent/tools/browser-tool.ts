@@ -182,6 +182,7 @@ export class BrowserController {
     selector?: string;
     url?: string;
     timeout?: number;
+    timeMs?: number;
   }): Promise<boolean> {
     try {
       const args: string[] = [];
@@ -193,6 +194,9 @@ export class BrowserController {
       }
       if (options.url) {
         args.push(`--url "${options.url}"`);
+      }
+      if (options.timeMs) {
+        args.push(`--time ${options.timeMs}`);
       }
       const timeout = options.timeout || this.timeout;
 
@@ -239,7 +243,8 @@ export class BrowserController {
         { timeout: 5000 },
       );
       const result = JSON.parse(stdout);
-      return result.url || null;
+      // Get URL from first tab
+      return result.tabs?.[0]?.url || result.url || null;
     } catch {
       return null;
     }
