@@ -8,7 +8,7 @@ type: project
 
 **Date:** 2026-03-19
 **Status:** Draft
-**Author:** Claude
+**Author:** Sbapan
 
 ## 1. Overview
 
@@ -108,7 +108,7 @@ A **fully autonomous digital agent** ("QCortex Agent") that operates as a digita
 | `CalendarTool`           | Google Calendar integration | Use existing Google OAuth + new Calendar client       |
 | `EmailTool`              | Gmail API access            | Extend existing `src/hooks/gmail-ops.ts`              |
 | `ContactsTool`           | Google Contacts integration | New module using Google Contacts API                  |
-| `NotificationTool`       | System notifications        | macOS: `src/channels/dock.ts`, iOS: out of scope      |
+| `NotificationTool`       | System notifications        | macOS:`src/channels/dock.ts`, iOS: out of scope       |
 | `MobileVerificationTool` | SMS via QCortex app         | Mobile app integration via secure channel             |
 | `AppControlTool`         | Launch/control applications | macOS: AppleScript/Launch Services, iOS: out of scope |
 
@@ -485,6 +485,36 @@ Agent encounters verification
 | Auto-Approve  | Yes/No                    | Skip approval in assisted mode |
 | Notifications | All/Important/None        | When to notify user            |
 
+### 6.1.1 Verification & Security Controls
+
+Additional granular controls for sensitive operations:
+
+| Setting            | Options                                   | Description             |
+| ------------------ | ----------------------------------------- | ----------------------- |
+| **OTP Handling**   | Auto-read / Manual input / Ask me         | How OTPs are handled    |
+| **Payment Mode**   | Disabled / View only / Full access        | Payment capabilities    |
+| **Form Auto-fill** | Ask each time / Use saved data / Disabled | Personal info handling  |
+| **External Sites** | Always ask / Trusted sites only / Blocked | Site access control     |
+| **Data Sharing**   | Allow / Ask each time / Block             | Sharing data externally |
+
+**OTP Handling Options:**
+
+- **Auto-read**: Agent automatically reads OTPs from Gmail (default)
+- **Manual input**: Agent pauses and asks you to enter the code
+- **Ask me**: Agent asks which method you prefer each time
+
+**Payment Mode Options:**
+
+- **Disabled**: No payment capabilities
+- **View only**: Can view payment methods, cannot make transactions
+- **Full access**: Can complete purchases (with confirmation for high-value)
+
+**Form Auto-fill Options:**
+
+- **Ask each time**: Agent asks before filling any form
+- **Use saved data**: Uses data you provided to agent (see below)
+- **Disabled**: Agent never auto-fills forms
+
 ### 6.2 Settings UI
 
 ```
@@ -504,14 +534,25 @@ Agent encounters verification
 │  ☑ Mobile SMS  [● Read ○ Write ○ All] [☐ Auto]   │
 │  ☐ Apps        [○ Read ○ Write ○ All] [☐ Auto]   │
 │                                                    │
+│  ── Verification & Security ─────────────────────│
+│                                                    │
+│  OTP Handling:  [○ Auto  ● Manual  ○ Ask each]   │
+│  Payment Mode: [○ Disabled  ○ View  ● Full]      │
+│  Form Fill:    [○ Ask  ● Use saved  ○ Disabled] │
+│                                                    │
+│  ── Your Data ─────────────────────────────────── │
+│                                                    │
+│  [Manage saved data...]  [Add payment method...]  │
+│                                                    │
 │  ── Notifications ─────────────────────────────── │
 │                                                    │
 │  [●] On action   [☑] On complete   [☑] On error │
 │                                                    │
-│  ── Verification ─────────────────────────────── │
+│  ── Safety ────────────────────────────────────── │
 │                                                    │
-│  Auto-retry: [3] times                            │
-│  Escalate after: [5] failures                    │
+│  Payment approval: [Always]  Amount threshold: $0│
+│  Session timeout: [30 min]  [☐ 2FA for settings] │
+│  Emergency PIN: [______]                          │
 │                                                    │
 │                    [Save]  [Cancel]               │
 └────────────────────────────────────────────────────┘
@@ -522,6 +563,35 @@ Agent encounters verification
 - **Maximum Privacy**: Assisted mode, read-only tools, all auto-approve off
 - **Standard**: Assisted mode, read+write tools, important actions require approval
 - **Full Automation**: Autonomous mode, all tools, full access
+
+### 6.4 User-Provided Data
+
+Users can optionally provide personal information for the agent to use:
+
+| Data Field    | Use Case                                        | Storage             |
+| ------------- | ----------------------------------------------- | ------------------- |
+| Name          | Form filling, emails                            | Encrypted           |
+| Email         | Form filling, account creation                  | Encrypted           |
+| Phone         | Form filling, verifications                     | Encrypted           |
+| Address       | Shipping forms                                  | Encrypted           |
+| Date of Birth | Age verification                                | Encrypted           |
+| Credit Card   | Payments (never stored, just use when provided) | Never stored        |
+| Bank Details  | Payments                                        | Encrypted, optional |
+
+**How it works:**
+
+- User provides data via Settings UI
+- Data is encrypted and stored securely
+- When agent encounters a form, it uses this data (if allowed in settings)
+- For payments, user can provide card details per-transaction
+- **Never automatically stores payment information** - user must explicitly save
+
+**Privacy:**
+
+- All user data is encrypted at rest
+- Data is only used when explicitly needed
+- User can delete all saved data at any time
+- Audit log shows when data was used
 
 ---
 
@@ -547,6 +617,31 @@ Agent encounters verification
 - Rate limiting to prevent abuse
 - Session timeout (configurable)
 - Emergency stop (global kill switch)
+
+### 7.4 Enhanced Security Controls
+
+| Security Setting                  | Default | Description                                 |
+| --------------------------------- | ------- | ------------------------------------------- |
+| **Require approval for payments** | Always  | Always ask before any payment               |
+| **Payment amount threshold**      | $0      | Amount above which always requires approval |
+| **Block external data sharing**   | Ask     | Ask before sending data outside             |
+| **Session timeout**               | 30 min  | Auto-lock after inactivity                  |
+| **Two-factor for settings**       | Off     | Require auth to change settings             |
+| **Emergency PIN**                 | None    | Quick kill switch PIN                       |
+
+**Payment Security:**
+
+- No automatic payment processing
+- Agent shows exact amount and merchant before each transaction
+- User must explicitly approve each payment
+- For subscriptions: ask once, confirm renewal amounts
+
+**Kill Switch:**
+
+- Global emergency stop (keyboard shortcut or menu)
+- Instantly stops all agent activity
+- Closes browser, clears session
+- Can set a PIN to prevent accidental activation
 
 ---
 
