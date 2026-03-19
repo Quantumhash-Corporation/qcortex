@@ -165,7 +165,8 @@ export class SubagentDispatcher {
   }
 
   private isSubagentEnabled(name: string): boolean {
-    return this.settings.subagents[name]?.enabled ?? false;
+    // Default to enabled if not specified in settings
+    return this.settings.subagents?.[name]?.enabled ?? true;
   }
 
   private async executeWithRetry(

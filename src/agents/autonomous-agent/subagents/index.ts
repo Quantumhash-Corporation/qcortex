@@ -15,31 +15,13 @@ import { SubagentDispatcher } from "./subagent-dispatcher.js";
  */
 export function initializeSubagents(dispatcher: SubagentDispatcher): void {
   // Register OTP Fetcher subagent
-  dispatcher.register({
-    id: "otp-fetcher",
-    name: "OTP Fetcher",
-    description: "Retrieves verification codes from Gmail and mobile SMS",
-    capabilities: ["email", "sms", "otp"],
-    subagent: new OTPFetcherSubagent(),
-  });
+  dispatcher.register(new OTPFetcherSubagent());
 
   // Register Account Creator subagent
-  dispatcher.register({
-    id: "account-creator",
-    name: "Account Creator",
-    description: "Creates accounts on websites with OTP verification",
-    capabilities: ["account-creation", "form-fill", "otp", "browser"],
-    subagent: new AccountCreatorSubagent(),
-  });
+  dispatcher.register(new AccountCreatorSubagent());
 
   // Register Data Uploader subagent
-  dispatcher.register({
-    id: "data-uploader",
-    name: "Data Uploader",
-    description: "Uploads files to web forms, Google Drive, Dropbox",
-    capabilities: ["file-upload", "cloud-storage", "browser"],
-    subagent: new DataUploaderSubagent(),
-  });
+  dispatcher.register(new DataUploaderSubagent());
 }
 
 /**
