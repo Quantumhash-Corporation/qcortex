@@ -28,6 +28,8 @@ A **fully autonomous digital agent** ("QCortex Agent") that operates as a digita
 - **Verification handling**: Smart escalation - agent tries to solve, falls back to human
 - **100% accuracy focus**: Robust error handling, retry logic, verification steps
 - **Dual-mode**: Users choose between fully autonomous or assisted operation
+- **Hybrid execution**: Subagents for complex tasks, tools as fallback
+- **Human-in-loop**: When both fail, ask user for help and retry
 
 ---
 
@@ -98,6 +100,93 @@ A **fully autonomous digital agent** ("QCortex Agent") that operates as a digita
 - **TaskExecutor**: Executes tasks in auto or assisted mode
 - **SessionManager**: Maintains context across tasks
 - **ToolRegistry**: Registers and manages all available tools
+- **SubagentDispatcher**: Dispatches specialized subagents for complex tasks
+
+#### 2.2.1b Subagent Dispatch System
+
+The agent uses a hybrid approach: tries subagents first, falls back to tools, escalates to human when both fail.
+
+```
+User Task
+    │
+    ▼
+┌─────────────────┐
+│  Analyze Task  │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐     ┌─────────────────┐
+│ Dispatch        │────▶│ Subagent        │
+│ Subagent        │     │ Executes Task   │
+└────────┬────────┘     └────────┬────────┘
+         │                      │
+    Success?               Success
+         │                      │
+    No                       │
+         │                      ▼
+         ▼              ┌─────────────┐
+┌─────────────────┐     │ Task        │
+│ Fallback to     │────▶│ Complete    │
+│ Tools           │     └─────────────┘
+└────────┬────────┘
+         │
+    Success?
+         │
+         ▼
+    ┌─────────────┐     ┌─────────────────┐
+    │ Both Failed │────▶│ Ask Human for   │
+    │             │     │ Help & Retry    │
+    └─────────────┘     └─────────────────┘
+```
+
+**Available Subagents:**
+
+| Subagent            | Purpose                       | Example Tasks                           |
+| ------------------- | ----------------------------- | --------------------------------------- |
+| `AccountCreator`    | Create accounts on websites   | Sign up for services, register accounts |
+| `OTPFetcher`        | Retrieve verification codes   | Read Gmail OTPs, fetch SMS codes        |
+| `DataUploader`      | Upload files/data to sites    | Submit forms, upload documents          |
+| `BrowserController` | Control browser for web tasks | Navigate, fill forms, scrape            |
+| `FileManager`       | Manage local files            | Organize, move, rename files            |
+| `EmailAgent`        | Handle email operations       | Send emails, read inbox, manage labels  |
+
+**Subagent Interface:**
+
+```typescript
+interface Subagent {
+  name: string;
+  description: string;
+  execute(task: TaskInput): Promise<SubagentResult>;
+}
+
+interface SubagentResult {
+  success: boolean;
+  data?: unknown;
+  error?: {
+    code: string;
+    message: string;
+    recoverable: boolean;
+    canEscalateToHuman: boolean;
+  };
+  requiresHumanHelp?: boolean;
+  humanHelpMessage?: string;
+}
+
+interface TaskInput {
+  id: string;
+  description: string;
+  context: Record<string, unknown>;
+  userPreferences: UserPreferences;
+}
+```
+
+**Fallback Chain:**
+
+1. Try subagent first
+2. If subagent fails with `recoverable: true`, try corresponding tool
+3. If tool fails, check `canEscalateToHuman`
+4. If can escalate, ask user for help with specific `humanHelpMessage`
+5. Retry with user-provided information
 
 #### 2.2.2 Tool Modules
 
