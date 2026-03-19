@@ -6,6 +6,19 @@ export interface TaskDetectionResult {
   suggestedTask?: string;
 }
 
+// Confidence scoring weights
+const URL_WEIGHT = 0.5;
+const TRIGGER_WEIGHT = 0.2;
+const ACTION_VERB_WEIGHT = 0.4;
+const CHAT_OVERRIDE_WEIGHT = 0.4;
+const QUESTION_PENALTY = 0.15;
+const INFO_SEEKING_PENALTY = 0.1;
+
+// Thresholds
+const TASK_THRESHOLD = 0.5;
+const CLARIFICATION_THRESHOLD = 0.3;
+const HIGH_CONFIDENCE_THRESHOLD = 0.7;
+
 const TASK_TRIGGERS = [
   "can you",
   "please",
@@ -73,14 +86,14 @@ export class TaskDetector {
 
     // URL in message = high confidence task (+0.5)
     if (URL_PATTERN.test(message)) {
-      score += 0.5;
+      score += URL_WEIGHT;
       reasons.push("contains URL");
     }
 
     // Task trigger keyword (+0.2)
     const hasTrigger = TASK_TRIGGERS.some((t) => lower.includes(t));
     if (hasTrigger) {
-      score += 0.2;
+      score += TRIGGER_WEIGHT;
       reasons.push("task trigger keyword");
     }
 
@@ -88,36 +101,36 @@ export class TaskDetector {
     const words = lower.split(/\s+/);
     const hasAction = ACTION_VERBS.some((v) => words.includes(v));
     if (hasAction && words.length > 3) {
-      score += 0.4;
+      score += ACTION_VERB_WEIGHT;
       reasons.push("action verb with object");
     }
 
     // Chat override - reduces score significantly (-0.4)
     const hasChatOverride = CHAT_OVERRIDES.some((c) => lower === c || lower.startsWith(c + " "));
     if (hasChatOverride) {
-      score -= 0.4;
+      score -= CHAT_OVERRIDE_WEIGHT;
       reasons.push("chat override");
     }
 
     // Question mark - reduces score unless very high confidence
     if (lower.includes("?")) {
-      if (score < 0.7) {
-        score -= 0.15;
+      if (score < HIGH_CONFIDENCE_THRESHOLD) {
+        score -= QUESTION_PENALTY;
       }
     }
 
     // Check for information-seeking patterns (what, how, when, where, why)
     const infoPatterns = ["what ", "how ", "when ", "where ", "why "];
     if (infoPatterns.some((p) => lower.includes(p)) && lower.includes("?")) {
-      score -= 0.1;
+      score -= INFO_SEEKING_PENALTY;
     }
 
     // Clamp score between 0 and 1
     score = Math.max(0, Math.min(1, score));
 
     // Determine result
-    const isTask = score >= 0.5;
-    const needsClarification = score >= 0.3 && score < 0.5;
+    const isTask = score >= TASK_THRESHOLD;
+    const needsClarification = score >= CLARIFICATION_THRESHOLD && score < TASK_THRESHOLD;
 
     return {
       isTask,

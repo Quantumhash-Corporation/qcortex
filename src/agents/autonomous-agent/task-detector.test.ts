@@ -27,5 +27,29 @@ describe("TaskDetector", () => {
       const result = detector.detect("Can you tell me what time it is?");
       expect(result.needsClarification).toBe(true);
     });
+
+    // Edge cases
+    it("should handle empty string", () => {
+      const result = detector.detect("");
+      expect(result.confidence).toBe(0);
+      expect(result.isTask).toBe(false);
+    });
+
+    it("should handle URL-only message", () => {
+      const result = detector.detect("https://example.com");
+      expect(result.isTask).toBe(true);
+      expect(result.confidence).toBe(0.5);
+    });
+
+    it("should handle single word login", () => {
+      const result = detector.detect("login");
+      expect(result.confidence).toBe(0.2);
+    });
+
+    it("should handle very long message", () => {
+      const longMessage = "please " + "do something ".repeat(50);
+      const result = detector.detect(longMessage);
+      expect(result.isTask).toBe(true);
+    });
   });
 });
