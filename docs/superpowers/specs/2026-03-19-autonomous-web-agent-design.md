@@ -101,16 +101,16 @@ A **fully autonomous digital agent** ("QCortex Agent") that operates as a digita
 
 #### 2.2.2 Tool Modules
 
-| Module                   | Purpose                     | Status   |
-| ------------------------ | --------------------------- | -------- |
-| `BrowserTool`            | Web automation (existing)   | Existing |
-| `FileSystemTool`         | Local file operations       | New      |
-| `CalendarTool`           | Google Calendar integration | New      |
-| `EmailTool`              | Gmail API access            | New      |
-| `ContactsTool`           | Google Contacts integration | New      |
-| `NotificationTool`       | System notifications        | New      |
-| `MobileVerificationTool` | SMS via QCortex app         | New      |
-| `AppControlTool`         | Launch/control applications | New      |
+| Module                   | Purpose                     | Integration Point                                     |
+| ------------------------ | --------------------------- | ----------------------------------------------------- |
+| `BrowserTool`            | Web automation (existing)   | `src/agents/tools/browser-tool.ts` + `src/browser/`   |
+| `FileSystemTool`         | Local file operations       | New module                                            |
+| `CalendarTool`           | Google Calendar integration | Use existing Google OAuth + new Calendar client       |
+| `EmailTool`              | Gmail API access            | Extend existing `src/hooks/gmail-ops.ts`              |
+| `ContactsTool`           | Google Contacts integration | New module using Google Contacts API                  |
+| `NotificationTool`       | System notifications        | macOS: `src/channels/dock.ts`, iOS: native APIs       |
+| `MobileVerificationTool` | SMS via QCortex app         | Mobile app integration via secure channel             |
+| `AppControlTool`         | Launch/control applications | macOS: AppleScript/Launch Services, iOS: private APIs |
 
 #### 2.2.3 Verification Handler
 
@@ -125,6 +125,24 @@ A **fully autonomous digital agent** ("QCortex Agent") that operates as a digita
 - **ToolPermissionGranter**: Enables/disables tools per user config
 - **ScopeController**: Limits what data the agent can access
 - **AuditLogger**: Logs all agent actions for review
+
+#### 2.2.5 Authentication & OAuth
+
+Google API integration requires OAuth2 authentication. The agent uses the existing QCortex Google integration (OAuth flow already in codebase).
+
+| Tool          | Required OAuth Scope(s)                             |
+| ------------- | --------------------------------------------------- |
+| Email (Gmail) | `gmail.readonly`, `gmail.send`                      |
+| Calendar      | `calendar`, `calendar.events`                       |
+| Contacts      | `https://www.googleapis.com/auth/contacts.readonly` |
+| Drive (files) | `drive.readonly`, `drive.file`                      |
+
+**Credential Flow:**
+
+1. User authorizes QCortex via existing Google OAuth (already implemented)
+2. Agent accesses Google APIs using stored refresh tokens
+3. Tokens are stored securely in credential store
+4. Agent requests only the scopes enabled in user settings
 
 ### 2.3 Data Flow
 
@@ -203,25 +221,33 @@ Leverages existing Playwright-based automation:
 ### 3.2 File System Tool
 
 ```typescript
+type ToolResult<T> = { success: true; data: T } | { success: false; error: ToolError };
+
+interface ToolError {
+  code: string;
+  message: string;
+  recoverable: boolean;
+}
+
 interface FileSystemTool {
   // Read
-  readFile(path: string): Promise<string>;
-  listDirectory(path: string): Promise<FileInfo[]>;
-  searchFiles(pattern: string): Promise<string[]>;
+  readFile(path: string): Promise<ToolResult<string>>;
+  listDirectory(path: string): Promise<ToolResult<FileInfo[]>>;
+  searchFiles(pattern: string): Promise<ToolResult<string[]>>;
 
   // Write
-  writeFile(path: string, content: string): Promise<void>;
-  appendFile(path: string, content: string): Promise<void>;
+  writeFile(path: string, content: string): Promise<ToolResult<void>>;
+  appendFile(path: string, content: string): Promise<ToolResult<void>>;
 
   // Manage
-  createDirectory(path: string): Promise<void>;
-  deleteFile(path: string): Promise<void>;
-  moveFile(from: string, to: string): Promise<void>;
-  copyFile(from: string, to: string): Promise<void>;
+  createDirectory(path: string): Promise<ToolResult<void>>;
+  deleteFile(path: string): Promise<ToolResult<void>>;
+  moveFile(from: string, to: string): Promise<ToolResult<void>>;
+  copyFile(from: string, to: string): Promise<ToolResult<void>>;
 
   // Downloads
   getDownloadsPath(): string;
-  moveDownloadedFile(from: string, to: string): Promise<void>;
+  moveDownloadedFile(from: string, to: string): Promise<ToolResult<void>>;
 }
 ```
 
@@ -230,16 +256,19 @@ interface FileSystemTool {
 ```typescript
 interface CalendarTool {
   // Read
-  listEvents(from: Date, to: Date): Promise<CalendarEvent[]>;
-  getEvent(eventId: string): Promise<CalendarEvent>;
+  listEvents(from: Date, to: Date): Promise<ToolResult<CalendarEvent[]>>;
+  getEvent(eventId: string): Promise<ToolResult<CalendarEvent>>;
 
   // Write
-  createEvent(event: CalendarEventInput): Promise<CalendarEvent>;
-  updateEvent(eventId: string, updates: Partial<CalendarEvent>): Promise<CalendarEvent>;
-  deleteEvent(eventId: string): Promise<void>;
+  createEvent(event: CalendarEventInput): Promise<ToolResult<CalendarEvent>>;
+  updateEvent(eventId: string, updates: Partial<CalendarEvent>): Promise<ToolResult<CalendarEvent>>;
+  deleteEvent(eventId: string): Promise<ToolResult<void>>;
 
   // Respond
-  respondToEvent(eventId: string, response: "accept" | "decline" | "tentative"): Promise<void>;
+  respondToEvent(
+    eventId: string,
+    response: "accept" | "decline" | "tentative",
+  ): Promise<ToolResult<void>>;
 }
 ```
 
@@ -248,19 +277,24 @@ interface CalendarTool {
 ```typescript
 interface EmailTool {
   // Read
-  listEmails(query: string, maxResults?: number): Promise<Email[]>;
-  getEmail(emailId: string): Promise<Email>;
+  listEmails(query: string, maxResults?: number): Promise<ToolResult<Email[]>>;
+  getEmail(emailId: string): Promise<ToolResult<Email>>;
 
   // Send
-  sendEmail(to: string, subject: string, body: string, attachments?: string[]): Promise<string>;
+  sendEmail(
+    to: string,
+    subject: string,
+    body: string,
+    attachments?: string[],
+  ): Promise<ToolResult<string>>;
 
   // Labels
-  listLabels(): Promise<Label[]>;
-  archiveEmail(emailId: string): Promise<void>;
-  markAsRead(emailId: string): Promise<void>;
+  listLabels(): Promise<ToolResult<Label[]>>;
+  archiveEmail(emailId: string): Promise<ToolResult<void>>;
+  markAsRead(emailId: string): Promise<ToolResult<void>>;
 
   // OTP Detection
-  detectOTPInInbox(): Promise<OTP | null>;
+  detectOTPInInbox(): Promise<ToolResult<OTP | null>>;
 }
 ```
 
@@ -269,26 +303,28 @@ interface EmailTool {
 ```typescript
 interface ContactsTool {
   // Read
-  listContacts(): Promise<Contact[]>;
-  searchContacts(query: string): Promise<Contact[]>;
+  listContacts(): Promise<ToolResult<Contact[]>>;
+  searchContacts(query: string): Promise<ToolResult<Contact[]>>;
 
   // Write
-  createContact(contact: ContactInput): Promise<Contact>;
-  updateContact(contactId: string, updates: Partial<Contact>): Promise<Contact>;
-  deleteContact(contactId: string): Promise<void>;
+  createContact(contact: ContactInput): Promise<ToolResult<Contact>>;
+  updateContact(contactId: string, updates: Partial<Contact>): Promise<ToolResult<Contact>>;
+  deleteContact(contactId: string): Promise<ToolResult<void>>;
 }
 ```
 
 ### 3.6 Mobile Verification Tool
 
+**Note:** On iOS, the QCortex app cannot register as default SMS handler due to platform restrictions. On Android, this requires user to set as default SMS app. For platforms where direct SMS access isn't available, the agent will fall back to human-in-the-loop verification.
+
 ```typescript
 interface MobileVerificationTool {
   // SMS (via QCortex app)
-  requestSMSCode(phoneNumber: string): Promise<string>; // Returns session ID
-  waitForSMS(sessionId: string, timeoutMs?: number): Promise<string>; // Returns OTP
+  requestSMSCode(phoneNumber: string): Promise<ToolResult<string>>; // Returns session ID
+  waitForSMS(sessionId: string, timeoutMs?: number): Promise<ToolResult<string>>; // Returns OTP
 
-  // Fallback to human
-  requestHumanVerification(type: "sms" | "call" | "whatsapp"): Promise<void>;
+  // Fallback to human - sends notification to user requesting the code
+  requestHumanVerification(type: "sms" | "call" | "whatsapp"): Promise<ToolResult<void>>;
 }
 ```
 
@@ -297,12 +333,12 @@ interface MobileVerificationTool {
 ```typescript
 interface NotificationTool {
   // Read
-  getNotifications(): Promise<SystemNotification[]>;
-  markAsRead(notificationId: string): Promise<void>;
+  getNotifications(): Promise<ToolResult<SystemNotification[]>>;
+  markAsRead(notificationId: string): Promise<ToolResult<void>>;
 
   // Respond
-  openNotification(notificationId: string): Promise<void>;
-  replyToNotification(notificationId: string, response: string): Promise<void>;
+  openNotification(notificationId: string): Promise<ToolResult<void>>;
+  replyToNotification(notificationId: string, response: string): Promise<ToolResult<void>>;
 }
 ```
 
@@ -311,16 +347,16 @@ interface NotificationTool {
 ```typescript
 interface AppControlTool {
   // Launch
-  launchApp(bundleId: string): Promise<void>;
-  openFileWithApp(filePath: string, appBundleId?: string): Promise<void>;
+  launchApp(bundleId: string): Promise<ToolResult<void>>;
+  openFileWithApp(filePath: string, appBundleId?: string): Promise<ToolResult<void>>;
 
   // Control
-  activateApp(bundleId: string): Promise<void>;
-  quitApp(bundleId: string): Promise<void>;
+  activateApp(bundleId: string): Promise<ToolResult<void>>;
+  quitApp(bundleId: string): Promise<ToolResult<void>>;
 
   // List
-  listRunningApps(): Promise<RunningApp[]>;
-  listInstalledApps(): Promise<InstalledApp[]>;
+  listRunningApps(): Promise<ToolResult<RunningApp[]>>;
+  listInstalledApps(): Promise<ToolResult<InstalledApp[]>>;
 }
 ```
 
@@ -420,9 +456,12 @@ Agent encounters verification
 ### 5.2 Gmail OTP Integration
 
 - Use Gmail API to watch inbox for new emails
-- Pattern match for OTP codes (regex: `\d{4,8}`)
+- Pattern match for OTP codes using context-aware regex:
+  - Primary: `(?:code|otp|verification|pin)[^\d]*(\d{4,8})` (with code context)
+  - Fallback: `\b(\d{6})\b` (6-digit codes - most common)
+- ML-based confidence scoring to avoid false positives
 - Auto-extract and use within 5-minute window
-- Clean up detection emails after use
+- Clean up detection emails after use (optional, user setting)
 
 ### 5.3 Mobile App SMS Integration
 
