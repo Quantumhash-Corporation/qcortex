@@ -108,9 +108,9 @@ A **fully autonomous digital agent** ("QCortex Agent") that operates as a digita
 | `CalendarTool`           | Google Calendar integration | Use existing Google OAuth + new Calendar client       |
 | `EmailTool`              | Gmail API access            | Extend existing `src/hooks/gmail-ops.ts`              |
 | `ContactsTool`           | Google Contacts integration | New module using Google Contacts API                  |
-| `NotificationTool`       | System notifications        | macOS: `src/channels/dock.ts`, iOS: native APIs       |
+| `NotificationTool`       | System notifications        | macOS: `src/channels/dock.ts`, iOS: out of scope      |
 | `MobileVerificationTool` | SMS via QCortex app         | Mobile app integration via secure channel             |
-| `AppControlTool`         | Launch/control applications | macOS: AppleScript/Launch Services, iOS: private APIs |
+| `AppControlTool`         | Launch/control applications | macOS: AppleScript/Launch Services, iOS: out of scope |
 
 #### 2.2.3 Verification Handler
 
@@ -379,6 +379,7 @@ interface AppControlTool {
 - Shows: target URL, action type, data involved
 - User can: Approve, Deny, Modify, Cancel
 - Remember preferences for similar actions
+- **autoApprove setting**: When enabled (per-tool), repeats similar actions without asking
 
 ### 4.3 Mode Switching
 
@@ -459,7 +460,8 @@ Agent encounters verification
 - Pattern match for OTP codes using context-aware regex:
   - Primary: `(?:code|otp|verification|pin)[^\d]*(\d{4,8})` (with code context)
   - Fallback: `\b(\d{6})\b` (6-digit codes - most common)
-- ML-based confidence scoring to avoid false positives
+- Confidence scoring: numeric patterns that appear near verification keywords get higher score
+- Score threshold: if multiple matches, prefer 6-digit codes over longer/shorter
 - Auto-extract and use within 5-minute window
 - Clean up detection emails after use (optional, user setting)
 
