@@ -16,6 +16,7 @@ import { normalizeSecretInputString } from "../config/types.secrets.js";
 import type { RuntimeEnv } from "../runtime.js";
 import { defaultRuntime } from "../runtime.js";
 import { resolveUserPath } from "../utils.js";
+import { runGoogleLoginStep } from "./onboarding.google-login.js";
 import { resolveOnboardingSecretInputString } from "./onboarding.secret-input.js";
 import type { QuickstartGatewayDefaults, WizardFlow } from "./onboarding.types.js";
 import { WizardCancelledError, type WizardPrompter } from "./prompts.js";
@@ -79,6 +80,9 @@ export async function runOnboardingWizard(
   onboardHelpers.printWizardHeader(runtime);
   await prompter.intro("QCortex onboarding");
   await requireRiskAcknowledgement({ opts, prompter });
+
+  // Mandatory Google login step for digital human agent
+  await runGoogleLoginStep(prompter);
 
   const snapshot = await readConfigFileSnapshot();
   let baseConfig: QCortexConfig = snapshot.valid ? snapshot.config : {};
