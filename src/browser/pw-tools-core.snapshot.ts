@@ -33,14 +33,18 @@ export async function snapshotAriaViaPlaywright(opts: {
   ensurePageState(page);
   const session = await page.context().newCDPSession(page);
   try {
-    await session.send("Accessibility.enable").catch(() => {});
+    await session.send("Accessibility.enable").catch((err) => {
+      console.warn("Failed to enable accessibility:", err);
+    });
     const res = (await session.send("Accessibility.getFullAXTree")) as {
       nodes?: RawAXNode[];
     };
     const nodes = Array.isArray(res?.nodes) ? res.nodes : [];
     return { nodes: formatAriaSnapshot(nodes, limit) };
   } finally {
-    await session.detach().catch(() => {});
+    await session.detach().catch((err) => {
+      console.warn("Failed to detach CDP session:", err);
+    });
   }
 }
 
@@ -203,7 +207,9 @@ export async function navigateViaPlaywright(opts: {
       cdpUrl: opts.cdpUrl,
       targetId: opts.targetId,
       reason: "retry navigate after detached frame",
-    }).catch(() => {});
+    }).catch((err) => {
+      console.warn("Failed to force disconnect playwright for retry:", err);
+    });
     page = await getPageForTargetId(opts);
     ensurePageState(page);
     await page.goto(url, { timeout });

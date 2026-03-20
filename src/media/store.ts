@@ -131,7 +131,9 @@ export async function cleanOldMedia(ttlMs = DEFAULT_TTL_MS, options: CleanOldMed
         if (recursive) {
           const childIsEmpty = await removeExpiredFilesInDir(fullPath);
           if (childIsEmpty) {
-            await fs.rmdir(fullPath).catch(() => {});
+            await fs.rmdir(fullPath).catch((err) => {
+              console.warn(`Failed to remove directory ${fullPath}:`, err);
+            });
           }
         }
         continue;
@@ -140,7 +142,9 @@ export async function cleanOldMedia(ttlMs = DEFAULT_TTL_MS, options: CleanOldMed
         continue;
       }
       if (now - stat.mtimeMs > ttlMs) {
-        await fs.rm(fullPath, { force: true }).catch(() => {});
+        await fs.rm(fullPath, { force: true }).catch((err) => {
+          console.warn(`Failed to remove file ${fullPath}:`, err);
+        });
       }
     }
     if (!pruneEmptyDirs) {
