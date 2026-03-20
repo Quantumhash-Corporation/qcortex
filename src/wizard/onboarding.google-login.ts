@@ -20,6 +20,33 @@ const GOOGLE_LOGIN_URL = "https://myaccount.google.com/";
 const PROFILE_DIR = path.join(os.homedir(), ".qcortex", "browser", "qcortex", "user-data");
 
 /**
+ * Check if we're running in non-interactive mode by checking if stdin is a TTY
+ */
+function isInteractive(): boolean {
+  return process.stdin.isTTY ?? false;
+}
+
+/**
+ * Run Google login step without a prompter (for programmatic use)
+ */
+export async function runGoogleLoginStepNoPrompt(): Promise<void> {
+  // Copy existing Google profile if available
+  await copyGoogleProfile();
+
+  // Enable headless mode
+  const snapshot = await readConfigFileSnapshot();
+  const currentConfig: QCortexConfig = snapshot.valid ? snapshot.config : {};
+
+  await writeConfigFile({
+    ...currentConfig,
+    browser: {
+      ...currentConfig.browser,
+      headless: true,
+    },
+  });
+}
+
+/**
  * Detect if user is logged into Google by checking for Google cookies
  */
 async function detectGoogleLogin(): Promise<boolean> {
@@ -179,8 +206,51 @@ async function stopBrowser(): Promise<void> {
  * 4. Waits for user to login
  * 5. Saves session and closes browser
  * 6. Sets up headless mode for future use
+ *
+ * In non-interactive mode, this step will:
+ * - Copy existing Google profile if available
+ * - Enable headless mode in config
+ * - Skip the browser login prompt
  */
 export async function runGoogleLoginStep(prompter: WizardPrompter): Promise<boolean> {
+  // Check if we're in interactive mode
+  const isInteractiveMode = isInteractive();
+
+  // In non-interactive mode, just set up headless and copy profile
+  if (!isInteractiveMode) {
+    await prompter.note(
+      [
+        "Google Login (Skipped in non-interactive mode)",
+        "",
+        "The digital human agent requires Google login for browser automation.",
+        "After onboarding completes, run:",
+        "",
+        "  qcortex browser login",
+        "",
+        "This will open a browser for you to login to Google.",
+        "Setting up headless mode for future use...",
+      ].join("\n"),
+      "Google Login",
+    );
+
+    // Copy existing Google profile if available
+    await copyGoogleProfile();
+
+    // Enable headless mode
+    const snapshot = await readConfigFileSnapshot();
+    const currentConfig: QCortexConfig = snapshot.valid ? snapshot.config : {};
+
+    await writeConfigFile({
+      ...currentConfig,
+      browser: {
+        ...currentConfig.browser,
+        headless: true,
+      },
+    });
+
+    return false;
+  }
+
   await prompter.note(
     [
       "Google Account Login (Required)",

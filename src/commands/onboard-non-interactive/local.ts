@@ -78,6 +78,16 @@ export async function runNonInteractiveOnboardingLocal(params: {
   nextConfig = applyNonInteractiveSkillsConfig({ nextConfig, opts, runtime });
 
   nextConfig = applyWizardMetadata(nextConfig, { command: "onboard", mode });
+
+  // Apply Google login config (headless mode for browser automation)
+  nextConfig = {
+    ...nextConfig,
+    browser: {
+      ...nextConfig.browser,
+      headless: true,
+    },
+  };
+
   await writeConfigFile(nextConfig);
   logConfigUpdated(runtime);
 

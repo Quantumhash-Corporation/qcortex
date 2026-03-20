@@ -68,7 +68,12 @@ async function waitForLocalCallback(params: {
   timeoutMs: number;
   onProgress?: (message: string) => void;
 }): Promise<{ code: string; state: string }> {
-  const redirectUrl = new URL(params.redirectUri);
+  let redirectUrl: URL;
+  try {
+    redirectUrl = new URL(params.redirectUri);
+  } catch {
+    throw new Error(`Invalid redirect URI: ${params.redirectUri}`);
+  }
   if (redirectUrl.protocol !== "http:") {
     throw new Error(`Chutes OAuth redirect URI must be http:// (got ${params.redirectUri})`);
   }

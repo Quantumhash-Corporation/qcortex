@@ -483,7 +483,9 @@ export async function openWritableFileWithinRoot(params: {
     const cleanupPath = openedRealPath ?? ioPath;
     await handle.close().catch(() => {});
     if (cleanupCreatedPath) {
-      await fs.rm(cleanupPath, { force: true }).catch(() => {});
+      await fs.rm(cleanupPath, { force: true }).catch((err) => {
+        console.warn(`Failed to cleanup path ${cleanupPath}:`, err);
+      });
     }
     throw err;
   }
@@ -528,7 +530,9 @@ export async function writeFileWithinRoot(params: {
     }
   } finally {
     if (tempPath) {
-      await fs.rm(tempPath, { force: true }).catch(() => {});
+      await fs.rm(tempPath, { force: true }).catch((err) => {
+        console.warn(`Failed to cleanup temp path ${tempPath}:`, err);
+      });
     }
   }
 }
@@ -572,7 +576,10 @@ export async function copyFileWithinRoot(params: {
     await pipeline(sourceStream, targetStream);
   } catch (err) {
     if (target?.createdForWrite) {
-      await fs.rm(target.openedRealPath, { force: true }).catch(() => {});
+      const targetPath = target.openedRealPath;
+      await fs.rm(targetPath, { force: true }).catch((rmErr) => {
+        console.warn(`Failed to cleanup target path ${targetPath}:`, rmErr);
+      });
     }
     throw err;
   } finally {
