@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: qcortex
+    runtime: docker
+    plan: starter
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: "8080"
+      - key: SETUP_PASSWORD
+        sync: false
+      - key: QCORTEX_STATE_DIR
+        value: /data/.qcortex
+      - key: QCORTEX_WORKSPACE_DIR
+        value: /data/workspace
+      - key: QCORTEX_GATEWAY_TOKEN
+        generateValue: true
+    disk:
+      name: qcortex-data
+      mountPath: /data
+      sizeGB: 1

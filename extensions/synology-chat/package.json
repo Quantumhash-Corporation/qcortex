@@ -1,0 +1,28 @@
+{
+  "name": "@qcortex/synology-chat",
+  "version": "2026.3.7",
+  "description": "Synology Chat channel plugin for QCortex",
+  "type": "module",
+  "dependencies": {
+    "zod": "^4.3.6"
+  },
+  "qcortex": {
+    "extensions": [
+      "./index.ts"
+    ],
+    "channel": {
+      "id": "synology-chat",
+      "label": "Synology Chat",
+      "selectionLabel": "Synology Chat (Webhook)",
+      "docsPath": "/channels/synology-chat",
+      "docsLabel": "synology-chat",
+      "blurb": "Connect your Synology NAS Chat to QCortex with full agent capabilities.",
+      "order": 90
+    },
+    "install": {
+      "npmSpec": "@qcortex/synology-chat",
+      "localPath": "extensions/synology-chat",
+      "defaultChoice": "npm"
+    }
+  }
+}

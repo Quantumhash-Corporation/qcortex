@@ -1,0 +1,14 @@
+// Copy to LocalSigning.xcconfig for personal local signing overrides.
+// This file is only an example and should stay committed.
+
+QCORTEX_CODE_SIGN_STYLE = Automatic
+QCORTEX_DEVELOPMENT_TEAM = P5Z8X89DJL
+
+QCORTEX_APP_BUNDLE_ID = ai.qcortex.ios.test.mariano
+QCORTEX_SHARE_BUNDLE_ID = ai.qcortex.ios.test.mariano.share
+QCORTEX_WATCH_APP_BUNDLE_ID = ai.qcortex.ios.test.mariano.watchkitapp
+QCORTEX_WATCH_EXTENSION_BUNDLE_ID = ai.qcortex.ios.test.mariano.watchkitapp.extension
+
+// Leave empty with automatic signing.
+QCORTEX_APP_PROFILE =
+QCORTEX_SHARE_PROFILE =

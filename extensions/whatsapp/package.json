@@ -1,0 +1,12 @@
+{
+  "name": "@qcortex/whatsapp",
+  "version": "2026.3.7",
+  "private": true,
+  "description": "QCortex WhatsApp channel plugin",
+  "type": "module",
+  "qcortex": {
+    "extensions": [
+      "./index.ts"
+    ]
+  }
+}

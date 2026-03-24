@@ -1,0 +1,20 @@
+{
+  "name": "@qcortex/memory-core",
+  "version": "2026.3.7",
+  "private": true,
+  "description": "QCortex core memory search plugin",
+  "type": "module",
+  "peerDependencies": {
+    "qcortex": ">=2026.3.2"
+  },
+  "peerDependenciesMeta": {
+    "qcortex": {
+      "optional": true
+    }
+  },
+  "qcortex": {
+    "extensions": [
+      "./index.ts"
+    ]
+  }
+}

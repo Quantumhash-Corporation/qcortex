@@ -1,0 +1,14 @@
+{
+  "name": "@qcortex/irc",
+  "version": "2026.3.7",
+  "description": "QCortex IRC channel plugin",
+  "type": "module",
+  "dependencies": {
+    "zod": "^4.3.6"
+  },
+  "qcortex": {
+    "extensions": [
+      "./index.ts"
+    ]
+  }
+}

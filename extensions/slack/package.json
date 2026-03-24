@@ -1,0 +1,12 @@
+{
+  "name": "@qcortex/slack",
+  "version": "2026.3.7",
+  "private": true,
+  "description": "QCortex Slack channel plugin",
+  "type": "module",
+  "qcortex": {
+    "extensions": [
+      "./index.ts"
+    ]
+  }
+}

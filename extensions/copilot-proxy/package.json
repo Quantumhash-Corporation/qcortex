@@ -1,0 +1,12 @@
+{
+  "name": "@qcortex/copilot-proxy",
+  "version": "2026.3.7",
+  "private": true,
+  "description": "QCortex Copilot Proxy provider plugin",
+  "type": "module",
+  "qcortex": {
+    "extensions": [
+      "./index.ts"
+    ]
+  }
+}

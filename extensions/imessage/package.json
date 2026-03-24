@@ -1,0 +1,12 @@
+{
+  "name": "@qcortex/imessage",
+  "version": "2026.3.7",
+  "private": true,
+  "description": "QCortex iMessage channel plugin",
+  "type": "module",
+  "qcortex": {
+    "extensions": [
+      "./index.ts"
+    ]
+  }
+}
