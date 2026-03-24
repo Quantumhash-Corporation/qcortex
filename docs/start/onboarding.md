@@ -34,7 +34,7 @@ Security trust model:
 
 - By default, QCortex is a personal agent: one trusted operator boundary.
 - Shared/multi-user setups require lock-down (split trust boundaries, keep tool access minimal, and follow [Security](/gateway/security)).
-- Local onboarding now defaults new configs to `tools.profile: "messaging"` so broad runtime/filesystem tools are opt-in.
+- Local onboarding now defaults new configs to `tools.profile: "full"` so all tools including browser automation are available.
 - If hooks/webhooks or other untrusted content feeds are enabled, use a strong modern model tier and keep strict tool policy/sandboxing.
 
 </Step>
