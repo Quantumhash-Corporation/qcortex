@@ -515,6 +515,29 @@ export function applyCompactionDefaults(cfg: QCortexConfig): QCortexConfig {
     return cfg;
   }
 
+  // Apply defaults only when not explicitly set by user
+  const overrides: Record<string, unknown> = {
+    mode: "safeguard",
+  };
+
+  // Only apply reserveTokens if not set by user
+  if (compaction?.reserveTokens === undefined) {
+    overrides.reserveTokens = 32_000;
+  }
+
+  // Only apply keepRecentTokens if not set by user
+  if (compaction?.keepRecentTokens === undefined) {
+    overrides.keepRecentTokens = 25_000;
+  }
+
+  // Only apply memoryFlush defaults if not set
+  if (compaction?.memoryFlush === undefined) {
+    overrides.memoryFlush = {
+      enabled: true,
+      softThresholdTokens: 8_000,
+    };
+  }
+
   return {
     ...cfg,
     agents: {
@@ -523,7 +546,7 @@ export function applyCompactionDefaults(cfg: QCortexConfig): QCortexConfig {
         ...defaults,
         compaction: {
           ...compaction,
-          mode: "safeguard",
+          ...overrides,
         },
       },
     },
