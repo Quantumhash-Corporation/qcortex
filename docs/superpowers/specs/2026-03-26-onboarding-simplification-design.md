@@ -72,6 +72,7 @@ Model/Auth → Workspace → Gateway → Channels → Daemon → Health → Skil
 ```
 
 When user picks an option:
+
 - Automatically configures everything needed for that channel
 - Asks only essential questions (e.g., phone number for WhatsApp verification)
 - Handles login/auth flow with clear instructions
@@ -96,13 +97,13 @@ When user picks an option:
 
 ## 4. Jargon Replacement Table
 
-| Jargon | Plain Language |
-|--------|----------------|
-| "Gateway" | "The service that connects your AI to messaging apps" |
-| "Daemon" | "Run in background so it works even after you close terminal" |
-| "Workspace" | "Where your AI's files and memories are stored" |
-| "Tailscale" | "Access from other devices (like your phone)" |
-| "Token auth" | "A password to keep your AI secure" |
+| Jargon       | Plain Language                                                |
+| ------------ | ------------------------------------------------------------- |
+| "Gateway"    | "The service that connects your AI to messaging apps"         |
+| "Daemon"     | "Run in background so it works even after you close terminal" |
+| "Workspace"  | "Where your AI's files and memories are stored"               |
+| "Tailscale"  | "Access from other devices (like your phone)"                 |
+| "Token auth" | "A password to keep your AI secure"                           |
 
 ---
 

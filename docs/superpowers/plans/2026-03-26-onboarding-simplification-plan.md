@@ -5,6 +5,7 @@
 **Goal:** Simplify QCortex onboarding so non-technical users can understand how to install and use it
 
 **Architecture:**
+
 - Add "use case" selection at wizard start (WhatsApp, Telegram, Discord, Browser-only)
 - Group related questions into conversational flows
 - Replace jargon with plain language in all prompts
@@ -29,6 +30,7 @@
 ## Task 1: Add Use Case Selection at Wizard Start
 
 **Files:**
+
 - Modify: `src/wizard/onboarding.ts:126-143`
 - Test: Run `pnpm qcortex onboard` and verify prompt appears
 
@@ -63,9 +65,8 @@ const channelFromUseCase: Record<string, string[]> = {
 };
 
 // In setupChannels call, pre-fill based on use case
-const forceAllowFromChannels = flow === "quickstart"
-  ? channelFromUseCase[useCase] || quickstartAllowFromChannels
-  : [];
+const forceAllowFromChannels =
+  flow === "quickstart" ? channelFromUseCase[useCase] || quickstartAllowFromChannels : [];
 ```
 
 - [ ] **Step 3: Test the flow**
@@ -85,6 +86,7 @@ git commit -m "feat: add use case selection to onboarding wizard"
 ## Task 2: Replace Jargon with Plain Language
 
 **Files:**
+
 - Modify: `src/wizard/onboarding.ts:234-263` (quickstart display)
 - Modify: `src/commands/onboard-helpers.ts` (various prompts)
 - Modify: `src/commands/onboard-channels.ts` (channel prompts)
@@ -132,6 +134,7 @@ git commit -m "feat: replace jargon with plain language in wizard prompts"
 ## Task 3: Add Helpful Hints to Each Step
 
 **Files:**
+
 - Modify: `src/wizard/prompts.ts` (add hint type)
 - Modify: `src/wizard/clack-prompter.ts` (render hints)
 - Modify: Various onboard commands (add hints to prompts)
@@ -176,6 +179,7 @@ git commit -m "feat: add helpful hints to wizard prompts"
 ## Task 4: Progressive Disclosure (Simple/Advanced)
 
 **Files:**
+
 - Modify: `src/wizard/onboarding.ts:126-143` (flow selection)
 - Modify: `src/commands/onboard-helpers.ts` (QuickStart vs Manual hints)
 - Test: Verify Simple mode shows fewer questions
@@ -231,6 +235,7 @@ git commit -m "feat: improve Simple vs Advanced mode UX"
 ## Task 5: Update Documentation
 
 **Files:**
+
 - Modify: `docs/start/getting-started.md`
 - Modify: `docs/start/wizard.md`
 - Test: Verify docs match new flow
@@ -239,7 +244,7 @@ git commit -m "feat: improve Simple vs Advanced mode UX"
 
 Update the "Quick setup (CLI)" section to reflect simpler flow:
 
-```markdown
+````markdown
 ## Quick setup (CLI)
 
 <Steps>
@@ -262,7 +267,7 @@ Update the "Quick setup (CLI)" section to reflect simpler flow:
     Run `qcortex dashboard` to open the Control UI
   </Step>
 </Steps>
-```
+````
 
 - [ ] **Step 2: Update wizard.md**
 
@@ -274,11 +279,13 @@ Add section about Simple vs Advanced modes:
 The wizard offers two modes:
 
 **QuickStart (recommended):**
+
 - Asks just 3-5 questions
 - Uses simple language
 - Pre-configures sensible defaults
 
 **Advanced:**
+
 - Shows all options
 - Full control over gateway, daemon, Tailscale, etc.
 - Good for developers or power users
@@ -296,6 +303,7 @@ git commit -m "docs: update onboarding docs for simplified flow"
 ## Task 6: Test with Non-Technical User
 
 **Files:**
+
 - Test: Manual testing
 - Feedback: Collect user feedback
 
@@ -312,11 +320,11 @@ Walk through as a new user would
 
 ## Summary
 
-| Task | Changes |
-|------|---------|
-| 1. Use case selection | Add WhatsApp/Telegram/Discord/Browser choice at start |
-| 2. Plain language | Replace "Gateway", "Daemon", "Workspace" with friendly terms |
-| 3. Helpful hints | Add contextual tips to each option |
-| 4. Simple/Advanced | Make QuickStart clearly recommended |
-| 5. Documentation | Update getting-started and wizard docs |
-| 6. Testing | Verify complete flow works |
+| Task                  | Changes                                                      |
+| --------------------- | ------------------------------------------------------------ |
+| 1. Use case selection | Add WhatsApp/Telegram/Discord/Browser choice at start        |
+| 2. Plain language     | Replace "Gateway", "Daemon", "Workspace" with friendly terms |
+| 3. Helpful hints      | Add contextual tips to each option                           |
+| 4. Simple/Advanced    | Make QuickStart clearly recommended                          |
+| 5. Documentation      | Update getting-started and wizard docs                       |
+| 6. Testing            | Verify complete flow works                                   |
