@@ -120,3 +120,4 @@ dist/protocol.schema.json
 # Synthing
 **/.stfolder/
 !src/canvas-host/a2ui/a2ui.bundle.js
+.worktrees/
