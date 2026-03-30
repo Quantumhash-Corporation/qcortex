@@ -14,6 +14,17 @@ Linux, or Windows (via WSL2; strongly recommended).
 It configures a local Gateway or a remote Gateway connection, plus channels, skills,
 and workspace defaults in one guided flow.
 
+## Simple vs Advanced
+
+Choose your setup mode when the wizard starts:
+
+- **QuickStart** (recommended) — Uses sensible defaults. Get running in minutes with minimal choices.
+- **Manual/Advanced** — Full control. Configure every option explicitly.
+
+<Info>
+QuickStart is recommended for first-time setup. You can re-run the wizard later with `--advanced` to customize.
+</Info>
+
 ```bash
 qcortex onboard
 ```

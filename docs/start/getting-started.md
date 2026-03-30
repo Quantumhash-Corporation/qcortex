@@ -28,7 +28,7 @@ Check your Node version with `node --version` if you are unsure.
 ## Quick setup (CLI)
 
 <Steps>
-  <Step title="Install QCortex (recommended)">
+  <Step title="Install QCortex">
     <Tabs>
       <Tab title="macOS/Linux">
         ```bash
@@ -48,28 +48,22 @@ Check your Node version with `node --version` if you are unsure.
     </Tabs>
 
     <Note>
-    Other install methods and requirements: [Install](/install).
+    Other install methods: [Install](/install).
     </Note>
 
   </Step>
-  <Step title="Run the onboarding wizard">
+  <Step title="Run onboarding wizard">
     ```bash
     qcortex onboard --install-daemon
     ```
 
-    The wizard configures auth, gateway settings, and optional channels.
+    The wizard asks "What would you like to do?" to guide you through setup:
+    - **QuickStart** — recommended defaults, get running in minutes
+    - **Advanced** — full control over all options
     See [Onboarding Wizard](/start/wizard) for details.
 
   </Step>
-  <Step title="Check the Gateway">
-    If you installed the service, it should already be running:
-
-    ```bash
-    qcortex gateway status
-    ```
-
-  </Step>
-  <Step title="Open the Control UI">
+  <Step title="Start chatting">
     ```bash
     qcortex dashboard
     ```
